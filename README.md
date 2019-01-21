@@ -8,7 +8,8 @@
 
 This project implements an open source Windows Shell data provider,
 which is necessary to display information related to the Windows system structure
-in an Application.
+in an Application. This library is the core of a [Metro Breadcrumb control](https://github.com/Dirkster99/bm)
+implemented in a different project.
 
 This implementation targets Windows 10 but should also be good for support on Vista and later (Windows 7-8).
 
