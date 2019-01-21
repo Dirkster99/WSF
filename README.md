@@ -4,7 +4,7 @@
 
 # Windows Shell Foundation (WSF)
 
-<h1><img src="https://github.com/Dirkster99/WSF/blob/master/ProjectIcon.png?raw=true" height="64"/>&nbsp;Overview</h1>
+<h2><img src="https://github.com/Dirkster99/WSF/blob/master/ProjectIcon.png?raw=true" height="64"/>&nbsp;Overview</h2>
 
 This project implements an open source Windows Shell data provider,
 which is necessary to display information related to the Windows system structure
