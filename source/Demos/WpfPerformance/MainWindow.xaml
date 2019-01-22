@@ -17,6 +17,10 @@
                                                 TrueValue="Visible"
                                                 FalseValue="Collapsed"
                                                 />
+            <conv:BoolToVisibilityPropConverter x:Key="BoolToVisibilityCollapsedNegPropConverter"
+                                                TrueValue="Collapsed"
+                                                FalseValue="Visible"
+                                                />
             <conv:InvertBoolConverter x:Key="InvertBoolConverter"/>
         </Grid.Resources>
         <Grid.RowDefinitions>
@@ -110,12 +114,33 @@
             </ListBox.ItemTemplate>
         </ListBox>
 
-        <ProgressBar
-            Grid.Row="2"
-            Visibility="{Binding IsProcessing,Converter={StaticResource BoolToVisibilityCollapsedPropConverter}}"
-            IsIndeterminate="True"
-            Height="9"
-            HorizontalAlignment="Stretch"
-        />
+        <StatusBar Grid.Row="2">
+            <StatusBar.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                    </Grid>
+                </ItemsPanelTemplate>
+            </StatusBar.ItemsPanel>
+            <StatusBarItem Grid.Column="0">
+                <TextBlock>Count:<TextBlock Text="{Binding ItemsCount}" /></TextBlock>
+            </StatusBarItem>
+            
+            <StatusBarItem Grid.Column="1" HorizontalContentAlignment="Stretch">
+                <ProgressBar
+                    Visibility="{Binding IsProcessing,Converter={StaticResource BoolToVisibilityCollapsedPropConverter}}"
+                    IsIndeterminate="True"
+                    MinHeight="9"
+                    MinWidth="250"
+                    HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                />
+            </StatusBarItem>
+        </StatusBar>
     </Grid>
 </Window>

@@ -14,11 +14,11 @@
         /// Parameterized class constructor
         /// </summary>
         public DirectoryBrowserSlim(int parId,
-                                         string parItemPath,
+                                    string parItemPath,
 
-                                         string parName,
-                                         string parParseName,
-                                         string parLabelName)
+                                    string parName,
+                                    string parParseName,
+                                    string parLabelName)
             : this()
         {
             ID = parId;
@@ -47,7 +47,7 @@
         /// <summary>
         /// Gets the path of this item.
         /// </summary>
-        public object ItemPath { get; }
+        public string ItemPath { get; }
 
         /// <summary>
         /// Gets the Name of this item.

@@ -120,6 +120,11 @@
                 return _ListItems;
             }
         }
+
+        public int ItemsCount
+        {
+            get { return _ListItems.Count; }
+        }
         #endregion properties
 
         #region methods
@@ -138,6 +143,7 @@
 
             _ListItems.Clear();
             _ListItems.AddItems(result);
+            NotifyPropertyChanged(() => ItemsCount);
 
             var endTime = DateTime.Now;
             Console.WriteLine("{0} done adding items after {1:n2} seconds..\n",
