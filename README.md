@@ -26,9 +26,7 @@ Finding all children (eg: 'This PC') under the Desktop root is as complicated as
 using WSF;
 using WSF.IDs;
 
-var desktop = Browser.Create(KF_IID.ID_FOLDERID_Desktop);
-
-foreach (var item in Browser.GetChildItems(desktop.SpecialPathId))
+foreach (var item in Browser.GetChildItems(KF_IID.ID_FOLDERID_Desktop))
 {
     Console.WriteLine("Name '{0}' SpecialPathId '{1}' PathFileSystem '{2}'",
         item.Name, item.SpecialPathId, item.PathFileSystem);
