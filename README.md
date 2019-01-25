@@ -33,4 +33,6 @@ foreach (var item in Browser.GetChildItems(KF_IID.ID_FOLDERID_Desktop))
 }
 ```
 
+The *Name* attribute is localized (it should be &quot;This PC&quot; in English and &quot;Dieser PC&quot; in German).
+
 More information about the [Windows Shell](https://msdn.microsoft.com/de-de/library/windows/desktop/bb773177.aspx).
