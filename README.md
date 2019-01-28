@@ -20,4 +20,19 @@ The implementation of the Windows Shell Foundation in this WSF project is based 
 but completely refactored in terms of models and classes using [SharpShell](https://github.com/dwmkerr/sharpshell)
 as a base of most things that are there.
 
+Finding all children (eg: 'This PC') under the Desktop root is as complicated as this:
+
+```C#
+using WSF;
+using WSF.IDs;
+
+foreach (var item in Browser.GetChildItems(KF_IID.ID_FOLDERID_Desktop))
+{
+    Console.WriteLine("Name '{0}' SpecialPathId '{1}' PathFileSystem '{2}'",
+        item.Name, item.SpecialPathId, item.PathFileSystem);
+}
+```
+
+The *Name* attribute is localized (it should be &quot;This PC&quot; in English and &quot;Dieser PC&quot; in German).
+
 More information about the [Windows Shell](https://msdn.microsoft.com/de-de/library/windows/desktop/bb773177.aspx).
