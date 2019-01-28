@@ -60,6 +60,7 @@
     <Compile Include="PIDL_PathTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ShellInteropTests.cs" />
+    <Compile Include="DirectoryBrowserSlimTests.cs" />
     <Compile Include="TestHelper.cs" />
     <Compile Include="ShellBrowserTest.cs" />
     <Compile Include="ZipFilesTests.cs" />

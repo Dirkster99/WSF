@@ -1297,6 +1297,12 @@
                 Marshal.WriteInt32(ptrStr, 0, 0);
                 StringBuilder strbuf = new StringBuilder(NativeMethods.MAX_PATH);
                 int index = 0;
+                IdList pidlFullList;
+
+                if (pidlFull != default(IntPtr))
+                    pidlFullList = PidlManager.PidlToIdlist(pidlFull);
+                else
+                    pidlFullList = IdList.Create();
 
                 // Get one item below root item at a time and process by getting its display name
                 // PITEMID_CHILD: The ITEMIDLIST is an allocated child ITEMIDLIST relative to
@@ -1358,7 +1364,8 @@
 
                         IdList apidlIdList = PidlManager.PidlToIdlist(apidl);
 
-                        yield return new DirectoryBrowserSlim(index++, folderParseName, parseName, name, labelName);
+                        yield return new DirectoryBrowserSlim(index++, folderParseName, parseName, name, labelName,
+                                                                       pidlFullList, apidlIdList);
                     }
                     finally
                     {
@@ -1432,20 +1439,20 @@
                                 }
                             }
 
-                            ////                            using (var nativeKF = KnownFolderHelper.FromKnownFolderGuid(knownFolderID))
-                            ////                            {
-                            ////                                var kf = KnownFolderHelper.GetFolderProperties(nativeKF.Obj);
+                            //// using (var nativeKF = KnownFolderHelper.FromKnownFolderGuid(knownFolderID))
+                            //// {
+                            ////     var kf = KnownFolderHelper.GetFolderProperties(nativeKF.Obj);
                             ////
-                            ////                                // Add to our collection if it's not null (some folders might not exist on the system
-                            ////                                // or we could have an exception that resulted in the null return from above method call
-                            ////                                if (kf != null)
-                            ////                                {
-                            ////                                    foldersList.Add(kf.FolderId, kf);
+                            ////     // Add to our collection if it's not null (some folders might not exist on the system
+                            ////     // or we could have an exception that resulted in the null return from above method call
+                            ////     if (kf != null)
+                            ////     {
+                            ////         foldersList.Add(kf.FolderId, kf);
                             ////
-                            ////                                    if (kf.IsExistsInFileSystem == true)
-                            ////                                        pathList.Add(kf.Path, kf);
-                            ////                                }
-                            ////                            }
+                            ////         if (kf.IsExistsInFileSystem == true)
+                            ////             pathList.Add(kf.Path, kf);
+                            ////     }
+                            //// }
                         }
                         catch { }
                     }

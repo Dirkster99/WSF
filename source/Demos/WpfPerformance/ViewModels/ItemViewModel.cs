@@ -95,7 +95,7 @@
                 }
                 else
                 {
-                    return _ModelStage1.ParseName;
+                    return _ModelStage1.Name;
                 }
 
                 return string.Empty;
@@ -191,12 +191,8 @@
                 IsLoading = true;
                 try
                 {
-                    string pathFileName = string.Format("{0}{1}{2}", _ModelStage1.ItemPath
-                                                                   , System.IO.Path.DirectorySeparatorChar
-                                                                   , _ModelStage1.ParseName );
-
-                    _dir = Browser.Create(pathFileName, _ModelStage1.LabelName,
-                                               _ModelStage1.Name);
+                    _dir = Browser.Create(_ModelStage1.ParseName,
+                                          _ModelStage1.Name, _ModelStage1.LabelName);
 
                     if (_dir != null)
                     {

@@ -188,7 +188,6 @@
             if (Obj == null)
                 throw new System.ArgumentException("Native IKnownFolder cannot be null.");
 
-            IntPtr ptrPath = default(IntPtr);
             try
             {
                 return Obj.GetId().ToString();
@@ -197,10 +196,6 @@
             {
                 // Some special folders may not have a file system path
                 return null;
-            }
-            finally
-            {
-                ptrPath = PidlManager.FreeCoTaskMem(ptrPath);
             }
         }
 
@@ -213,7 +208,6 @@
             if (Obj == null)
                 throw new System.ArgumentException("Native IKnownFolder cannot be null.");
 
-            IntPtr ptrPath = default(IntPtr);
             try
             {
                 string s = string.Format("{0}{1}{2}", "::{", Obj.GetId(), "}");
@@ -223,10 +217,6 @@
             {
                 // Some special folders may not have this path
                 return null;
-            }
-            finally
-            {
-                ptrPath = PidlManager.FreeCoTaskMem(ptrPath);
             }
         }
 
