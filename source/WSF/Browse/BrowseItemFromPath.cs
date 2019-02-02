@@ -221,15 +221,15 @@
             bool hasPIDL = false;
             IdList parentIdList, relativeChildIdList;
 
-            if (isSpecialID != ShellHelpers.SpecialPath.IsSpecialPath)
-            {
-                normPath = Browser.NormalizePath(path);
-                hasPIDL = PidlManager.GetParentIdListFromPath(normPath, out parentIdList, out relativeChildIdList);
-            }
-            else
+            if (isSpecialID == ShellHelpers.SpecialPath.IsSpecialPath)
             {
                 SpecialPathId = path;
                 hasPIDL = PidlManager.GetParentIdListFromPath(path, out parentIdList, out relativeChildIdList);
+            }
+            else
+            {
+                normPath = Browser.NormalizePath(path);
+                hasPIDL = PidlManager.GetParentIdListFromPath(normPath, out parentIdList, out relativeChildIdList);
             }
 
             if (hasPIDL == false)   // return references that cannot resolve with a PIDL
@@ -568,7 +568,7 @@
             return false;
         }
 
-        internal static BrowseItemFromPath InitDesktopRootItem()
+        private static BrowseItemFromPath InitDesktopRootItem()
         {
             string root = KF_IID.ID_ROOT_Desktop;
             BrowseItemFromPath ret = new BrowseItemFromPath(root, root, PathHandler.DesktopRoot);

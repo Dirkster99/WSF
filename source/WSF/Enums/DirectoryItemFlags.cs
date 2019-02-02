@@ -7,6 +7,8 @@
     {
         /// <summary>
         /// Default option to use for initialization.
+        /// 
+        /// This value indicates an error, if its still available after initialization.
         /// </summary>
         Unknown = 0,
 
@@ -22,10 +24,16 @@
         Special = 1,
 
         /// <summary>
-        /// This item has a representation in the file system storage system.
+        /// This item has a directory representation in the file system storage system.
         /// (eg. 'Documents')
         /// </summary>
         FileSystemDirectory = 2,
+
+        /// <summary>
+        /// This item has a file representation in the file system storage system.
+        /// (eg. 'Bm.zip')
+        /// </summary>
+        FileSystemFile = 8192,
 
         /// <summary>
         /// This item has a representation in the file system storage system
@@ -86,6 +94,6 @@
         /// <summary>
         /// This item represents the Videos special folder.
         /// </summary>
-        Videos = 512
+        Videos = 512,
     }
 }

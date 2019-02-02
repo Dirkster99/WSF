@@ -13,8 +13,7 @@
     ///
     /// </summary>
     /// <remarks>
-    /// See:
-    /// http://msdn.microsoft.com/en-us/library/windows/desktop/dd378457.aspx
+    /// See: http://msdn.microsoft.com/en-us/library/windows/desktop/dd378457.aspx
     /// For details on known folders.
     /// </remarks>
     public sealed class KF_ID
@@ -23,6 +22,12 @@
         /// Defines the exact length in characters for all IDs defined below.
         /// </summary>
         public const int ID_Length = 38;
+
+        /// <summary>
+        /// Invented Id for Desktop Root Item which is root above all other items
+        /// (Not to be confused with user desktop special folder item).
+        /// </summary>
+        public static readonly string ID_ROOT_Desktop = "{00000001-0001-0001-0001-000000000001}";
 
         /// <summary>
         /// Display Name         Network

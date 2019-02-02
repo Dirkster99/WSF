@@ -26,13 +26,6 @@
             for (int i = 0; i < SlimItems.Count; i++)
             {
                 Assert.IsTrue(string.Compare(SlimItems[i].Name, Items[i].Name) == 0);
-
-                string knownFolderId = SlimItems[i].GetKnownFolderId();
-
-                if (Items[i].SpecialPathId != null && knownFolderId != null)
-                    Assert.IsTrue(string.Compare(Items[i].SpecialPathId, knownFolderId, true) == 0);
-                else
-                    Assert.IsTrue(Items[i].SpecialPathId == null && knownFolderId == null);
             }
 
             KnownFolderManagerClass knownFolderManager = new KnownFolderManagerClass();
@@ -78,13 +71,6 @@
             for (int i = 0; i < SlimItems.Count; i++)
             {
                 Assert.IsTrue(string.Compare(SlimItems[i].Name, Items[i].Name) == 0);
-
-                string knownFolderId = SlimItems[i].GetKnownFolderId();
-
-                if (Items[i].SpecialPathId != null && knownFolderId != null)
-                    Assert.IsTrue(string.Compare(Items[i].SpecialPathId, knownFolderId, true) == 0);
-                else
-                    Assert.IsTrue(Items[i].SpecialPathId == null && knownFolderId == null);
             }
         }
     }

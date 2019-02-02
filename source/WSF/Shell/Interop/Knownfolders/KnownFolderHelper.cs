@@ -276,6 +276,12 @@
                                     new KnownFolderProperties(knownFolderNative,
                                                               nativeFolderDefinition);
 
+                // Error handling - Empty Pidl indicates non-existing local folder
+                // Let's not worry about non-exisitng local 'known' folders
+                if (knownFolderProperties.PidlIdList.Size == 0 &&
+                    knownFolderProperties.FolderId != new Guid(KF_ID.ID_FOLDERID_Desktop))
+                    return default(KnownFolderProperties);
+
                 return knownFolderProperties;
             }
             catch

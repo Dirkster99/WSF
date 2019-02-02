@@ -33,7 +33,7 @@
         /// Invented Id for Desktop Root Item which is root above all other items
         /// (Not to be confused with user desktop special folder item).
         /// </summary>
-        public static readonly string ID_ROOT_Desktop = IID_Prefix + "{00000001-0001-0001-0001-000000000001}";
+        public static readonly string ID_ROOT_Desktop = IID_Prefix + KF_ID.ID_ROOT_Desktop;
 
         /// <summary>
         /// Display Name         Network

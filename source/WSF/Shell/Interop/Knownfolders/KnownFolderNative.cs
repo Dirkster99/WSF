@@ -129,11 +129,13 @@
                 HRESULT RetVal = Obj.GetIDList((uint)KNOWN_FOLDER_FLAG.KF_NO_FLAGS, out ptrAddr);
 
                 if (ptrAddr != default(IntPtr) && RetVal == HRESULT.S_OK)
-                {
                     return ptrAddr;
-                }
                 else
-                    throw new ArgumentException("Invalid knownFolder " + RetVal);
+                    return default(IntPtr);
+            }
+            catch (System.IO.FileNotFoundException)
+            {
+                // Is thrown for some folders on Win10 (not sure why?)
             }
             catch (System.ArgumentException)
             {

@@ -18,6 +18,7 @@
     using System.Text;
     using WSF.Enums;
     using System.Linq;
+    using WSF.Shell.Interop.Interfaces.Knownfolders;
 
     /// <summary>
     /// Implements core API type methods and properties that are used to interact
@@ -25,22 +26,51 @@
     /// </summary>
     public static class Browser
     {
+        #region fields
+        /// <summary>
+        /// Filtering these folders since they are not too useful here
+        /// and cause odd exception in later processing steps ...
+        ///
+        /// SyncSetupFolder, SyncResultsFolder, ConflictFolder
+        /// AppUpdatesFolder, ChangeRemoveProgramsFolder, SyncCenterFolder
+        /// </summary>
+        private static readonly HashSet<Guid> _filterKF = new HashSet<Guid>()
+        {
+            new Guid(KF_ID.ID_FOLDERID_SyncSetupFolder),
+            new Guid(KF_ID.ID_FOLDERID_SyncResultsFolder),
+            new Guid(KF_ID.ID_FOLDERID_ConflictFolder),
+            new Guid(KF_ID.ID_FOLDERID_AppUpdates),
+            new Guid(KF_ID.ID_FOLDERID_ChangeRemovePrograms),
+            new Guid(KF_ID.ID_FOLDERID_SyncManagerFolder),
+            new Guid(KF_ID.ID_FOLDERID_LocalizedResourcesDir),
+        };
+        #endregion fields
+
         #region ctors
         /// <summary>
         /// Static constructor
         /// </summary>
         static Browser()
         {
-            KnownFileSystemFolders = new Dictionary<string, IDirectoryBrowser>();
+            KnownDirectoryBrowsers = new Dictionary<string, IDirectoryBrowser>();
+
+            KnownFileSystemFolders = new Dictionary<string, IKnownFolderProperties>();
+
+            LocalKFs = new Dictionary<Guid, IKnownFolderProperties>();
         }
         #endregion  ctors
 
         #region properties
+
+        private static Dictionary<string, IDirectoryBrowser> KnownDirectoryBrowsers { get; }
+
         /// <summary>
         /// Contains a collection of known folders with a file system folder.
         /// This collection is build on program start-up.
         /// </summary>
-        private static Dictionary<string, IDirectoryBrowser> KnownFileSystemFolders { get; }
+        private static Dictionary<string, IKnownFolderProperties> KnownFileSystemFolders { get; }
+
+        private static Dictionary<Guid, IKnownFolderProperties> LocalKFs { get; set; }
 
         /// <summary>
         /// Gets the default system drive - usually 'C:\'.
@@ -170,7 +200,7 @@
                 // Try to locate a known folder by its directory path in the file system
                 if (ShellHelpers.IsSpecialPath(fullPath) == ShellHelpers.SpecialPath.None)
                 {
-                    var item = Browser.FindKnownFolderByFileSystemPath(fullPath);
+                    var item = Browser.FindDirectoryBrowserKFByFileSystemPath(fullPath);
 
                     if (item != null)
                         return item;
@@ -223,7 +253,7 @@
                 // Try to locate a known folder by its directory path in the file system
                 if (ShellHelpers.IsSpecialPath(parseName) == ShellHelpers.SpecialPath.None)
                 {
-                    var item = Browser.FindKnownFolderByFileSystemPath(parseName);
+                    var item = Browser.FindDirectoryBrowserKFByFileSystemPath(parseName);
 
                     if (item != null)
                         return item;
@@ -1396,12 +1426,12 @@
         /// an associated file system path.
         /// </summary>
         /// <returns></returns>
-        public static Dictionary<string, IDirectoryBrowser> GetAllKnownFolders()
+        public static Dictionary<Guid, IKnownFolderProperties> GetAllKFs()
         {
             // Should this method be thread-safe?? (It'll take a while
             // to get a list of all the known folders, create the managed wrapper
             // and return the read-only collection.
-            var pathList = new Dictionary<string, IDirectoryBrowser>();
+            var pathList = new Dictionary<Guid, IKnownFolderProperties>();
             uint count;
             IntPtr folders = IntPtr.Zero;
 
@@ -1421,38 +1451,20 @@
                         // Convert to Guid
                         Guid knownFolderID = (Guid)Marshal.PtrToStructure(current, typeof(Guid));
 
+                        if (_filterKF.Contains(knownFolderID))
+                            continue;
+
                         try
                         {
-                            var folder = Browser.Create("::" + knownFolderID.ToString("B"), true);
-
-                            if (folder != null &&
-                                string.IsNullOrEmpty(folder.PathFileSystem) == false)
+                            using (var nativeKF = KnownFolderHelper.FromKnownFolderGuid(knownFolderID))
                             {
-                                // It is possible to have more than one known folder point at one
-                                // file system location - but this implementation still handles
-                                // unique file locations and associated folders
-                                IDirectoryBrowser val = null;
-                                if (pathList.TryGetValue(folder.PathFileSystem, out val) == false)
-                                {
-                                    if (string.IsNullOrEmpty(folder.PathFileSystem) == false)
-                                        pathList.Add(folder.PathFileSystem, folder);
-                                }
+                                var kf = KnownFolderHelper.GetFolderProperties(nativeKF.Obj);
+                            
+                                // Add to our collection if it's not null (some folders might not exist on the system
+                                // or we could have an exception that resulted in the null return from above method call
+                                if (kf != null)
+                                    pathList.Add(kf.FolderId, kf);
                             }
-
-                            //// using (var nativeKF = KnownFolderHelper.FromKnownFolderGuid(knownFolderID))
-                            //// {
-                            ////     var kf = KnownFolderHelper.GetFolderProperties(nativeKF.Obj);
-                            ////
-                            ////     // Add to our collection if it's not null (some folders might not exist on the system
-                            ////     // or we could have an exception that resulted in the null return from above method call
-                            ////     if (kf != null)
-                            ////     {
-                            ////         foldersList.Add(kf.FolderId, kf);
-                            ////
-                            ////         if (kf.IsExistsInFileSystem == true)
-                            ////             pathList.Add(kf.Path, kf);
-                            ////     }
-                            //// }
                         }
                         catch { }
                     }
@@ -1467,22 +1479,92 @@
             return pathList;
         }
 
+        private static void LoadAllKFs()
+        {
+            if (LocalKFs.Count == 0)
+            {
+                LocalKFs = GetAllKFs();
+
+                foreach (var item in LocalKFs.Values)
+                {
+                    // Make known FolderId and SpecialParseNameId available in one collection
+                    KnownFileSystemFolders.Add(item.FolderId.ToString("B").ToUpper(), item);
+
+                    KnownFileSystemFolders.Add(KF_IID.IID_Prefix + item.FolderId.ToString("B").ToUpper(), item);
+
+                    if (Browser.IsTypeOf(item.ParsingName) == PathType.SpecialFolder)
+                        KnownFileSystemFolders.Add(item.ParsingName, item);
+
+                    if (string.IsNullOrEmpty(item.Path) == false)
+                    {
+                        try
+                        {
+                            // It is possible to have more than one known folder point at one
+                            // file system location - but this implementation still handles
+                            // unique file locations and associated folders
+                            IKnownFolderProperties val = null;
+                            if (KnownFileSystemFolders.TryGetValue(item.Path, out val) == false)
+                                KnownFileSystemFolders.Add(item.Path, item);
+                        }
+                        catch
+                        {
+                            // swallow errors beyond this point
+                        }
+
+                        try
+                        {
+                            var folder = Browser.Create("::" + item.FolderId.ToString("B"), true);
+
+                            if (folder != null &&
+                                string.IsNullOrEmpty(folder.PathFileSystem) == false)
+                            {
+                                // It is possible to have more than one known folder point at one
+                                // file system location - but this implementation still handles
+                                // unique file locations and associated folders
+                                IDirectoryBrowser val = null;
+                                if (KnownDirectoryBrowsers.TryGetValue(folder.PathFileSystem, out val) == false)
+                                    KnownDirectoryBrowsers.Add(folder.PathFileSystem, folder);
+                            }
+                        }
+                        catch
+                        {
+                            // swallow errors beyond this point
+                        }
+                    }
+                }
+            }
+        }
+
         /// <summary>
         /// Tries to determine whether there is a known folder associated with this
         /// path or not.
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        public static IDirectoryBrowser FindKnownFolderByFileSystemPath(string path)
+        public static IKnownFolderProperties FindKnownFolderByFileSystemPath(string path)
         {
             if (KnownFileSystemFolders.Count == 0)
-            {
-                foreach (var item in GetAllKnownFolders())
-                    KnownFileSystemFolders.Add(item.Key, item.Value);
-            }
+                LoadAllKFs();
+
+            IKnownFolderProperties matchedItem = null;
+            KnownFileSystemFolders.TryGetValue(path.ToUpper(), out matchedItem);
+
+            return matchedItem;
+        }
+
+        /// <summary>
+        /// Tries to determine whether there is a known folder associated with this
+        /// path or not.
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static IDirectoryBrowser FindDirectoryBrowserKFByFileSystemPath(string path)
+        {
+            if (KnownFileSystemFolders.Count == 0)
+                LoadAllKFs();
 
             IDirectoryBrowser matchedItem = null;
-            KnownFileSystemFolders.TryGetValue(path, out matchedItem);
+            KnownDirectoryBrowsers.TryGetValue(path, out matchedItem);
 
             return matchedItem;
         }

@@ -11,9 +11,10 @@
     using System.Runtime.InteropServices;
     using System.Text;
     using System.Diagnostics;
+    using WSF.IDs;
 
     /// <summary>
-    /// Store property values for  a known folder.
+    /// Store property values for a known folder.
     /// This class holds the information returned in the KNOWNFOLDER_DEFINITION structure,
     /// and resources referenced by fields in NativeFolderDefinition, such as icon and tool tip.
     ///
@@ -86,7 +87,7 @@
         ////public string folderType { get; protected set; }  Is a manually maintained list of canonical string names in Windows API Pack 1.1
 
         /// <summary>
-        /// Gets the KnownFolderId of this Known Folder object.
+        /// Gets the KnownFolderId of this Known Folder object (<seealso cref="KF_ID"/>).
         /// </summary>
         public Guid FolderId { get; protected set; }
 
@@ -210,6 +211,45 @@
             return null;
         }
 
+        /// <summary>
+        /// Determines whether the string in <paramref name="iconResourceId"/> contains
+        /// a valid resource id reference of the sample form 'dll, -3'.
+        /// 
+        /// Call this method without parameter to determine this for
+        /// the <see cref="IconResourceId"/> property contained in this object.
+        /// </summary>
+        /// <param name="iconResourceId"></param>
+        /// <returns></returns>
+        public bool IsIconResourceIdValid(string iconResourceId = null)
+        {
+            string testString = null;
+
+            if (string.IsNullOrEmpty(iconResourceId) == false)
+                testString = iconResourceId;
+            else
+                testString = this.IconResourceId;
+
+            if (string.IsNullOrEmpty(testString))
+                return false;
+
+            int indexOfKomma = testString.IndexOf(',');
+            if (indexOfKomma <= 2)
+                return false;
+
+            return true;
+        }
+
+        /// <summary>
+        /// Resets an icons resource id. Use this property to overwrite available
+        /// values or consider alternative options for retrieving the correct resource id string.
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <param name="index"></param>
+        public void ResetIconResourceId(string filename, int index)
+        {
+            this.IconResourceId = string.Format("{0}, {1}", filename, index);
+        }
+
         private void Init(IKnownFolderNative knownFolderNative,
                           NativeFolderDefinition nativeFolderDefinition)
         {
@@ -274,47 +314,14 @@
             // Load Icon ResourceId from Icon Resource helper (if not already present)
             if (IsIconResourceIdValid(IconResourceId) == false && PidlIdList != null)
             {
-                IconResourceId = IconHelper.FromPidl(PidlIdList, true, false);
+                if (PidlIdList.Size == 0 && this.FolderId == new Guid(KF_ID.ID_FOLDERID_Desktop))
+                    IconResourceId = IconHelper.FromPidl(PidlIdList, true, false);
+                else
+                {
+                    if (PidlIdList.Size != 0)
+                        IconResourceId = IconHelper.FromPidl(PidlIdList, true, false);
+                }
             }
-        }
-
-        /// <summary>
-        /// Determines whether the string in <paramref name="iconResourceId"/> contains
-        /// a valid resource id reference of the sample form 'dll, -3'.
-        /// 
-        /// Call this method without parameter to determine this for
-        /// the <see cref="IconResourceId"/> property contained in this object.
-        /// </summary>
-        /// <param name="iconResourceId"></param>
-        /// <returns></returns>
-        public bool IsIconResourceIdValid(string iconResourceId = null)
-        {
-            string testString = null;
-
-            if (string.IsNullOrEmpty(iconResourceId) == false)
-                testString = iconResourceId;
-            else
-                testString = this.IconResourceId;
-
-            if (string.IsNullOrEmpty(testString))
-                return false;
-
-            int indexOfKomma = testString.IndexOf(',');
-            if (indexOfKomma <= 2)
-                return false;
-
-            return true;
-        }
-
-        /// <summary>
-        /// Resets an icons resource id. Use this property to overwrite available
-        /// values or consider alternative options for retrieving the correct resource id string.
-        /// </summary>
-        /// <param name="filename"></param>
-        /// <param name="index"></param>
-        public void ResetIconResourceId(string filename, int index)
-        {
-            this.IconResourceId = string.Format("{0}, {1}", filename, index);
         }
     }
 }

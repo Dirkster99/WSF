@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Browse\BrowseItemFromPath.cs" />
+    <Compile Include="Browse\BrowseItemFromPath2.cs" />
     <Compile Include="Browse\DirectoryBrowser.cs" />
     <Compile Include="Browse\DirectoryBrowserSlim.cs" />
     <Compile Include="Browse\FilterMask.cs" />
@@ -56,6 +57,7 @@
     <Compile Include="Enums\PathHandler.cs" />
     <Compile Include="Enums\SubItemFilter.cs" />
     <Compile Include="FileSystemCommands.cs" />
+    <Compile Include="IDs\KF_ParseName_IID.cs" />
     <Compile Include="IDs\KnownfolderSlim.cs" />
     <Compile Include="Interfaces\IDirectoryBrowser.cs" />
     <Compile Include="Local\Strings.de-DE.Designer.cs">

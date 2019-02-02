@@ -133,8 +133,9 @@
         #endregion properties
 
         #region methods
+/***
         /// <summary>
-        /// Gets the KnownfolderId of this object or null if it is not a knownfolder.
+        /// Gets the KnownfolderId as ParseName of this object or null if it is not a knownfolder.
         /// </summary>
         /// <returns></returns>
         public string GetKnownFolderId()
@@ -144,7 +145,10 @@
             {
                 var dir = Browser.FindKnownFolderByFileSystemPath(ParseName);
                 if (dir != null)
-                    return dir.SpecialPathId;
+                {
+                    string ret = string.Format("{0}{1}{2}", "::{", dir.FolderId, "}");
+                    return ret;
+                }
 
                 return null;
             }
@@ -190,6 +194,7 @@
                 Marshal.FreeCoTaskMem(fullpidl);
             }
         }
+***/
         #endregion methods
     }
 }
