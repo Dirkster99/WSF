@@ -191,9 +191,11 @@
             try
             {
                 var itemModel = BrowseItemFromPath2.InitItem(fullPath);
-                itemModel.LoadProperties();
 
-                return new DirectoryBrowser2(itemModel);
+                var dirBrowser = new DirectoryBrowser2(itemModel);
+                dirBrowser.LoadProperties();
+
+                return dirBrowser;
             }
             catch (Exception exc)
             {
@@ -226,10 +228,12 @@
         /// <param name="parseName"></param>
         /// <param name="labelName"></param>
         /// <param name="name"></param>
+        /// <param name="lazyLodingProperties"></param>
         /// <returns></returns>
         public static IDirectoryBrowser2 Create(string parseName,
                                                 string name,
-                                                string labelName)
+                                                string labelName,
+                                                bool lazyLodingProperties = false)
         {
             if (string.IsNullOrEmpty(parseName) == true)
                 throw new System.ArgumentNullException("path cannot be null or empty");
@@ -237,9 +241,13 @@
             try
             {
                 var itemModel = BrowseItemFromPath2.InitItem(parseName, name, labelName);
-                itemModel.LoadProperties();
 
-                return new DirectoryBrowser2(itemModel);
+                var dirBrowser = new DirectoryBrowser2(itemModel);
+
+                if (lazyLodingProperties == false)
+                    dirBrowser.LoadProperties();
+
+                return dirBrowser;
             }
             catch (Exception exc)
             {
@@ -247,6 +255,30 @@
 
                 return null;
             }
+        }
+
+        /// <summary>Creates a new object that implements the
+        /// <see cref="IDirectoryBrowser2"/> interface from a
+        /// <paramref name="fullPidl"/> that represents an item in the browsing structure.
+        /// 
+        /// Returns null if a parseName could not be determined.
+        /// </summary>
+        /// <param name="fullPidl"></param>
+        /// <returns></returns>
+        public static IDirectoryBrowser2 Create(IdList fullPidl)
+        {
+            if (fullPidl == null)
+                return Create(KF_IID.ID_FOLDERID_Desktop);
+
+            if (fullPidl.Size == 0)
+                return Create(KF_IID.ID_FOLDERID_Desktop);
+
+            string parseName = PidlManager.GetPathFromPIDL(fullPidl);
+
+            if (string.IsNullOrEmpty(parseName) == true)
+                return null;
+
+            return Create(parseName);
         }
 
         /// <summary>
@@ -257,10 +289,12 @@
         /// <param name="searchMask">Optional name of an item that should be filtered
         /// in case insensitive fashion when searching for a certain child rather than all children.</param>
         /// <param name="itemFilter">Specify wether to filter only on names or on names and ParseNames</param>
+        /// <param name="lazyLodingProperties"></param>
         /// <returns>returns each item as <see cref="IDirectoryBrowser2"/> object</returns>
         public static IEnumerable<IDirectoryBrowser2> GetChildItems(string folderParseName,
                                                                    string searchMask = null,
-                                                                   SubItemFilter itemFilter = SubItemFilter.NameOnly)
+                                                                   SubItemFilter itemFilter = SubItemFilter.NameOnly,
+                                                                   bool lazyLodingProperties = false)
         {
             if (string.IsNullOrEmpty(folderParseName) == true)
                 yield break;
@@ -399,7 +433,7 @@
 
                         IdList apidlIdList = PidlManager.PidlToIdlist(apidl);
 
-                        yield return Create(parseName, name, labelName);
+                        yield return Create(parseName, name, labelName, lazyLodingProperties);
                     }
                     finally
                     {
@@ -704,6 +738,479 @@
                 dirOrfilePath = dirOrfilePath.Trim(System.IO.Path.DirectorySeparatorChar);
 
             return dirOrfilePath;
+        }
+
+        /// <summary>
+        /// Extends a list of <see cref="IDirectoryBrowser2"/> path models with the
+        /// given path extension if these items can be verified in the file system structure.
+        /// </summary>
+        /// <param name="pathList"></param>
+        /// <param name="pathExtension"></param>
+        /// <returns></returns>
+        public static bool ExtendPath(ref List<IDirectoryBrowser2> pathList,
+                                      string pathExtension)
+        {
+            string[] altPathNames = GetDirectories(pathExtension);
+            for (int i = 0; i < altPathNames.Length; i++)
+            {
+                try
+                {
+                    var currentRootParseName = pathList[pathList.Count - 1].PathShell;
+
+                    var nxt = GetChildItems(currentRootParseName, altPathNames[i]);
+
+                    if (nxt.Any() == false)
+                        return false;
+
+                    pathList.Add(nxt.First());
+                }
+                catch
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Attempts to re-root a path model item
+        /// under the Desktop or ThisPC (filesystem) by looking up its PIDLS
+        /// and building a sequence of path models from those PIDLS.
+        /// </summary>
+        /// <param name="location"></param>
+        /// <returns></returns>
+        public static IDirectoryBrowser2[] FindRoot(IDirectoryBrowser2 location)
+        {
+            IDirectoryBrowser2[] ret = null;
+
+            try
+            {
+                var items = PathItemsAsIdList(location);
+                IDirectoryBrowser2[] pathItems = new IDirectoryBrowser2[items.Count];
+
+                for (int i = 0; i < items.Count; i++)
+                    pathItems[i] = Create(items[i]);
+
+                return pathItems;
+            }
+            catch
+            {
+                return ret;
+            }
+        }
+
+        /// <summary>
+        /// Attempts to re-root a sequence of path model items
+        /// under the Desktop or ThisPC (filesystem).
+        /// </summary>
+        /// <param name="pathItems"></param>
+        /// <param name="newPath"></param>
+        /// <param name="pathIsRooted">Determines whether the output result
+        /// was succesfully rooted or not. This parameter was introduced to
+        /// support returning empty collection to indicate Desktop
+        /// - NOT 100% sure if this is still required.</param>
+        /// <returns></returns>
+        public static IDirectoryBrowser2[] FindRoot(IDirectoryBrowser2[] pathItems,
+                                                    string newPath,
+                                                    out bool pathIsRooted)
+        {
+            pathIsRooted = false;
+            bool foundRoot = false;
+            List<IDirectoryBrowser2> newRoot = new List<IDirectoryBrowser2>();
+
+            var desktop = Browser2.DesktopDirectory;
+
+            if (pathItems.Length >= 1)
+            {
+                // Is the desktop already part of the indicated location?
+                for (int i = 0; i < pathItems.Length; i++)
+                {
+                    if (desktop.Equals(pathItems[i]) == true)
+                    {
+                        for (int j = i + 1; j < pathItems.Length; j++)
+                            newRoot.Add(pathItems[j].Clone() as IDirectoryBrowser2);
+
+                        if (newRoot.Count == 0)
+                        {
+                            newRoot.Add(Browser2.MyComputer);
+                            newRoot.Add(Browser2.DesktopDirectory);
+                        }
+
+                        pathIsRooted = true;
+                        return newRoot.ToArray();
+                    }
+                }
+
+                // Search this item under desktop root
+                for (int i = pathItems.Length - 1; i >= 0; i--)
+                {
+                    var it = GetChildItems(KF_IID.ID_FOLDERID_Desktop, pathItems[i].Name);
+                    if (it.Any())
+                    {
+                        // This is rooted so we just return it as is
+                        if (pathItems[i].Equals(it.First()) == true)
+                        {
+                            for (int j = i; j < pathItems.Length; j++)
+                                newRoot.Add(pathItems[j].Clone() as IDirectoryBrowser2);
+
+                            pathIsRooted = true;
+                            return newRoot.ToArray();
+                        }
+                    }
+                }
+
+                // Can we find it under an item directly under the Destop (eg.: Under ThisPC)?
+                // (then return it with eg.: ThisPC on top)
+                foreach (var rootitem in GetChildItems(KF_IID.ID_FOLDERID_Desktop))
+                {
+                    // Evaluate only special items, such as, ThisPC, User etc.
+                    if (string.IsNullOrEmpty(rootitem.SpecialPathId))
+                        continue;
+
+                    var itms = GetChildItems(rootitem.SpecialPathId, pathItems[0].Name);
+                    if (itms.Any())
+                    {
+                        if (pathItems[0].Equals(itms.First()) == true)
+                        {
+                            newRoot.Add(rootitem);
+
+                            for (int i = 0; i < pathItems.Length; i++)
+                                newRoot.Add(pathItems[i].Clone() as IDirectoryBrowser2);
+
+                            pathIsRooted = true;
+                            return newRoot.ToArray();
+                        }
+                    }
+                }
+            }
+
+            if (IsTypeOf(newPath) == PathType.WinShellPath)
+            {
+                // Search root under desktop and return shortest possible number of items
+                for (int idx = pathItems.Length - 1; idx >= 0; idx--)
+                {
+                    var dpItems = GetChildItems(KF_IID.ID_FOLDERID_Desktop, pathItems[idx].Name);
+                    if (dpItems.Any())
+                    {
+                        for (int i = idx; i < pathItems.Length; i++)
+                            newRoot.Add(pathItems[i].Clone() as IDirectoryBrowser2);
+
+                        pathIsRooted = true;
+                        return newRoot.ToArray();
+                    }
+                }
+            }
+
+            string pathExt = null;
+            if (IsParentPathOf(desktop.PathFileSystem, newPath, out pathExt))
+            {
+                int idx = -1;
+
+                // Is this path under desktop but desktop burried in the middle of it?
+                // Eg 'C:', 'Users', '<User>', 'Desktop', 'Folder', 'SubFolder'
+                if (pathItems.Length > 1)
+                {
+                    for (int i = 0; i < pathItems.Length; i++)
+                    {
+                        if ((pathItems[i].ItemType & DirectoryItemFlags.Desktop) != 0)
+                        {
+                            idx = i;
+                            break;
+                        }
+                    }
+
+                    if (idx >= 0 && idx == pathItems.Length - 1)
+                    {
+                        // Requested location is desktop itself, so we return 'ThisPC','Desktop'
+                        var retArr = new IDirectoryBrowser2[2];
+                        retArr[0] = Browser2.MyComputer;
+
+                        var dpItems = GetChildItems(retArr[0].SpecialPathId, desktop.Name);
+                        if (dpItems.Any())
+                        {
+                            retArr[1] = dpItems.First();
+
+                            return retArr;
+                        }
+                    }
+
+                    if (idx >= 0)
+                    {
+                        // Return remaining path but skip desktop
+                        // since items under desktop are ROOTED items
+                        for (int i = idx + 1; i < pathItems.Length; i++)
+                            newRoot.Add(pathItems[i].Clone() as IDirectoryBrowser2);
+
+                        pathIsRooted = true;
+                        return newRoot.ToArray();
+                    }
+                }
+
+                IDirectoryBrowser2[] arrDesktop = new IDirectoryBrowser2[1] { desktop };
+
+                // Search root under desktop based on pathItems.Length == 1
+                idx = FindCommonRoot(arrDesktop, newPath, out pathExt);
+
+                if (idx >= 0)
+                {
+                    if ((pathItems[idx].ItemType & DirectoryItemFlags.Desktop) != 0)
+                    {
+                        if (idx < (pathItems.Length - 1))
+                            idx++;
+                        else
+                            idx = -1; // Find Desktop under ThisPC/file system test below
+                    }
+                }
+
+                if (idx >= 0)
+                {
+                    var dpItems = GetChildItems(KF_IID.ID_FOLDERID_Desktop, pathItems[idx].Name);
+                    if (dpItems.Any())
+                    {
+                        for (int i = idx; i < pathItems.Length; i++)
+                            newRoot.Add(pathItems[i].Clone() as IDirectoryBrowser2);
+
+                        pathIsRooted = true;
+                        return newRoot.ToArray();
+                    }
+                }
+            }
+
+            // Second chance finding root under ThisPC
+            var thisPC = Browser2.MyComputer;
+            foreach (var item in GetChildItems(KF_IID.ID_FOLDERID_ComputerFolder))
+            {
+                if (string.IsNullOrEmpty(item.PathFileSystem))
+                    continue;
+
+                pathExt = null;
+                if (IsParentPathOf(item.PathFileSystem, newPath, out pathExt) == true)
+                {
+                    // Search root under ThisPC
+                    int idx = FindCommonRoot(pathItems, item.PathFileSystem, out pathExt);
+
+                    if (idx >= 0)
+                    {
+                        var dpItems = GetChildItems(KF_IID.ID_FOLDERID_ComputerFolder, pathItems[idx].Name);
+                        if (dpItems.Any())
+                        {
+                            newRoot.Add(Browser2.MyComputer);
+
+                            for (int i = idx; i < pathItems.Length; i++)
+                                newRoot.Add(pathItems[i].Clone() as IDirectoryBrowser2);
+
+                            pathIsRooted = true;
+                            return newRoot.ToArray();
+                        }
+                    }
+                }
+            }
+
+            // Third chance try finding root under ThisPC
+            var items = GetChildItems(KF_IID.ID_FOLDERID_ComputerFolder, pathItems[0].Name);
+            if (items.Any())
+            {
+                foundRoot = true;
+                newRoot.Add(Browser2.MyComputer);
+            }
+
+            // No rooted item found for re-mount
+            if (foundRoot == false)
+                return null;
+
+            for (int i = 0; i < pathItems.Length; i++) //Join path to root and return to sender
+                newRoot.Add(pathItems[i].Clone() as IDirectoryBrowser2);
+
+            pathIsRooted = true;
+            return newRoot.ToArray();
+        }
+
+        /// <summary>
+        /// Determines if the given <paramref name="childPath"/> could be mounted
+        /// somewhere into the path of the <paramref name="parentPath"/> and returns
+        /// true if thats the case.
+        /// </summary>
+        /// <param name="parentPath"></param>
+        /// <param name="childPath"></param>
+        /// <param name="pathExtension">Contains the part of the <paramref name="childPath"/>
+        /// that could be used to extend the <paramref name="parentPath"/> in order to find
+        /// an alternative path representation.</param>
+        /// <returns></returns>
+        public static bool IsParentPathOf(string parentPath,
+                                          string childPath,
+                                          out string pathExtension)
+        {
+            pathExtension = null;
+
+            if (string.IsNullOrEmpty(parentPath) == true || string.IsNullOrEmpty(childPath) == true)
+                return false;
+
+            if (parentPath.Length > childPath.Length)
+                return false;
+
+            string childRoot = childPath.Substring(0, parentPath.Length);
+
+            bool ret = string.Compare(childRoot, parentPath, true) == 0;
+
+            if (ret == true)
+            {
+                pathExtension = childPath.Substring(childRoot.Length);
+
+                if (pathExtension.Length > 0)       // Skip seperator at beginning of string
+                {
+                    if (pathExtension[0] == '\\')
+                        pathExtension = pathExtension.Substring(1);
+                }
+
+                if (pathExtension.Length > 0)      // Skip last seperator char if present
+                {
+                    int idx = pathExtension.LastIndexOf('\\');
+                    if (idx > 0 && idx == pathExtension.Length - 1)
+                        pathExtension = pathExtension.Substring(0, idx);
+                }
+            }
+
+            return ret;
+        }
+
+        /// <summary>
+        /// Compares 2 to paths and indicates whether they match or not.
+        /// Both strings should be normalized before calling this method.
+        /// </summary>
+        /// <param name="inputPath"></param>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static PathMatch IsCurrentPath(string inputPath, string path)
+        {
+            if (string.IsNullOrEmpty(inputPath) == true &&
+                string.IsNullOrEmpty(path) == true)
+                return PathMatch.CompleteMatch;
+
+            if ((string.IsNullOrEmpty(inputPath) == true && string.IsNullOrEmpty(path) == false) ||
+                (string.IsNullOrEmpty(inputPath) == false && string.IsNullOrEmpty(path) == true))
+                return PathMatch.Unrelated;
+
+            // Remove ending backslash to normalize both strings for comparison
+            int idx = inputPath.LastIndexOf('\\');
+            if (idx == (inputPath.Length - 1))
+                inputPath = inputPath.Substring(0, inputPath.Length - 1);
+
+            if (string.Compare(path, inputPath, true) == 0)
+                return PathMatch.CompleteMatch;
+
+            if (inputPath.Length > path.Length)
+            {
+                string tmpInputPath = inputPath.Substring(0, path.Length);
+                if (string.Compare(path, tmpInputPath, true) == 0)
+                    return PathMatch.PartialTarget;
+            }
+            else
+            {
+                if (path.Length > inputPath.Length)
+                {
+                    string tmpPath = path.Substring(0, inputPath.Length);
+                    if (string.Compare(inputPath, tmpPath, true) == 0)
+                        return PathMatch.PartialSource;
+                }
+            }
+
+            return PathMatch.Unrelated;
+        }
+
+        /// <summary>
+        /// Attempts to find a common root between the given path of <see cref="IDirectoryBrowser"/>
+        /// model items and the string based path and returns the part of the alternative path
+        /// that could be joined on to the element with the indicated index.
+        /// 
+        /// Returns the maximum common root (eg.: 'C:\Windows' is returned instead of 'C:\').
+        /// </summary>
+        /// <param name="currentPath"></param>
+        /// <param name="navigateToThisLocation"></param>
+        /// <param name="pathExtension"></param>
+        /// <returns></returns>
+        public static int FindCommonRoot(IDirectoryBrowser2[] currentPath,
+                                        string navigateToThisLocation,
+                                        out string pathExtension)
+        {
+            pathExtension = null;
+
+            for (int i = currentPath.Length - 1; i >= 0; i--)
+            {
+                var model = currentPath[i];
+
+                if (string.IsNullOrEmpty(model.PathFileSystem))
+                    break;
+
+                // found a common root item for path discription
+                if (IsParentPathOf(model.PathFileSystem, navigateToThisLocation, out pathExtension))
+                    return i;
+            }
+
+            return -1;
+        }
+
+        /// <summary>
+        /// Gets a list of fullids that represent a path to the given <paramref name="location"/>.
+        /// </summary>
+        /// <param name="location"></param>
+        /// <returns></returns>
+        public static List<IdList> PathItemsAsIdList(IDirectoryBrowser2 location)
+        {
+            List<IdList> pathItems = new List<IdList>();
+
+            // Desktop has no parents and no child to point at
+            if (location.ParentIdList == null && location.ChildIdList == null)
+                return pathItems;
+
+            var fullIdList = PidlManager.CombineParentChild(location.ParentIdList,
+                                                            location.ChildIdList);
+
+            if (fullIdList.Size <= 1)
+            {
+                pathItems.Add(fullIdList); // Reference to 'This PC'(?) directly under desktop
+                return pathItems;
+            }
+
+            IdList parentItem, childItem;
+            while (PidlManager.GetParentChildIdList(fullIdList,
+                                                    out parentItem, out childItem) == true)
+            {
+                // Reverse order since parent lookup would otherwise produce wrong order
+                pathItems.Insert(0, fullIdList);
+
+                if (fullIdList.Size <= 1)
+                    break;
+
+                fullIdList = parentItem;
+            }
+
+            return pathItems;
+        }
+
+        /// <summary>
+        /// Gets a list of ParseNames that (taken together) represent a path to
+        /// a given <paramref name="location"/>.
+        /// </summary>
+        /// <param name="location"></param>
+        /// <returns></returns>
+        public static List<string> PathItemsAsParseNames(IDirectoryBrowser2 location)
+        {
+            var pathItems = new List<string>();
+
+            var idLists = PathItemsAsIdList(location);
+
+            foreach (var item in idLists)
+            {
+                string parseName = PidlManager.IdListFullToName(item, SHGDNF.SHGDN_FORPARSING);
+
+                if (string.IsNullOrEmpty(parseName) == false)
+                    pathItems.Add(parseName);
+                else
+                    return pathItems;  // ParseName cannot be determined so we return what we got :-(
+            }
+
+            return pathItems;
         }
 
         /// <summary>

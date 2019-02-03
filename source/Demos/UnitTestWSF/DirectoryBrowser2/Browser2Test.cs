@@ -1,4 +1,4 @@
-﻿namespace UnitTestWSF
+﻿namespace UnitTestWSF.DirectoryBrowser2
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using WSF;
@@ -72,7 +72,7 @@
             Assert.IsTrue(pathItems != null);
             Assert.IsTrue(pathItems.Length == 2);
         }
-/***
+
         /// <summary>
         /// Tests whether Shellbrowser can parse a Paths with '\' separators
         /// in normalized form and non-normalized form.
@@ -132,7 +132,7 @@
         {
             var sysDefault = Browser2.SysDefault;
 
-            IDirectoryBrowser[] pathItems;
+            IDirectoryBrowser2[] pathItems;
             bool exists = Browser2.DirectoryExists(sysDefault.PathFileSystem, out pathItems);
 
             Assert.IsTrue(pathItems != null);
@@ -158,7 +158,7 @@
 
             var items = Browser2.PathItemsAsIdList(windowsDir);
 
-            IDirectoryBrowser[] pathItems;
+            IDirectoryBrowser2[] pathItems;
             bool exists = Browser2.DirectoryExists(windowsDir.PathFileSystem, out pathItems);
 
             Assert.IsTrue(items != null);
@@ -280,6 +280,5 @@
             Assert.IsTrue(bresult);
             Assert.IsTrue(dirstringsItems.Length < dirstringsList.Count);
         }
-***/
     }
 }

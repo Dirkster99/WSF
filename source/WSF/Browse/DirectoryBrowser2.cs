@@ -26,6 +26,11 @@ namespace WSF.Browse
         private bool _KnownFolderIsInitialized;
         private IKnownFolderProperties _KnownFolder;
 
+        private object _resolvePidlsLock = new object();
+        private bool _PIDLs_Initialized;
+        private IdList _ParentIdList;
+        private IdList _ChildIdList;
+
         private bool _ItemTypeIsInitialized;
         private DirectoryItemFlags _ItemType;
         #endregion fields
@@ -44,9 +49,6 @@ namespace WSF.Browse
             SpecialPathId = itemModel.PathSpecialItemId;
             IsSpecialParseItem = itemModel.IsSpecialParseItem;
             PathFileSystem = itemModel.PathFileSystem;
-
-            ParentIdList = itemModel.ParentIdList;
-            ChildIdList = itemModel.ChildIdList;
 
             // Get PathShell
             if (string.IsNullOrEmpty(itemModel.PathSpecialItemId) == false)
@@ -99,8 +101,9 @@ namespace WSF.Browse
             PathRAW = copyThis.PathRAW;
             PathShell = copyThis.PathShell;
 
-            ChildIdList = copyThis.ChildIdList;
-            ParentIdList = copyThis.ParentIdList;
+            _PIDLs_Initialized = copyThis._PIDLs_Initialized;
+            _ChildIdList = copyThis._ChildIdList;
+            _ParentIdList = copyThis._ParentIdList;
 
             SpecialPathId = copyThis.SpecialPathId;
             IsSpecialParseItem = copyThis.IsSpecialParseItem;
@@ -161,14 +164,27 @@ namespace WSF.Browse
         /// Gets the IdList (if available) that describes the full
         /// shell path for this item)
         /// </summary>
-        public IdList ParentIdList { get; }
-
+        public IdList ParentIdList
+        {
+            get
+            {
+                LoadPidls();
+                return _ParentIdList;
+            }
+        }
 
         /// <summary>
         /// Gets the IdList (if available) that describes the full
         /// shell path for this item)
         /// </summary>
-        public IdList ChildIdList { get; }
+        public IdList ChildIdList
+        {
+            get
+            {
+                LoadPidls();
+                return _ChildIdList;
+            }
+        }
 
         /// <summary>
         /// Gets an optional pointer to the default icon resource used when the folder is created.
@@ -248,8 +264,8 @@ namespace WSF.Browse
         public bool IsFullyInitialized
         {
             get { return _IconResourceIdInitialized
-                       | _ItemTypeIsInitialized
-                       | _KnownFolderIsInitialized; }
+                       & _ItemTypeIsInitialized
+                       & _KnownFolderIsInitialized; }
         }
 
         /// <summary>
@@ -447,6 +463,24 @@ namespace WSF.Browse
             return false;
         }
 
+        public void LoadPidls()
+        {
+            lock (_resolvePidlsLock)
+            {
+                if (_PIDLs_Initialized == true)
+                    return;
+
+                _PIDLs_Initialized = true;
+                IdList parentIdList, relativeChildIdList;
+                bool hasPIDL = PidlManager.GetParentIdListFromPath(ParseName, out parentIdList, out relativeChildIdList);
+                if (hasPIDL == true)
+                {
+                    _ParentIdList = parentIdList;
+                    _ChildIdList = relativeChildIdList;
+                }
+            }
+        }
+
         private string LoadIconResourceId()
         {
             string filename = null; // Get Resoure Id for desktop root item
@@ -459,6 +493,8 @@ namespace WSF.Browse
             if (isKFIconResourceIdValid == false)
             {
                 IdList pidl = null;
+                LoadPidls();
+
                 if (ChildIdList != null || ParentIdList != null)
                     pidl = PidlManager.CombineParentChild(ParentIdList, ChildIdList);
                 else

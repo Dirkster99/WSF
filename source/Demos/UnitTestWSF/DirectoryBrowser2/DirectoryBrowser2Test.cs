@@ -1,4 +1,4 @@
-﻿namespace UnitTestWSF.BrowseItemFromPath
+﻿namespace UnitTestWSF.DirectoryBrowser2
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using System;
@@ -328,7 +328,6 @@
             //Assert.IsTrue(music.ParentIdList.Equals(music1.ParentIdList));
             //Assert.IsTrue(music.ChildIdList.Equals(music1.ChildIdList));
         }
-
 
         [TestMethod]
         public void GetInEquality()

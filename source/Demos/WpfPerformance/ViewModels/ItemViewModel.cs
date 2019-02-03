@@ -9,21 +9,22 @@
     public class ItemViewModel : Base.ViewModelBase, IItemViewModel
     {
         #region fields
-        private readonly DirectoryBrowserSlim _ModelStage1;
+        private readonly IDirectoryBrowser2 _ModelStage1;
         private DateTime _lastRefreshTimeUtc;
-        private IDirectoryBrowser _dir;
         private bool _isLoaded;
         private bool _IsLoading;
+        private int _ID;
         #endregion fields
 
         #region ctors
         /// <summary>
         /// parameterized class constructor
         /// </summary>
-        public ItemViewModel(DirectoryBrowserSlim model)
+        public ItemViewModel(IDirectoryBrowser2 model, int id)
             : this()
         {
             this._ModelStage1 = model;
+            this._ID = id;
         }
 
         /// <summary>
@@ -42,7 +43,7 @@
         {
             get
             {
-                return _ModelStage1.ID;
+                return _ID;
             }
         }
 
@@ -53,7 +54,7 @@
         {
             get
             {
-                return (_dir != null ? _dir.Label : string.Empty);
+                return (_ModelStage1 != null ? _ModelStage1.Label : string.Empty);
             }
         }
 
@@ -70,14 +71,13 @@
         {
             get
             {
-                if (_dir == null)
+                if (_ModelStage1 == null)
                     return string.Empty;
 
-                if (string.IsNullOrEmpty(_dir.SpecialPathId) == false)
-                    return _dir.SpecialPathId;
+                if (string.IsNullOrEmpty(_ModelStage1.SpecialPathId) == false)
+                    return _ModelStage1.SpecialPathId;
 
-
-                return _dir.PathFileSystem;
+                return _ModelStage1.PathFileSystem;
             }
         }
 
@@ -90,8 +90,8 @@
             {
                 if (IsLoaded)
                 {
-                    if (_dir != null)
-                        return _dir.Name;
+                    if (_ModelStage1 != null)
+                        return _ModelStage1.Name;
                 }
                 else
                 {
@@ -113,8 +113,8 @@
         {
             get
             {
-                if (_dir != null)
-                    return _dir.IconResourceId;
+                if (_ModelStage1 != null)
+                    return _ModelStage1.IconResourceId;
 
                 return null;
             }
@@ -191,31 +191,29 @@
                 IsLoading = true;
                 try
                 {
-                    _dir = Browser.Create(_ModelStage1.ParseName,
-                                          _ModelStage1.Name, _ModelStage1.LabelName);
-
-                    if (_dir != null)
+                    if (_ModelStage1.IsFullyInitialized == false)
                     {
+                        _ModelStage1.LoadProperties();
+
                         NotifyPropertyChanged(() => ItemName);
                         NotifyPropertyChanged(() => ItemPath);
                         NotifyPropertyChanged(() => IconResourceId);
                         NotifyPropertyChanged(() => Header);
 
                         LastRefreshTimeUtc = DateTime.Now;
-                        IsLoaded = true;
-
-                        //System.Console.WriteLine("Model {0} loaded.", _ModelStage1.ID);
+                        System.Console.WriteLine("Model {0} loaded.", _ID);
                     }
                 }
                 catch
                 {
-                    IsLoaded = false;
-                    IsLoading = false;
                     return false;
                 }
+                finally
+                {
+                    IsLoading = false;
+                    IsLoaded = true;
+                }
 
-                IsLoading = false;
-                IsLoaded = true;
                 return IsLoaded;
             });
         }
@@ -229,7 +227,7 @@
                     IsLoading = true;
                     try
                     {
-                        _dir = null;
+                        Console.WriteLine("Simulating UnloadModel in id: {0}", _ID);
                     }
                     finally
                     {

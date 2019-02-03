@@ -18,6 +18,9 @@
         /// </summary>
         string Name { get; }
 
+        /// <summary>
+        /// Gets the parse name that was returned from the IShellFolder2 interface.
+        /// </summary>
         string ParseName { get; }
 
         /// <summary>
@@ -45,6 +48,12 @@
         /// </summary>
         string SpecialPathId { get; }
 
+        /// <summary>
+        /// Indicates whether the parse name is available with a special path reference,
+        /// such as, '::{...}'. This type of reference indicates a knownfolder reference
+        /// that should be available in <see cref="SpecialPathId"/> if this property
+        /// returns true.
+        /// </summary>
         bool IsSpecialParseItem { get; }
 
         /// <summary>

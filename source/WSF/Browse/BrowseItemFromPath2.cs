@@ -18,11 +18,11 @@
     internal class BrowseItemFromPath2
     {
         #region fields
-        private bool _IconResourceIdInitialized;
-        private string _IconResourceId;
-
-        private bool _KnownFolderIsInitialized;
-        private bool _ItemTypeIsInitialized;
+////        private bool _IconResourceIdInitialized;
+////        private string _IconResourceId;
+////
+////        private bool _KnownFolderIsInitialized;
+////        private bool _ItemTypeIsInitialized;
         #endregion fields
 
         #region ctors
@@ -35,11 +35,11 @@
         /// </summary>
         /// <param name="rawPath"></param>
         /// <param name="parsingName"></param>
-        /// <param name="itemType"></param>
+////        /// <param name="itemType"></param>
         protected BrowseItemFromPath2(string rawPath,
-                                      string parsingName,
-                                      DirectoryItemFlags itemType = DirectoryItemFlags.Unknown)
-            : this()
+                                      string parsingName
+////                                      ,DirectoryItemFlags itemType = DirectoryItemFlags.Unknown
+            )
         {
             Path_RAW = rawPath;
 
@@ -57,11 +57,11 @@
                 }
             }
 
-            if (itemType != DirectoryItemFlags.Unknown)
-            {
-                ItemType = itemType;
-                _ItemTypeIsInitialized = true;
-            }
+////            if (itemType != DirectoryItemFlags.Unknown)
+////            {
+////                ItemType = itemType;
+////                _ItemTypeIsInitialized = true;
+////            }
         }
 
         /// <summary>
@@ -73,16 +73,17 @@
         /// <param name="labelName"></param>
         /// <param name="specialPathId"></param>
         /// <param name="normPath"></param>
-        /// <param name="parentIdList"></param>
-        /// <param name="relativeChildIdList"></param>
+////        /// <param name="parentIdList"></param>
+////        /// <param name="relativeChildIdList"></param>
         protected BrowseItemFromPath2(string pathRaw,
                                       string parseName,
                                       string name,
                                       string labelName,
                                       string specialPathId,
-                                      string normPath,
-                                      IdList parentIdList,
-                                      IdList relativeChildIdList)
+                                      string normPath
+////                                      , IdList parentIdList,
+////                                      IdList relativeChildIdList
+            )
         {
             if (string.IsNullOrEmpty(specialPathId) == false)
             {
@@ -95,8 +96,8 @@
             LabelName = labelName;
             PathFileSystem = normPath;
 
-            ParentIdList = parentIdList;
-            ChildIdList = relativeChildIdList;
+////            ParentIdList = parentIdList;
+////            ChildIdList = relativeChildIdList;
 
             Path_RAW = pathRaw;
         }
@@ -106,7 +107,6 @@
         /// </summary>
         protected BrowseItemFromPath2()
         {
-            ItemType = DirectoryItemFlags.Unknown;
         }
         #endregion ctors
 
@@ -117,8 +117,18 @@
         /// </summary>
         public string Name { get; protected set; }
 
+        /// <summary>
+        /// Gets the parse name that was returned from the IShellFolder2 interface.
+        /// </summary>
         public string ParseName { get; }
 
+        /// <summary>
+        /// Gets a label string that may differ from other naming
+        /// strings if the item (eg Drive) supports labeling.
+        /// 
+        /// String is suitable for display only and should
+        /// not be used as index as it is not unique.
+        /// </summary>
         public string LabelName { get; }
 
         /// <summary>
@@ -128,6 +138,12 @@
         /// </summary>
         public string PathSpecialItemId { get; }
 
+        /// <summary>
+        /// Indicates whether the parse name is available with a special path reference,
+        /// such as, '::{...}'. This type of reference indicates a knownfolder reference
+        /// that should be available in <see cref="PathSpecialItemId"/> if this property
+        /// returns true.
+        /// </summary>
         public bool IsSpecialParseItem { get; }
 
         /// <summary>
@@ -136,51 +152,57 @@
         /// </summary>
         public string PathFileSystem { get; }
 
-        /// <summary>
-        /// Gets the IdList (if available) that describes the parent
-        /// shell item of this item. This property can be null if this
-        /// shell item does not have a parent (is the Desktop).
-        /// </summary>
-        public IdList ParentIdList { get; }
+////        /// <summary>
+////        /// Gets the IdList (if available) that describes the parent
+////        /// shell item of this item. This property can be null if this
+////        /// shell item does not have a parent (is the Desktop).
+////        /// </summary>
+////        public IdList ParentIdList { get; }
+////
+////        /// <summary>
+////        /// Gets the IdList (if available) that describes this item
+////        /// underneath the parent item.
+////        /// 
+////        /// This property cannot be null. The <see cref="ParentIdList"/>
+////        /// and <see cref="ChildIdList"/> must be processed together
+////        /// since this item is otherwise no fully described just using
+////        /// one of either properties.
+////        /// </summary>
+////        public IdList ChildIdList { get; }
 
-        /// <summary>
-        /// Gets the IdList (if available) that describes this item
-        /// underneath the parent item.
-        /// 
-        /// This property cannot be null. The <see cref="ParentIdList"/>
-        /// and <see cref="ChildIdList"/> must be processed together
-        /// since this item is otherwise no fully described just using
-        /// one of either properties.
-        /// </summary>
-        public IdList ChildIdList { get; }
-
-        /// <summary>
-        /// Gets an optional pointer to the default icon resource used when the folder is created.
-        /// This is a null-terminated Unicode string in this form:
-        ///
-        /// Module name, Resource ID
-        /// or null is this information is not available.
-        /// </summary>
-        public string IconResourceId
-        {
-            get
-            {
-                if (_IconResourceIdInitialized == false)
-                {
-                    _IconResourceIdInitialized = true;
-                    _IconResourceId = LoadIconResourceId();
-                }
-
-                return _IconResourceId;
-            }
-        } 
-
-        //// <summary>
-        //// Gets the folders type classification.
-        //// </summary>
-        public DirectoryItemFlags ItemType { get; private set; }
-
-        public IKnownFolderProperties KnownFolder { get; private set; }
+////        /// <summary>
+////        /// Gets an optional pointer to the default icon resource used when the folder is created.
+////        /// This is a null-terminated Unicode string in this form:
+////        ///
+////        /// Module name, Resource ID
+////        /// or null is this information is not available.
+////        /// </summary>
+////        public string IconResourceId
+////        {
+////            get
+////            {
+////                if (_IconResourceIdInitialized == false)
+////                {
+////                    _IconResourceIdInitialized = true;
+////                    _IconResourceId = LoadIconResourceId();
+////                }
+////
+////                return _IconResourceId;
+////            }
+////        } 
+////
+////        //// <summary>
+////        //// Gets the folders type classification.
+////        //// </summary>
+////        public DirectoryItemFlags ItemType { get; private set; }
+////
+////        /// <summary>
+////        /// Gets the knownfolder properties if this item represents a knownfolder,
+////        /// otherwise null.
+////        ///
+////        /// https://msdn.microsoft.com/en-us/library/windows/desktop/bb773325(v=vs.85).aspx
+////        /// </summary>
+////        public IKnownFolderProperties KnownFolder { get; private set; }
 
         /// <summary>
         /// The raw path string that was originally passed in (for debugging only).
@@ -189,26 +211,26 @@
         #endregion properties
 
         #region methods
-        public void LoadProperties()
-        {
-            if (_KnownFolderIsInitialized == false)
-            {
-                _KnownFolderIsInitialized = true;
-                KnownFolder = LoadKnownFolder();
-            }
-
-            if (_ItemTypeIsInitialized == false)
-            {
-                _ItemTypeIsInitialized = true;
-                ItemType = LoadItemType();
-            }
-
-            if (_IconResourceIdInitialized == false)
-            {
-                _IconResourceIdInitialized = true;
-                _IconResourceId = LoadIconResourceId();
-            }
-        }
+////        public void LoadProperties()
+////        {
+////            if (_KnownFolderIsInitialized == false)
+////            {
+////                _KnownFolderIsInitialized = true;
+////                KnownFolder = LoadKnownFolder();
+////            }
+////
+////            if (_ItemTypeIsInitialized == false)
+////            {
+////                _ItemTypeIsInitialized = true;
+////                ItemType = LoadItemType();
+////            }
+////
+////            if (_IconResourceIdInitialized == false)
+////            {
+////                _IconResourceIdInitialized = true;
+////                _IconResourceId = LoadIconResourceId();
+////            }
+////        }
 
         /// <summary>
         /// Initializes the items type flags and path properties.
@@ -339,8 +361,9 @@
                     normPath = parseName;
 
                 return new BrowseItemFromPath2(path, parseName, name, labelName,
-                                               SpecialPathId, normPath,
-                                               parentIdList, relativeChildIdList);
+                                               SpecialPathId, normPath
+////                                               ,parentIdList, relativeChildIdList
+                                               );
             }
             finally
             {
@@ -361,19 +384,14 @@
         /// <param name="parseName"></param>
         /// <param name="name"></param>
         /// <param name="labelName"></param>
-        /// <param name="bFindKF">Determines if known folder should be looked up
-        /// even if given folder is a normal string such as (eg.: 'C:\Windows\').
-        /// Set this parameter only if you are sure that you need it as it will
-        /// have a performance impact on the time required to generate the object.
-        /// </param>
         /// <returns></returns>
         internal static BrowseItemFromPath2 InitItem(string parseName,
                                                      string name,
                                                      string labelName)
         {
-            bool hasPIDL = false;
-            IdList parentIdList = null;
-            IdList relativeChildIdList = null;
+////            bool hasPIDL = false;
+////            IdList parentIdList = null;
+////            IdList relativeChildIdList = null;
 
             string path = parseName;
             string normPath = null, SpecialPathId = null;
@@ -386,26 +404,25 @@
                 SpecialPathId = path;
             }
 
-            hasPIDL = PidlManager.GetParentIdListFromPath(path, out parentIdList, out relativeChildIdList);
+////            hasPIDL = PidlManager.GetParentIdListFromPath(path, out parentIdList, out relativeChildIdList);
+////            if (hasPIDL == false)   // return references that cannot resolve with a PIDL
+////            {
+////                var ret = new BrowseItemFromPath2(path, path);
+////                ret.Name = path;
+////                return ret;
+////            }
 
-            if (hasPIDL == false)   // return references that cannot resolve with a PIDL
-            {
-                var ret = new BrowseItemFromPath2(path, path);
-                ret.Name = path;
-                return ret;
-            }
-
-            IdList fullIdList = null;
-
-            // Get the IShellFolder2 Interface for the original path item...
-            // We are asked to build the desktop root item here...
-            if ((parentIdList == null && relativeChildIdList == null) == false)
-                fullIdList = PidlManager.CombineParentChild(parentIdList, relativeChildIdList);
-
+////            IdList fullIdList = null;
+////
+////            // Get the IShellFolder2 Interface for the original path item...
+////            // We are asked to build the desktop root item here...
+////            if ((parentIdList == null && relativeChildIdList == null) == false)
+////                fullIdList = PidlManager.CombineParentChild(parentIdList, relativeChildIdList);
 
             return new BrowseItemFromPath2(path, parseName, name, labelName,
-                                           SpecialPathId, normPath,
-                                           parentIdList, relativeChildIdList);
+                                           SpecialPathId, normPath
+////                                           ,parentIdList, relativeChildIdList
+                                           );
         }
 
         /// <summary>
@@ -415,8 +432,8 @@
         private static BrowseItemFromPath2 InitDesktopRootItem()
         {
             string root = KF_IID.ID_ROOT_Desktop;
-            DirectoryItemFlags itemType = DirectoryItemFlags.Special | DirectoryItemFlags.DesktopRoot;
-            BrowseItemFromPath2 ret = new BrowseItemFromPath2(root, root, itemType);
+////            DirectoryItemFlags itemType = DirectoryItemFlags.Special | DirectoryItemFlags.DesktopRoot;
+            BrowseItemFromPath2 ret = new BrowseItemFromPath2(root, root);
 
             // Use normal desktop special folder as template for naming and properties
             string specialPath = KF_IID.ID_FOLDERID_Desktop;
@@ -426,169 +443,169 @@
                     return null;
 
                 ////IdList FullPidl = kf.KnownFolderToIdList();
-                ret.KnownFolder = KnownFolderHelper.GetFolderProperties(kf.Obj);
-                ret._KnownFolderIsInitialized = true;
+////                ret.KnownFolder = KnownFolderHelper.GetFolderProperties(kf.Obj);
+////                ret._KnownFolderIsInitialized = true;
             }
 
             // A directory we cannot find in file system is by definition VIRTUAL
-            if (ret.KnownFolder.Category == FolderCategory.Virtual)
-                ret.ItemType |= DirectoryItemFlags.Virtual;
-
-            ret.Name = ret.KnownFolder.Name;
+////            if (ret.KnownFolder.Category == FolderCategory.Virtual)
+////                ret.ItemType |= DirectoryItemFlags.Virtual;
+////
+////            ret.Name = ret.KnownFolder.Name;
 
             return ret;
         }
 
-        private string LoadIconResourceId()
-        {
-            string filename = null; // Get Resoure Id for desktop root item
-            int index = -1;
-
-            bool isKFIconResourceIdValid = false;
-            if (KnownFolder != null)
-                isKFIconResourceIdValid = KnownFolder.IsIconResourceIdValid();
-
-            if (isKFIconResourceIdValid == false)
-            {
-                IdList pidl = null;
-                if (ChildIdList != null || ParentIdList != null)
-                    pidl = PidlManager.CombineParentChild(ParentIdList, ChildIdList);
-                else
-                    pidl = IdList.Create();
-
-                if (IconHelper.GetIconResourceId(pidl, out filename, out index))
-                {
-                    // Store filename and index for Desktop Root ResourceId
-                    return string.Format("{0},{1}", filename, index);
-                }
-            }
-            else
-            {
-                return KnownFolder.IconResourceId;
-            }
-
-            return null;
-        }
-
-        private IKnownFolderProperties LoadKnownFolder()
-        {
-            if (this.IsSpecialParseItem)
-                return Browser2.FindKnownFolderByFileSystemPath(this.PathSpecialItemId);
-            else
-            {
-                if (string.IsNullOrEmpty(this.ParseName) == false)
-                    return Browser2.FindKnownFolderByFileSystemPath(this.ParseName);
-                else
-                    return Browser2.FindKnownFolderByFileSystemPath(this.Name);
-            }
-        }
-
-        private DirectoryItemFlags LoadItemType()
-        {
-            DirectoryItemFlags itemType = DirectoryItemFlags.Unknown;
-
-            if (string.IsNullOrEmpty(PathFileSystem) == false)
-            {
-                var pathIsTypeOf = Browser.IsTypeOf(PathFileSystem);
-
-                if (pathIsTypeOf == Enums.PathType.FileSystemPath)
-                {
-                    // TODO XXX Always evaluate on NormPath???
-                    try
-                    {
-                        bool pathExists = false;
-                        try
-                        {
-                            pathExists = System.IO.File.Exists(PathFileSystem);
-                        }
-                        catch { }
-
-                        if (pathExists)
-                        {
-                            itemType |= DirectoryItemFlags.FileSystemFile;
-
-                            if (PathFileSystem.EndsWith(".zip"))
-                                itemType |= DirectoryItemFlags.DataFileContainer;
-                        }
-                    }
-                    catch { }
-
-                    // See if this is a directory if it was not a file...
-                    if ((itemType & DirectoryItemFlags.FileSystemFile) == 0)
-                    {
-                        // Does this directory exist in file system ?
-                        try
-                        {
-                            bool pathExists = false;
-                            try
-                            {
-                                pathExists = System.IO.Directory.Exists(PathFileSystem);
-                            }
-                            catch { }
-
-                            if (pathExists == true)
-                            {
-                                itemType |= DirectoryItemFlags.FileSystemDirectory;
-
-                                // This could be a reference to a drive
-                                DirectoryInfo d = new DirectoryInfo(PathFileSystem);
-                                if (d.Parent == null)
-                                    itemType |= DirectoryItemFlags.Drive;
-                            }
-                            else
-                            {
-                                // Neither a regular directory nor a regular file
-                                // -> Most likely a folder inside a zip file data container
-                                if (PathFileSystem.Contains(".zip"))
-                                {
-                                    itemType |= DirectoryItemFlags.DataFileContainerFolder;
-                                }
-
-                                // -> Lets get its name for display if its more than empty
-                                string displayName = System.IO.Path.GetFileName(PathFileSystem);
-                            }
-                        }
-                        catch (Exception exp)
-                        {
-                            Debug.WriteLine(exp.Message);
-                        }
-                    }
-                }
-            }
-
-            if (KnownFolder != null)
-            {
-                if (KnownFolder.Category == FolderCategory.Virtual)
-                    itemType |= DirectoryItemFlags.Virtual;
-            }
-
-            if (IsSpecialParseItem)
-            {
-                itemType |= DirectoryItemFlags.Special;
-
-                // Check for very common known special directory reference
-                if (KF_IID.ID_FOLDERID_Desktop.Equals(PathSpecialItemId, StringComparison.InvariantCultureIgnoreCase))
-                    itemType |= DirectoryItemFlags.Desktop;
-                else
-                if (KF_IID.ID_FOLDERID_Documents.Equals(PathSpecialItemId, StringComparison.InvariantCultureIgnoreCase))
-                    itemType |= DirectoryItemFlags.Documents;
-                else
-                if (KF_IID.ID_FOLDERID_Downloads.Equals(PathSpecialItemId, StringComparison.InvariantCultureIgnoreCase))
-                    itemType |= DirectoryItemFlags.Downloads;
-                else
-                if (KF_IID.ID_FOLDERID_Music.Equals(PathSpecialItemId, StringComparison.InvariantCultureIgnoreCase))
-                    itemType |= DirectoryItemFlags.Music;
-                else
-                if (KF_IID.ID_FOLDERID_Pictures.Equals(PathSpecialItemId, StringComparison.InvariantCultureIgnoreCase))
-                    itemType |= DirectoryItemFlags.Pictures;
-                else
-                if (KF_IID.ID_FOLDERID_Videos.Equals(PathSpecialItemId, StringComparison.InvariantCultureIgnoreCase))
-                    itemType |= DirectoryItemFlags.Videos;
-            }
-
-
-            return itemType;
-        }
+////        private string LoadIconResourceId()
+////        {
+////            string filename = null; // Get Resoure Id for desktop root item
+////            int index = -1;
+////
+////            bool isKFIconResourceIdValid = false;
+////            if (KnownFolder != null)
+////                isKFIconResourceIdValid = KnownFolder.IsIconResourceIdValid();
+////
+////            if (isKFIconResourceIdValid == false)
+////            {
+////                IdList pidl = null;
+////                if (ChildIdList != null || ParentIdList != null)
+////                    pidl = PidlManager.CombineParentChild(ParentIdList, ChildIdList);
+////                else
+////                    pidl = IdList.Create();
+////
+////                if (IconHelper.GetIconResourceId(pidl, out filename, out index))
+////                {
+////                    // Store filename and index for Desktop Root ResourceId
+////                    return string.Format("{0},{1}", filename, index);
+////                }
+////            }
+////            else
+////            {
+////                return KnownFolder.IconResourceId;
+////            }
+////
+////            return null;
+////        }
+////
+////        private IKnownFolderProperties LoadKnownFolder()
+////        {
+////            if (this.IsSpecialParseItem)
+////                return Browser2.FindKnownFolderByFileSystemPath(this.PathSpecialItemId);
+////            else
+////            {
+////                if (string.IsNullOrEmpty(this.ParseName) == false)
+////                    return Browser2.FindKnownFolderByFileSystemPath(this.ParseName);
+////                else
+////                    return Browser2.FindKnownFolderByFileSystemPath(this.Name);
+////            }
+////        }
+////
+////        private DirectoryItemFlags LoadItemType()
+////        {
+////            DirectoryItemFlags itemType = DirectoryItemFlags.Unknown;
+////
+////            if (string.IsNullOrEmpty(PathFileSystem) == false)
+////            {
+////                var pathIsTypeOf = Browser.IsTypeOf(PathFileSystem);
+////
+////                if (pathIsTypeOf == Enums.PathType.FileSystemPath)
+////                {
+////                    // TODO XXX Always evaluate on NormPath???
+////                    try
+////                    {
+////                        bool pathExists = false;
+////                        try
+////                        {
+////                            pathExists = System.IO.File.Exists(PathFileSystem);
+////                        }
+////                        catch { }
+////
+////                        if (pathExists)
+////                        {
+////                            itemType |= DirectoryItemFlags.FileSystemFile;
+////
+////                            if (PathFileSystem.EndsWith(".zip"))
+////                                itemType |= DirectoryItemFlags.DataFileContainer;
+////                        }
+////                    }
+////                    catch { }
+////
+////                    // See if this is a directory if it was not a file...
+////                    if ((itemType & DirectoryItemFlags.FileSystemFile) == 0)
+////                    {
+////                        // Does this directory exist in file system ?
+////                        try
+////                        {
+////                            bool pathExists = false;
+////                            try
+////                            {
+////                                pathExists = System.IO.Directory.Exists(PathFileSystem);
+////                            }
+////                            catch { }
+////
+////                            if (pathExists == true)
+////                            {
+////                                itemType |= DirectoryItemFlags.FileSystemDirectory;
+////
+////                                // This could be a reference to a drive
+////                                DirectoryInfo d = new DirectoryInfo(PathFileSystem);
+////                                if (d.Parent == null)
+////                                    itemType |= DirectoryItemFlags.Drive;
+////                            }
+////                            else
+////                            {
+////                                // Neither a regular directory nor a regular file
+////                                // -> Most likely a folder inside a zip file data container
+////                                if (PathFileSystem.Contains(".zip"))
+////                                {
+////                                    itemType |= DirectoryItemFlags.DataFileContainerFolder;
+////                                }
+////
+////                                // -> Lets get its name for display if its more than empty
+////                                string displayName = System.IO.Path.GetFileName(PathFileSystem);
+////                            }
+////                        }
+////                        catch (Exception exp)
+////                        {
+////                            Debug.WriteLine(exp.Message);
+////                        }
+////                    }
+////                }
+////            }
+////
+////            if (KnownFolder != null)
+////            {
+////                if (KnownFolder.Category == FolderCategory.Virtual)
+////                    itemType |= DirectoryItemFlags.Virtual;
+////            }
+////
+////            if (IsSpecialParseItem)
+////            {
+////                itemType |= DirectoryItemFlags.Special;
+////
+////                // Check for very common known special directory reference
+////                if (KF_IID.ID_FOLDERID_Desktop.Equals(PathSpecialItemId, StringComparison.InvariantCultureIgnoreCase))
+////                    itemType |= DirectoryItemFlags.Desktop;
+////                else
+////                if (KF_IID.ID_FOLDERID_Documents.Equals(PathSpecialItemId, StringComparison.InvariantCultureIgnoreCase))
+////                    itemType |= DirectoryItemFlags.Documents;
+////                else
+////                if (KF_IID.ID_FOLDERID_Downloads.Equals(PathSpecialItemId, StringComparison.InvariantCultureIgnoreCase))
+////                    itemType |= DirectoryItemFlags.Downloads;
+////                else
+////                if (KF_IID.ID_FOLDERID_Music.Equals(PathSpecialItemId, StringComparison.InvariantCultureIgnoreCase))
+////                    itemType |= DirectoryItemFlags.Music;
+////                else
+////                if (KF_IID.ID_FOLDERID_Pictures.Equals(PathSpecialItemId, StringComparison.InvariantCultureIgnoreCase))
+////                    itemType |= DirectoryItemFlags.Pictures;
+////                else
+////                if (KF_IID.ID_FOLDERID_Videos.Equals(PathSpecialItemId, StringComparison.InvariantCultureIgnoreCase))
+////                    itemType |= DirectoryItemFlags.Videos;
+////            }
+////
+////
+////            return itemType;
+////        }
         #endregion methods
     }
 }

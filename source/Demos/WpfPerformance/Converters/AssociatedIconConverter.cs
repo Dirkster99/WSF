@@ -119,7 +119,7 @@
             if (string.IsNullOrEmpty(path) == true) // Try secondary path if available
                 path = secPath;
 
-            if (path == null)
+            if (string.IsNullOrEmpty(path) == true)
                 return Binding.DoNothing;
 
             IconSize iconSize = AssociatedIconConverter.DefaultIconSize;
@@ -127,47 +127,47 @@
             if (parameter is IconSize)
                 iconSize = (IconSize)parameter;
 
-            if (string.IsNullOrEmpty(path) == false)
+            try
             {
-                try
-                {
-                    // The resource for loading this item's icon is known
-                    // So, we attempt to extract and display it
-                    if (iconResourceId != null)
-                    {
-                        string[] resourceId = iconResourceId.Split(',');
-                        int iconIndex = int.Parse(resourceId[1]);
+                // The resource for loading this item's icon is unknown
+                // So, we attempt to determine the associated icon and load it
+                var imageSourceIcon = GetIconFromPath(path, iconSize);
 
-                        if (resourceId != null && resourceId.Length == 2)
+                if (imageSourceIcon != null)
+                    return imageSourceIcon;
+            }
+            catch (Exception exception)
+            {
+                Debug.WriteLine(string.Format("---> 2 Failed to get icon from {0}: {1}{2}", path, Environment.NewLine, exception.ToString()));
+            }
+
+            try
+            {
+                // The resource for loading this item's icon is known
+                // So, we attempt to extract and display it
+                if (string.IsNullOrEmpty(iconResourceId) == false)
+                {
+                    string[] resourceId = iconResourceId.Split(',');
+                    int iconIndex = int.Parse(resourceId[1]);
+
+                    if (resourceId != null && resourceId.Length == 2)
+                    {
+                        if (string.IsNullOrEmpty(resourceId[0]) == false)
                         {
-                            if (string.IsNullOrEmpty(resourceId[0]) == false)
-                            {
-                                return Extract(resourceId[0], iconIndex, iconSize);
-                            }
-                            else
-                            {
-                                Debug.WriteLine(string.Format("---> 0 Failed to get icon from '{0}' with '{1}'",
-                                    path, iconResourceId));
-                            }
+                            return Extract(resourceId[0], iconIndex, iconSize);
+                        }
+                        else
+                        {
+                            Debug.WriteLine(string.Format("---> 0 Failed to get icon from '{0}' with '{1}'",
+                                path, iconResourceId));
                         }
                     }
                 }
-                catch (Exception exception)
-                {
-                    Debug.WriteLine(string.Format("---> 1 Failed to get icon from {0}: {1}{2}",
-                        path, Environment.NewLine, exception.ToString()));
-                }
-
-                try
-                {
-                    // The resource for loading this item's icon is unknown
-                    // So, we attempt to determine the associated icon and load it
-                    return GetIconFromPath(path, iconSize);
-                }
-                catch (Exception exception)
-                {
-                    Debug.WriteLine(string.Format("---> 2 Failed to get icon from {0}: {1}{2}", path, Environment.NewLine, exception.ToString()));
-                }
+            }
+            catch (Exception exception)
+            {
+                Debug.WriteLine(string.Format("---> 1 Failed to get icon from {0}: {1}{2}",
+                    path, Environment.NewLine, exception.ToString()));
             }
 
             return null;

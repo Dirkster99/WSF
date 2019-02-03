@@ -52,6 +52,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BrowseItemFromPath2\BrowseItemFromPathTest.cs" />
+    <Compile Include="DirectoryBrowser2\ChildItemIdListListTests.cs" />
+    <Compile Include="DirectoryBrowser2\ChildItemTests.cs" />
     <Compile Include="DirectoryBrowser2\DirectoryBrowser2Test.cs" />
     <Compile Include="DirectoryBrowser2\Browser2Test.cs" />
     <Compile Include="DirectoryBrowser2\ZipFilesTests2.cs" />

@@ -1,4 +1,4 @@
-﻿namespace UnitTestWSF
+﻿namespace UnitTestWSF.DirectoryBrowser2
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using WSF.Enums;
