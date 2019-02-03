@@ -372,7 +372,13 @@
                                     foldersList.Add(kf.FolderId, kf);
 
                                     if (kf.IsExistsInFileSystem == true)
-                                        pathList.Add(kf.Path, kf);
+                                    {
+                                        IKnownFolderProperties obj;
+                                        if (pathList.TryGetValue(kf.Path.ToUpper(), out obj))
+                                        {
+                                            pathList.Add(kf.Path.ToUpper(), kf);
+                                        }
+                                    }
                                 }
                             }
                         }

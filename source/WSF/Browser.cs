@@ -54,24 +54,11 @@
         {
             KnownDirectoryBrowsers = new Dictionary<string, IDirectoryBrowser>();
 
-            KnownFileSystemFolders = new Dictionary<string, IKnownFolderProperties>();
-
             LocalKFs = new Dictionary<Guid, IKnownFolderProperties>();
         }
         #endregion  ctors
 
         #region properties
-
-        private static Dictionary<string, IDirectoryBrowser> KnownDirectoryBrowsers { get; }
-
-        /// <summary>
-        /// Contains a collection of known folders with a file system folder.
-        /// This collection is build on program start-up.
-        /// </summary>
-        private static Dictionary<string, IKnownFolderProperties> KnownFileSystemFolders { get; }
-
-        private static Dictionary<Guid, IKnownFolderProperties> LocalKFs { get; set; }
-
         /// <summary>
         /// Gets the default system drive - usually 'C:\'.
         /// </summary>
@@ -172,6 +159,10 @@
                 return Create(KF_IID.ID_FOLDERID_RecycleBinFolder);
             }
         }
+
+        private static Dictionary<string, IDirectoryBrowser> KnownDirectoryBrowsers { get; }
+
+        private static Dictionary<Guid, IKnownFolderProperties> LocalKFs { get; set; }
         #endregion properties
 
         #region methods
@@ -1487,30 +1478,8 @@
 
                 foreach (var item in LocalKFs.Values)
                 {
-                    // Make known FolderId and SpecialParseNameId available in one collection
-                    KnownFileSystemFolders.Add(item.FolderId.ToString("B").ToUpper(), item);
-
-                    KnownFileSystemFolders.Add(KF_IID.IID_Prefix + item.FolderId.ToString("B").ToUpper(), item);
-
-                    if (Browser.IsTypeOf(item.ParsingName) == PathType.SpecialFolder)
-                        KnownFileSystemFolders.Add(item.ParsingName.ToUpper(), item);
-
                     if (string.IsNullOrEmpty(item.Path) == false)
                     {
-                        try
-                        {
-                            // It is possible to have more than one known folder point at one
-                            // file system location - but this implementation still handles
-                            // unique file locations and associated folders
-                            IKnownFolderProperties val = null;
-                            if (KnownFileSystemFolders.TryGetValue(item.Path, out val) == false)
-                                KnownFileSystemFolders.Add(item.Path.ToUpper(), item);
-                        }
-                        catch
-                        {
-                            // swallow errors beyond this point
-                        }
-
                         try
                         {
                             var folder = Browser.Create("::" + item.FolderId.ToString("B"), true);
@@ -1522,7 +1491,7 @@
                                 // file system location - but this implementation still handles
                                 // unique file locations and associated folders
                                 IDirectoryBrowser val = null;
-                                if (KnownDirectoryBrowsers.TryGetValue(folder.PathFileSystem, out val) == false)
+                                if (KnownDirectoryBrowsers.TryGetValue(folder.PathFileSystem.ToUpper(), out val) == false)
                                     KnownDirectoryBrowsers.Add(folder.PathFileSystem.ToUpper(), folder);
                             }
                         }
@@ -1541,26 +1510,9 @@
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        public static IKnownFolderProperties FindKnownFolderByFileSystemPath(string path)
-        {
-            if (KnownFileSystemFolders.Count == 0)
-                LoadAllKFs();
-
-            IKnownFolderProperties matchedItem = null;
-            KnownFileSystemFolders.TryGetValue(path.ToUpper(), out matchedItem);
-
-            return matchedItem;
-        }
-
-        /// <summary>
-        /// Tries to determine whether there is a known folder associated with this
-        /// path or not.
-        /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
         public static IDirectoryBrowser FindDirectoryBrowserKFByFileSystemPath(string path)
         {
-            if (KnownFileSystemFolders.Count == 0)
+            if (KnownDirectoryBrowsers.Count == 0)
                 LoadAllKFs();
 
             IDirectoryBrowser matchedItem = null;

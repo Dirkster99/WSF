@@ -1,7 +1,6 @@
 ﻿namespace UnitTestWSF
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using WSF;
     using WSF.IDs;
     using WSF.Shell.Interop.Knownfolders;
     using WSF.Shell.Pidl;

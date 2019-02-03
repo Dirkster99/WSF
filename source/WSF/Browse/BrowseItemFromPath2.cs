@@ -353,6 +353,62 @@
         }
 
         /// <summary>
+        /// Class constructor from strings that are commonly exposed by
+        /// <see cref="IShellFolder2"/> interfaces. Constructing from these
+        /// items can speed up enumeration since we do not need to revisit
+        /// each items <see cref="IShellFolder2"/> interfaces.
+        /// </summary>
+        /// <param name="parseName"></param>
+        /// <param name="name"></param>
+        /// <param name="labelName"></param>
+        /// <param name="bFindKF">Determines if known folder should be looked up
+        /// even if given folder is a normal string such as (eg.: 'C:\Windows\').
+        /// Set this parameter only if you are sure that you need it as it will
+        /// have a performance impact on the time required to generate the object.
+        /// </param>
+        /// <returns></returns>
+        internal static BrowseItemFromPath2 InitItem(string parseName,
+                                                     string name,
+                                                     string labelName)
+        {
+            bool hasPIDL = false;
+            IdList parentIdList = null;
+            IdList relativeChildIdList = null;
+
+            string path = parseName;
+            string normPath = null, SpecialPathId = null;
+
+            ShellHelpers.SpecialPath isSpecialID = ShellHelpers.IsSpecialPath(path);
+            if (isSpecialID == ShellHelpers.SpecialPath.None)
+                normPath = parseName;
+            else
+            {
+                SpecialPathId = path;
+            }
+
+            hasPIDL = PidlManager.GetParentIdListFromPath(path, out parentIdList, out relativeChildIdList);
+
+            if (hasPIDL == false)   // return references that cannot resolve with a PIDL
+            {
+                var ret = new BrowseItemFromPath2(path, path);
+                ret.Name = path;
+                return ret;
+            }
+
+            IdList fullIdList = null;
+
+            // Get the IShellFolder2 Interface for the original path item...
+            // We are asked to build the desktop root item here...
+            if ((parentIdList == null && relativeChildIdList == null) == false)
+                fullIdList = PidlManager.CombineParentChild(parentIdList, relativeChildIdList);
+
+
+            return new BrowseItemFromPath2(path, parseName, name, labelName,
+                                           SpecialPathId, normPath,
+                                           parentIdList, relativeChildIdList);
+        }
+
+        /// <summary>
         /// Gets an initialized object for the desktop root item.
         /// </summary>
         /// <returns></returns>
@@ -417,13 +473,13 @@
         private IKnownFolderProperties LoadKnownFolder()
         {
             if (this.IsSpecialParseItem)
-                return Browser.FindKnownFolderByFileSystemPath(this.PathSpecialItemId);
+                return Browser2.FindKnownFolderByFileSystemPath(this.PathSpecialItemId);
             else
             {
                 if (string.IsNullOrEmpty(this.ParseName) == false)
-                    return Browser.FindKnownFolderByFileSystemPath(this.ParseName);
+                    return Browser2.FindKnownFolderByFileSystemPath(this.ParseName);
                 else
-                    return Browser.FindKnownFolderByFileSystemPath(this.Name);
+                    return Browser2.FindKnownFolderByFileSystemPath(this.Name);
             }
         }
 
