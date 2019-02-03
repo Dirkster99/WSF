@@ -82,6 +82,7 @@
 
         /// <summary>
         /// Canonical Name: "SavedGames"
+        ///  LocalizedName: Saved Games
         ///  KnownFolderId: "4c5c32ff-bb9d-43b0-b5b4-2d72e54eaaa4"
         /// </summary>
         public static readonly string SavedGames = @"::{59031a47-3f72-44a7-89c5-5595fe6b30ee}\{4C5C32FF-BB9D-43b0-B5B4-2D72E54EAAA4}";
@@ -109,6 +110,47 @@
         ///  KnownFolderId: "76fc4e2d-d6ad-4519-a663-37bd56068185"
         /// </summary>
         public static readonly string PrintersFolder = @"::{21EC2020-3AEA-1069-A2DD-08002B30309D}\::{2227A280-3AEA-1069-A2DE-08002B30309D}";
+
+        /// <summary>
+        /// Canonical Name: "OneDrive"
+        ///  KnownFolderId: "a52bba46-e9e1-435f-b3d9-28daa648c0f6"
+        /// </summary>
+        public static readonly string OneDrive = "shell:::{018D5C66-4533-4307-9B53-224DE2ED1FE6}";
+
+        /// <summary>
+        /// Canonical Name: "My Pictures"
+        ///  LocalizedName: Pictures
+        ///  KnownFolderId: "33e28130-4e1e-4676-835a-98395c3bc3bb"
+        /// </summary>
+        public static readonly string My_Pictures = @"shell:::{20D04FE0-3AEA-1069-A2D8-08002B30309D}\::{3ADD1653-EB32-4CB0-BBD7-DFA0ABB5ACCA}";
+
+        /// <summary>
+        /// Canonical Name: "My Video"
+        ///  LocalizedName: Videos
+        ///  KnownFolderId: "18989b1d-99b5-455b-841c-ab7c74e4ddfc"
+        /// </summary>
+        public static readonly string My_Videos = @"shell:::{20D04FE0-3AEA-1069-A2D8-08002B30309D}\::{A0953C92-50DC-43BF-BE83-3742FED03C9C}";
+
+        /// <summary>
+        /// Canonical Name: "My Music"
+        ///  LocalizedName: Music
+        ///  KnownFolderId: "4bd8d571-6d19-48d3-be97-422220080e43"
+        /// </summary>
+        public static readonly string My_Music = @"shell:::{20D04FE0-3AEA-1069-A2D8-08002B30309D}\::{1CF1260C-4DD0-4EBB-811F-33C572699FDE}";
+
+        /// <summary>
+        /// Canonical Name: "Downloads"
+        ///  LocalizedName: Downloads
+        ///  KnownFolderId: "374de290-123f-4565-9164-39c4925e467b"
+        /// </summary>
+        public static readonly string Downloads = @"shell:::{20D04FE0-3AEA-1069-A2D8-08002B30309D}\::{374DE290-123F-4565-9164-39C4925E467B}";
+
+        /// <summary>
+        /// Canonical Name: "Personal"
+        ///  LocalizedName: Documents
+        ///  KnownFolderId: "fdd39ad0-238f-46af-adb4-6c85480369c7"
+        /// </summary>
+        public static readonly string Personal = @"shell:::{20D04FE0-3AEA-1069-A2D8-08002B30309D}\::{A8CDFF1C-4878-43be-B5FD-F8091C1C60D0}";
         #endregion UsersFilesFolder
 
         #region HomeGroupFolder

@@ -6,6 +6,7 @@
     using WSF.IDs;
     using WSF.Interfaces;
     using System.Linq;
+    using System.Collections.Generic;
 
     [TestClass]
     public class Browser2Test
@@ -71,6 +72,48 @@
 
             Assert.IsTrue(pathItems != null);
             Assert.IsTrue(pathItems.Length == 2);
+        }
+
+        [TestMethod]
+        public void TestWinShellPath2()
+        {
+            IDirectoryBrowser2 userFiles = Browser2.Create(KF_IID.ID_FOLDERID_UsersFiles);
+            Assert.IsTrue(userFiles != null);
+
+            HashSet<string> KFs = new HashSet<string>();
+
+            KFs.Add(KF_ParseName_IID.Searches.ToUpper());
+            KFs.Add(KF_ParseName_IID.Links.ToUpper());
+            KFs.Add(KF_ParseName_IID.OneDrive.ToUpper());
+            KFs.Add(KF_ParseName_IID.Contacts.ToUpper());
+            KFs.Add(KF_ParseName_IID.My_Pictures.ToUpper());
+            KFs.Add(KF_ParseName_IID.My_Videos.ToUpper());
+            KFs.Add(KF_ParseName_IID.My_Music.ToUpper());
+            KFs.Add(KF_ParseName_IID.Downloads.ToUpper());
+            KFs.Add(KF_ParseName_IID.Personal.ToUpper());
+            KFs.Add(KF_ParseName_IID.SavedGames.ToUpper());
+
+            foreach (var item in Browser2.GetChildItems(userFiles.SpecialPathId))
+            {
+                // This test fails if folder was not resolved as being a known folder
+                // All items under libraries (UsersLibrariesFolder) should be knownfolders
+                if (item.KnownFolder != null)
+                {
+                    if (string.IsNullOrEmpty(item.KnownFolder.ParsingName) == false)
+                    {
+                        string search = item.KnownFolder.ParsingName.ToUpper();
+                        bool bFound = false;
+
+                        bFound = KFs.Contains(search);
+
+                        // If this tests fails it might just mean that we've encountered a
+                        // knownfolder that was not installed and running at the time this was written
+                        // So, failing this test may not be a big deal
+                        // (it really depends on the folder - is it listed above (? extend list) or not)
+                        Assert.IsTrue(bFound);
+                    }
+                }
+            }
         }
 
         /// <summary>
