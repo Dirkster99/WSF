@@ -1493,7 +1493,7 @@
                     KnownFileSystemFolders.Add(KF_IID.IID_Prefix + item.FolderId.ToString("B").ToUpper(), item);
 
                     if (Browser.IsTypeOf(item.ParsingName) == PathType.SpecialFolder)
-                        KnownFileSystemFolders.Add(item.ParsingName, item);
+                        KnownFileSystemFolders.Add(item.ParsingName.ToUpper(), item);
 
                     if (string.IsNullOrEmpty(item.Path) == false)
                     {
@@ -1504,7 +1504,7 @@
                             // unique file locations and associated folders
                             IKnownFolderProperties val = null;
                             if (KnownFileSystemFolders.TryGetValue(item.Path, out val) == false)
-                                KnownFileSystemFolders.Add(item.Path, item);
+                                KnownFileSystemFolders.Add(item.Path.ToUpper(), item);
                         }
                         catch
                         {
@@ -1523,7 +1523,7 @@
                                 // unique file locations and associated folders
                                 IDirectoryBrowser val = null;
                                 if (KnownDirectoryBrowsers.TryGetValue(folder.PathFileSystem, out val) == false)
-                                    KnownDirectoryBrowsers.Add(folder.PathFileSystem, folder);
+                                    KnownDirectoryBrowsers.Add(folder.PathFileSystem.ToUpper(), folder);
                             }
                         }
                         catch
