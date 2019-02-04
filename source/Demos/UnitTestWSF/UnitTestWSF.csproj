@@ -63,7 +63,7 @@
     <Compile Include="SubSystem\KnownFolderIconLocation.cs" />
     <Compile Include="SubSystem\ParentPIDLTests.cs" />
     <Compile Include="SubSystem\PidlManagerTests.cs" />
-    <Compile Include="SubSystem\PIDL_PathTests.cs" />
+    <Compile Include="DirectoryBrowser2\PIDL_PathTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SubSystem\ShellInteropTests.cs" />
     <Compile Include="DirectoryBrowserSlimTests.cs" />

@@ -3,6 +3,7 @@
     using WSF.Enums;
     using WSF.Shell.Pidl;
     using System;
+    using WSF.Shell.Interop.Interfaces.Knownfolders;
 
     /// <summary>
     /// Represents a directory in a PIDL Shell system using an abstract .Net
@@ -16,6 +17,11 @@
         /// Gets the name of a directory.
         /// </summary>
         string Name { get; }
+
+        /// <summary>
+        /// Gets the parse name that was returned from the IShellFolder2 interface.
+        /// </summary>
+        string ParseName { get; }
 
         /// <summary>
         /// Gets a label string that may differ from other naming
@@ -43,6 +49,14 @@
         string SpecialPathId { get; }
 
         /// <summary>
+        /// Indicates whether the parse name is available with a special path reference,
+        /// such as, '::{...}'. This type of reference indicates a knownfolder reference
+        /// that should be available in <see cref="SpecialPathId"/> if this property
+        /// returns true.
+        /// </summary>
+        bool IsSpecialParseItem { get; }
+
+        /// <summary>
         /// Gets the filesystem path (e.g. 'C:\') if this item has a dedicated
         /// or associated storage location in the file system.
         /// </summary>
@@ -62,6 +76,18 @@
         IdList ChildIdList { get; }
 
         /// <summary>
+        /// Get Known file system Path  or FolderId for this folder.
+        /// 
+        /// That is:
+        /// 1) A storage location (if it exists) in the filesystem
+        /// 
+        /// 2) A knownfolder GUID (if it exists) is shown
+        ///    here as default preference over
+        ///    
+        /// </summary>
+        string FullName { get; }
+
+        /// <summary>
         /// Gets an optional pointer to the default icon resource used when the folder is created.
         /// This is a null-terminated Unicode string in this form:
         ///
@@ -76,23 +102,22 @@
         DirectoryItemFlags ItemType { get; }
 
         /// <summary>
-        /// Gets a type of path handler that indicates the
-        /// handling object that should be used to manipulate
-        /// this item and its children.
+        /// Gets the knownfolder properties if this item represents a knownfolder,
+        /// otherwise null.
+        ///
+        /// https://msdn.microsoft.com/en-us/library/windows/desktop/bb773325(v=vs.85).aspx
         /// </summary>
-        PathHandler PathType { get; }
+        IKnownFolderProperties KnownFolder { get; }
 
         /// <summary>
-        /// Get Known file system Path  or FolderId for this folder.
+        /// Gets whether all properties have been fully resolved or not.
         /// 
-        /// That is:
-        /// 1) A storage location (if it exists) in the filesystem
-        /// 
-        /// 2) A knownfolder GUID (if it exists) is shown
-        ///    here as default preference over
-        ///    
+        /// Properties like <see cref="KnownFolder"/>, <see cref="IconResourceId"/>,
+        /// or <see cref="ItemType"/> can be loaded lazily
+        /// - call <see cref="LoadProperties"/> method to complete this process
+        /// before using these properties.
         /// </summary>
-        string FullName { get; }
+        bool IsFullyInitialized { get; }
 
         /// <summary>
         /// Gets the raw string that was used to construct this object.
@@ -103,6 +128,12 @@
         #endregion properties
 
         #region methods
+        /// <summary>
+        /// Resolves remaining properties if <see cref="IsFullyInitialized"/> indicates
+        /// missing values (useful for lazy initialization).
+        /// </summary>
+        void LoadProperties();
+
         /// <summary>
         /// Determines if this item refers to an existing path in the filesystem or not.
         /// </summary>

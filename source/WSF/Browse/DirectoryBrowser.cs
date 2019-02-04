@@ -5,6 +5,12 @@ namespace WSF.Browse
     using System;
     using WSF.Shell.Pidl;
     using System.Text;
+    using WSF.Shell.Interop.Interfaces.Knownfolders;
+    using WSF.Shell.Interop.ResourceIds;
+    using System.IO;
+    using System.Diagnostics;
+    using WSF.Shell.Interop.Interfaces.KnownFolders;
+    using WSF.IDs;
 
     /// <summary>
     /// Implements a light weight Windows Shell Browser class that can be used
@@ -12,6 +18,23 @@ namespace WSF.Browse
     /// </summary>
     internal sealed partial class DirectoryBrowser : IDirectoryBrowser
     {
+        #region fields
+        private object resolvePropsLock = new object();
+        private bool _IconResourceIdInitialized;
+        private string _IconResourceId;
+
+        private bool _KnownFolderIsInitialized;
+        private IKnownFolderProperties _KnownFolder;
+
+        private object _resolvePidlsLock = new object();
+        private bool _PIDLs_Initialized;
+        private IdList _ParentIdList;
+        private IdList _ChildIdList;
+
+        private bool _ItemTypeIsInitialized;
+        private DirectoryItemFlags _ItemType;
+        #endregion fields
+
         #region ctors
         /// <summary>
         /// Class constructor
@@ -20,17 +43,12 @@ namespace WSF.Browse
         {
             PathRAW = itemModel.Path_RAW;
 
-            ItemType = itemModel.ItemType;
-            PathType = itemModel.PathType;
             Name = itemModel.Name;
+            ParseName = itemModel.ParseName;
             Label = itemModel.LabelName;
             SpecialPathId = itemModel.PathSpecialItemId;
+            IsSpecialParseItem = itemModel.IsSpecialParseItem;
             PathFileSystem = itemModel.PathFileSystem;
-
-            ParentIdList = itemModel.ParentIdList;
-            ChildIdList = itemModel.ChildIdList;
-
-            IconResourceId = itemModel.IconResourceId;
 
             // Get PathShell
             if (string.IsNullOrEmpty(itemModel.PathSpecialItemId) == false)
@@ -57,7 +75,6 @@ namespace WSF.Browse
                     FullName = itemModel.Name;
                 }
             }
-
         }
 
         /// <summary>
@@ -69,19 +86,29 @@ namespace WSF.Browse
             if (copyThis == null)
                 return;
 
-            ItemType = copyThis.ItemType;
+            _ItemTypeIsInitialized = copyThis._ItemTypeIsInitialized;
+            _ItemType = copyThis._ItemType;
+
+            _KnownFolderIsInitialized = copyThis._KnownFolderIsInitialized;
+            _KnownFolder = copyThis._KnownFolder;
+
+            _IconResourceIdInitialized = copyThis._IconResourceIdInitialized;
+            _IconResourceId = copyThis._IconResourceId;
+
             Name = copyThis.Name;
+            ParseName = copyThis.ParseName;
             Label = copyThis.Label;
             PathRAW = copyThis.PathRAW;
             PathShell = copyThis.PathShell;
 
-            ChildIdList = copyThis.ChildIdList;
-            ParentIdList = copyThis.ParentIdList;
+            _PIDLs_Initialized = copyThis._PIDLs_Initialized;
+            _ChildIdList = copyThis._ChildIdList;
+            _ParentIdList = copyThis._ParentIdList;
 
-            IconResourceId = copyThis.IconResourceId;
             SpecialPathId = copyThis.SpecialPathId;
+            IsSpecialParseItem = copyThis.IsSpecialParseItem;
+
             PathFileSystem = copyThis.PathFileSystem;
-            PathType = copyThis.PathType;
 
             FullName = copyThis.FullName;
         }
@@ -92,6 +119,8 @@ namespace WSF.Browse
         /// Gets the (localized) name of an item.
         /// </summary>
         public string Name { get; }
+
+        public string ParseName { get; }
 
         /// <summary>
         /// Gets a label string that may differ from other naming
@@ -123,6 +152,8 @@ namespace WSF.Browse
         /// </summary>
         public string SpecialPathId { get; }
 
+        public bool IsSpecialParseItem { get; }
+
         /// <summary>
         /// Gets the filesystem path (e.g. 'C:\') if this item has a dedicated
         /// or associated storage location in the file system.
@@ -133,14 +164,27 @@ namespace WSF.Browse
         /// Gets the IdList (if available) that describes the full
         /// shell path for this item)
         /// </summary>
-        public IdList ParentIdList { get; }
-
+        public IdList ParentIdList
+        {
+            get
+            {
+                LoadPidls();
+                return _ParentIdList;
+            }
+        }
 
         /// <summary>
         /// Gets the IdList (if available) that describes the full
         /// shell path for this item)
         /// </summary>
-        public IdList ChildIdList { get; }
+        public IdList ChildIdList
+        {
+            get
+            {
+                LoadPidls();
+                return _ChildIdList;
+            }
+        }
 
         /// <summary>
         /// Gets an optional pointer to the default icon resource used when the folder is created.
@@ -149,19 +193,83 @@ namespace WSF.Browse
         /// Module name, Resource ID
         /// or null is this information is not available.
         /// </summary>
-        public string IconResourceId { get; }
+        public string IconResourceId
+        {
+            get
+            {
+                lock (resolvePropsLock)
+                {
+                    if (_IconResourceIdInitialized == false)
+                    {
+                        _IconResourceIdInitialized = true;
+                        _IconResourceId = LoadIconResourceId();
+                    }
+                }
+
+                return _IconResourceId;
+            }
+        }
 
         //// <summary>
         //// Gets the folders type classification.
         //// </summary>
-        public DirectoryItemFlags ItemType { get; }
+        public DirectoryItemFlags ItemType
+        {
+            get
+            {
+                lock (resolvePropsLock)
+                {
+                    if (_ItemTypeIsInitialized == false)
+                    {
+                        _ItemTypeIsInitialized = true;
+                        _ItemType = LoadItemType();
+                    }
+                }
+
+                return _ItemType;
+            }
+        }
 
         /// <summary>
-        /// Gets a type of path handler that indicates the
-        /// handling object that should be used to manipulate
-        /// this item and its children.
+        /// Gets the knownfolder properties if this item represents a knownfolder,
+        /// otherwise null.
+        ///
+        /// https://msdn.microsoft.com/en-us/library/windows/desktop/bb773325(v=vs.85).aspx
         /// </summary>
-        public PathHandler PathType { get; }
+        public IKnownFolderProperties KnownFolder
+        {
+            get
+            {
+                lock (resolvePropsLock)
+                {
+                    if (_KnownFolderIsInitialized == false)
+                    {
+                        _KnownFolderIsInitialized = true;
+                        _KnownFolder = LoadKnownFolder();
+                    }
+                }
+
+                return _KnownFolder;
+            }
+        }
+
+        /// <summary>
+        /// Gets whether all properties have been fully resolved or not.
+        /// 
+        /// Properties like <see cref="KnownFolder"/>, <see cref="IconResourceId"/>,
+        /// or <see cref="ItemType"/> can be loaded lazily
+        /// - call <see cref="LoadProperties"/> method to complete this process
+        /// before using these properties.
+        /// </summary>
+        public bool IsFullyInitialized
+        {
+            get
+            {
+                return _IconResourceIdInitialized
+                     & _ItemTypeIsInitialized
+                     & _KnownFolderIsInitialized;
+            }
+        }
 
         /// <summary>
         /// Gets the raw string that was used to construct this object.
@@ -184,6 +292,34 @@ namespace WSF.Browse
         #endregion properties
 
         #region methods
+        /// <summary>
+        /// Resolves remaining properties if <see cref="IsFullyInitialized"/> indicates
+        /// missing values (useful for lazy initialization).
+        /// </summary>
+        public void LoadProperties()
+        {
+            lock (resolvePropsLock)
+            {
+                if (_KnownFolderIsInitialized == false)
+                {
+                    _KnownFolderIsInitialized = true;
+                    _KnownFolder = LoadKnownFolder();
+                }
+
+                if (_ItemTypeIsInitialized == false)
+                {
+                    _ItemTypeIsInitialized = true;
+                    _ItemType = LoadItemType();
+                }
+
+                if (_IconResourceIdInitialized == false)
+                {
+                    _IconResourceIdInitialized = true;
+                    _IconResourceId = LoadIconResourceId();
+                }
+            }
+        }
+
         /// <summary>
         /// Determines if this item refers to an existing path in the filesystem or not.
         /// </summary>
@@ -253,6 +389,12 @@ namespace WSF.Browse
         {
             if (other == null)
                 return false;
+
+            if (KnownFolder != null && other.KnownFolder != null)
+            {
+                if (KnownFolder.FolderId == other.KnownFolder.FolderId)
+                    return true;
+            }
 
             if (string.Compare(this.SpecialPathId, other.SpecialPathId, true) != 0 ||
                 string.Compare(this.PathFileSystem, other.PathFileSystem, true) != 0)
@@ -328,6 +470,189 @@ namespace WSF.Browse
                 return true;
 
             return false;
+        }
+
+        public void LoadPidls()
+        {
+            lock (_resolvePidlsLock)
+            {
+                if (_PIDLs_Initialized == true)
+                    return;
+
+                _PIDLs_Initialized = true;
+                IdList parentIdList, relativeChildIdList;
+                bool hasPIDL = PidlManager.GetParentIdListFromPath(PathShell, out parentIdList, out relativeChildIdList);
+                if (hasPIDL == true)
+                {
+                    _ParentIdList = parentIdList;
+                    _ChildIdList = relativeChildIdList;
+                }
+            }
+        }
+
+        private string LoadIconResourceId()
+        {
+            string filename = null; // Get Resoure Id for desktop root item
+            int index = -1;
+
+            lock (resolvePropsLock)
+            {
+                if (_KnownFolderIsInitialized == false)
+                {
+                    _KnownFolderIsInitialized = true;
+                    _KnownFolder = LoadKnownFolder();
+                }
+            }
+
+            if (KnownFolder == null)
+                return null;
+
+            bool isKFIconResourceIdValid = false;
+            if (KnownFolder != null)
+                isKFIconResourceIdValid = KnownFolder.IsIconResourceIdValid();
+
+            if (isKFIconResourceIdValid == false)
+            {
+                IdList pidl = null;
+                LoadPidls();
+
+                if (ChildIdList != null || ParentIdList != null)
+                    pidl = PidlManager.CombineParentChild(ParentIdList, ChildIdList);
+                else
+                    pidl = IdList.Create();
+
+                if (IconHelper.GetIconResourceId(pidl, out filename, out index))
+                {
+                    // Store filename and index for Desktop Root ResourceId
+                    return string.Format("{0},{1}", filename, index);
+                }
+            }
+            else
+            {
+                return KnownFolder.IconResourceId;
+            }
+
+            return null;
+        }
+
+        private IKnownFolderProperties LoadKnownFolder()
+        {
+            if (this.IsSpecialParseItem)
+                return Browser.FindKnownFolderByFileSystemPath(this.SpecialPathId);
+            else
+            {
+                if (string.IsNullOrEmpty(this.ParseName) == false)
+                    return Browser.FindKnownFolderByFileSystemPath(this.ParseName);
+                else
+                    return Browser.FindKnownFolderByFileSystemPath(this.Name);
+            }
+        }
+
+        private DirectoryItemFlags LoadItemType()
+        {
+            DirectoryItemFlags itemType = DirectoryItemFlags.Unknown;
+
+            if (string.IsNullOrEmpty(PathFileSystem) == false)
+            {
+                var pathIsTypeOf = Browser.IsTypeOf(PathFileSystem);
+
+                if (pathIsTypeOf == Enums.PathType.FileSystemPath)
+                {
+                    // TODO XXX Always evaluate on NormPath???
+                    try
+                    {
+                        bool pathExists = false;
+                        try
+                        {
+                            pathExists = System.IO.File.Exists(PathFileSystem);
+                        }
+                        catch { }
+
+                        if (pathExists)
+                        {
+                            itemType |= DirectoryItemFlags.FileSystemFile;
+
+                            if (PathFileSystem.EndsWith(".zip"))
+                                itemType |= DirectoryItemFlags.DataFileContainer;
+                        }
+                    }
+                    catch { }
+
+                    // See if this is a directory if it was not a file...
+                    if ((itemType & DirectoryItemFlags.FileSystemFile) == 0)
+                    {
+                        // Does this directory exist in file system ?
+                        try
+                        {
+                            bool pathExists = false;
+                            try
+                            {
+                                pathExists = System.IO.Directory.Exists(PathFileSystem);
+                            }
+                            catch { }
+
+                            if (pathExists == true)
+                            {
+                                itemType |= DirectoryItemFlags.FileSystemDirectory;
+
+                                // This could be a reference to a drive
+                                DirectoryInfo d = new DirectoryInfo(PathFileSystem);
+                                if (d.Parent == null)
+                                    itemType |= DirectoryItemFlags.Drive;
+                            }
+                            else
+                            {
+                                // Neither a regular directory nor a regular file
+                                // -> Most likely a folder inside a zip file data container
+                                if (PathFileSystem.Contains(".zip"))
+                                {
+                                    itemType |= DirectoryItemFlags.DataFileContainerFolder;
+                                }
+
+                                // -> Lets get its name for display if its more than empty
+                                string displayName = System.IO.Path.GetFileName(PathFileSystem);
+                            }
+                        }
+                        catch (Exception exp)
+                        {
+                            Debug.WriteLine(exp.Message);
+                        }
+                    }
+                }
+            }
+
+            if (KnownFolder != null)
+            {
+                if (KnownFolder.Category == FolderCategory.Virtual)
+                    itemType |= DirectoryItemFlags.Virtual;
+            }
+
+            if (IsSpecialParseItem)
+            {
+                itemType |= DirectoryItemFlags.Special;
+
+                // Check for very common known special directory reference
+                if (KF_IID.ID_FOLDERID_Desktop.Equals(SpecialPathId, StringComparison.InvariantCultureIgnoreCase))
+                    itemType |= DirectoryItemFlags.Desktop;
+                else
+                if (KF_IID.ID_FOLDERID_Documents.Equals(SpecialPathId, StringComparison.InvariantCultureIgnoreCase))
+                    itemType |= DirectoryItemFlags.Documents;
+                else
+                if (KF_IID.ID_FOLDERID_Downloads.Equals(SpecialPathId, StringComparison.InvariantCultureIgnoreCase))
+                    itemType |= DirectoryItemFlags.Downloads;
+                else
+                if (KF_IID.ID_FOLDERID_Music.Equals(SpecialPathId, StringComparison.InvariantCultureIgnoreCase))
+                    itemType |= DirectoryItemFlags.Music;
+                else
+                if (KF_IID.ID_FOLDERID_Pictures.Equals(SpecialPathId, StringComparison.InvariantCultureIgnoreCase))
+                    itemType |= DirectoryItemFlags.Pictures;
+                else
+                if (KF_IID.ID_FOLDERID_Videos.Equals(SpecialPathId, StringComparison.InvariantCultureIgnoreCase))
+                    itemType |= DirectoryItemFlags.Videos;
+            }
+
+
+            return itemType;
         }
         #endregion methods
     }

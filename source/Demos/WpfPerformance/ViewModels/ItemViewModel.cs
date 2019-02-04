@@ -2,14 +2,12 @@
 {
     using System;
     using System.Threading.Tasks;
-    using WSF;
-    using WSF.Browse;
     using WSF.Interfaces;
 
     public class ItemViewModel : Base.ViewModelBase, IItemViewModel
     {
         #region fields
-        private readonly IDirectoryBrowser2 _ModelStage1;
+        private readonly IDirectoryBrowser _ModelStage1;
         private DateTime _lastRefreshTimeUtc;
         private bool _isLoaded;
         private bool _IsLoading;
@@ -20,7 +18,7 @@
         /// <summary>
         /// parameterized class constructor
         /// </summary>
-        public ItemViewModel(IDirectoryBrowser2 model, int id)
+        public ItemViewModel(IDirectoryBrowser model, int id)
             : this()
         {
             this._ModelStage1 = model;
@@ -44,17 +42,6 @@
             get
             {
                 return _ID;
-            }
-        }
-
-        /// <summary>
-        /// Gets the name of the Breadcrumb node (item).
-        /// </summary>
-        public string Header
-        {
-            get
-            {
-                return (_ModelStage1 != null ? _ModelStage1.Label : string.Empty);
             }
         }
 
@@ -91,7 +78,15 @@
                 if (IsLoaded)
                 {
                     if (_ModelStage1 != null)
+                    {
+                        if (_ModelStage1.KnownFolder != null)
+                        {
+                            if (string.IsNullOrEmpty(_ModelStage1.KnownFolder.LocalizedName) == false)
+                                return _ModelStage1.KnownFolder.LocalizedName;
+                        }
+
                         return _ModelStage1.Name;
+                    }
                 }
                 else
                 {
@@ -198,7 +193,6 @@
                         NotifyPropertyChanged(() => ItemName);
                         NotifyPropertyChanged(() => ItemPath);
                         NotifyPropertyChanged(() => IconResourceId);
-                        NotifyPropertyChanged(() => Header);
 
                         LastRefreshTimeUtc = DateTime.Now;
                         System.Console.WriteLine("Model {0} loaded.", _ID);

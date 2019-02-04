@@ -1,5 +1,6 @@
 ﻿namespace UnitTestWSF
 {
+/***
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using WSF;
     using WSF.Enums;
@@ -331,4 +332,5 @@
             Assert.IsFalse(music.Equals(specialItem));
         }
     }
+***/
 }

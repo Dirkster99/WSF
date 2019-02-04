@@ -23,7 +23,7 @@
 
         private static void TestAllWinSxsFoldersRetrieval(bool lazyLoadingProperties)
         {
-            var windowsFolder = Browser2.Create(KF_IID.ID_FOLDERID_Windows);
+            var windowsFolder = Browser.Create(KF_IID.ID_FOLDERID_Windows);
 
             string dirPath = System.IO.Path.Combine(windowsFolder.PathFileSystem, "WinSxs");
 
@@ -33,9 +33,9 @@
             var startTime = DateTime.Now;
             Console.WriteLine("...{0} working on it...\n", startTime);
 
-            List<IDirectoryBrowser2> result = new List<IDirectoryBrowser2>();
+            List<IDirectoryBrowser> result = new List<IDirectoryBrowser>();
             int i = 0;
-            foreach (var item in Browser2.GetChildItems(dirPath, null, SubItemFilter.NameOnly, lazyLoadingProperties))
+            foreach (var item in Browser.GetChildItems(dirPath, null, SubItemFilter.NameOnly, lazyLoadingProperties))
             {
                 result.Add(item);
                 i++;

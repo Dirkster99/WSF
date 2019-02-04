@@ -1,5 +1,6 @@
 ﻿namespace UnitTestWSF
 {
+/***
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using WSF;
     using WSF.Enums;
@@ -275,4 +276,5 @@
             Assert.IsTrue(dirstringsItems.Length < dirstringsList.Count);
         }
     }
+***/
 }

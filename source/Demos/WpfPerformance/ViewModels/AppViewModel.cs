@@ -166,12 +166,12 @@
                         // Load default demo directory if path was not supplied
                         if (string.IsNullOrEmpty(dirPath))
                         {
-                            var windowsFolder = Browser2.Create(KF_IID.ID_FOLDERID_Windows);
+                            var windowsFolder = Browser.Create(KF_IID.ID_FOLDERID_Windows);
                             dirPath = System.IO.Path.Combine(windowsFolder.PathFileSystem, "WinSxs");
                         }
 
                         if (System.IO.Directory.Exists(dirPath) == false)
-                            dirPath = Browser2.SysDefault.PathFileSystem;
+                            dirPath = Browser.SysDefault.PathFileSystem;
 
                         // Clip of last seperator if any
                         int idx = dirPath.LastIndexOf(System.IO.Path.DirectorySeparatorChar);
@@ -180,7 +180,7 @@
                     }
                     catch
                     {
-                        dirPath = Browser2.SysDefault.PathFileSystem;
+                        dirPath = Browser.SysDefault.PathFileSystem;
                     }
 
                     GoToPath = CurrentPath = dirPath;
@@ -191,7 +191,7 @@
                     Console.WriteLine("...{0} working on it...\n", startTime);
 
                     int i = 0;
-                    foreach (var item in Browser2.GetChildItems(dirPath, null, SubItemFilter.NameOnly, true))
+                    foreach (var item in Browser.GetChildItems(dirPath, null, SubItemFilter.NameOnly, true))
                     {
                         result.Add(new ItemViewModel(item, i));
                         i++;

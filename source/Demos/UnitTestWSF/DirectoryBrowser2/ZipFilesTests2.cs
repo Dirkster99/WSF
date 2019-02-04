@@ -31,7 +31,7 @@
 
             Assert.IsTrue(System.IO.File.Exists(resourcePath));
 
-            var zipFile = Browser2.Create(resourcePath);
+            var zipFile = Browser.Create(resourcePath);
 
             Assert.IsTrue(zipFile != null);
             Assert.IsTrue((zipFile.ItemType & DirectoryItemFlags.DataFileContainer) != 0);

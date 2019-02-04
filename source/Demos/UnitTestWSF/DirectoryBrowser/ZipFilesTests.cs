@@ -1,5 +1,6 @@
 ﻿namespace UnitTestWSF
 {
+/***
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using WSF.Enums;
     using WSF.Interfaces;
@@ -43,4 +44,5 @@
             Assert.IsTrue(string.Compare(zipFile.PathFileSystem, resourcePath, true) == 0);
         }
     }
+***/
 }

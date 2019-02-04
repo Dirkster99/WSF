@@ -1,71 +1,70 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="WSF.Browse.BrowseItemFromPath" Collapsed="true">
-    <Position X="9.25" Y="0.5" Width="1.5" />
+    <Position X="0.5" Y="6.5" Width="2" />
     <TypeIdentifier>
-      <HashCode>AABAAAgAAAQAAACAQAQCAAQAAAAABACBAgEAAAAEBgA=</HashCode>
+      <HashCode>AAAAAAgAAAQCAAAAQAQAAAQAAAAAAAAAAgEAAQAAAAA=</HashCode>
       <FileName>Browse\BrowseItemFromPath.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="WSF.Browse.DirectoryBrowser" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="14.5" Y="0.5" Width="1.5" />
+  <Class Name="WSF.Browse.DirectoryBrowser" BaseTypeListCollapsed="true">
+    <Position X="2.75" Y="0.5" Width="2" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
     <TypeIdentifier>
-      <HashCode>AABAgAAAEAIIAIAEgAQAAAQBAAgABICAAAAAAQAABhA=</HashCode>
+      <HashCode>ABAAgAgQEAiKBIEEgAQAAQQLRAwQFICAEAAEAQAABhA=</HashCode>
       <FileName>Browse\DirectoryBrowser.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" Collapsed="true" />
+    <Lollipop Position="0.2" />
   </Class>
-  <Class Name="WSF.Browse.DirectoryBrowserSlim" Collapsed="true">
-    <Position X="16.25" Y="0.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAgAAAQAgAAAAAAAAAQAAAAAAAAAAAAAAAAAAEA=</HashCode>
-      <FileName>Browse\DirectoryBrowserSlim.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="WSF.Browse.FilterMask" Collapsed="true">
-    <Position X="9.25" Y="1.5" Width="1.5" />
+  <Class Name="WSF.Browse.FilterMask">
+    <Position X="13.5" Y="14.25" Width="2.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
     <TypeIdentifier>
       <HashCode>AAABAAAAAAAAAAAAAQAAAAACAACAAAAAAAAABAAAAAg=</HashCode>
       <FileName>Browse\FilterMask.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="WSF.Browser" Collapsed="true">
-    <Position X="11" Y="0.5" Width="1.5" />
+  <Class Name="WSF.Browser">
+    <Position X="5" Y="0.5" Width="2.75" />
     <TypeIdentifier>
-      <HashCode>AAAAggGAIAhAQEAIAAIABAAAgEAAAEACJIAAoQQCAAA=</HashCode>
+      <HashCode>AAAAggGAIAhAQkQIAAIABAAAgEBAAEECJAAAoQQCAAA=</HashCode>
       <FileName>Browser.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="WSF.FileSystemCommands" Collapsed="true">
-    <Position X="18" Y="0.5" Width="1.5" />
+  <Class Name="WSF.FileSystemCommands">
+    <Position X="18" Y="0.75" Width="2" />
     <TypeIdentifier>
       <HashCode>AAABAAAAAABgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>FileSystemCommands.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="WSF.IDs.KF_ID" Collapsed="true">
-    <Position X="16.25" Y="1.5" Width="1.5" />
+    <Position X="8.25" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>IqnikXPSAsQBALgtEhmMUAhpA8x0DTI0DiKAdAQ7lIU=</HashCode>
       <FileName>IDs\KF_ID.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="WSF.IDs.KF_IID" Collapsed="true">
-    <Position X="18" Y="1.5" Width="1.5" />
+    <Position X="10" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>IqnikXPSAsQBALgtEhmMUAhpA8x0DTI0DiKBdAQ7lIU=</HashCode>
       <FileName>IDs\KF_IID.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="WSF.IDs.KnownfolderSlim" Collapsed="true">
-    <Position X="9.25" Y="3.5" Width="1.5" />
+    <Position X="8.25" Y="3.5" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAQAAAAAAAAAAAAgAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>IDs\KnownfolderSlim.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="WSF.IDs.ShellIIDGuids" Collapsed="true">
-    <Position X="12.75" Y="4.5" Width="1.5" />
+    <Position X="12" Y="20.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AACAAgAAAAAAAAEIAAAAAAAgAAABAAAAAAAAAAAAAAA=</HashCode>
       <FileName>IDs\ShellIIDGuids.cs</FileName>
@@ -78,35 +77,35 @@
     </TypeIdentifier>
   </Class>
   <Class Name="WSF.Shell.Interop.Dlls.CoreNativeMethods" Collapsed="true">
-    <Position X="12.75" Y="0.5" Width="1.5" />
+    <Position X="18" Y="4.5" Width="2" />
     <TypeIdentifier>
       <HashCode>AgAFAABBA0BAABIAQCIQAAATAAAgIAAAAAAEQAAAAAA=</HashCode>
       <FileName>Shell\Interop\DLLs\CoreNativeMethods.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="WSF.Shell.Interop.Dlls.NativeMethods" Collapsed="true">
-    <Position X="12.75" Y="3.5" Width="1.5" />
+    <Position X="8.25" Y="19.75" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAIACAIABAABACAAAAUgAIAgAIBAAAAAhAFBAgAAI=</HashCode>
       <FileName>Shell\Interop\DLLs\shell32.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="WSF.Shell.Interop.Interfaces.KnownFolders.KnownFoldersIIDGuid" Collapsed="true">
-    <Position X="18" Y="2.5" Width="1.5" />
+    <Position X="8.25" Y="20.75" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
       <FileName>Shell\Interop\Interfaces\KnownFolders\KnownFoldersIIDGuids.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="WSF.Shell.Interop.Knownfolders.KnownFolderHelper" Collapsed="true">
-    <Position X="11" Y="2.5" Width="1.5" />
+  <Class Name="WSF.Shell.Interop.Knownfolders.KnownFolderHelper">
+    <Position X="4" Y="14" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AEAAAAAAAAAAAAAAAAAAAAIAABAiAAAAgAAhAAEAAAI=</HashCode>
       <FileName>Shell\Interop\Knownfolders\KnownFolderHelper.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="WSF.Shell.Interop.Knownfolders.KnownFolderManagerClass" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="12.75" Y="2.5" Width="1.5" />
+    <Position X="10.75" Y="18" Width="2.25" />
     <TypeIdentifier>
       <HashCode>IAAEAAAAEAAAAAAAAAACAAAQAAAAAAAAEAAEQAAQAAI=</HashCode>
       <FileName>Shell\Interop\Knownfolders\KnownFolderManagerClass.cs</FileName>
@@ -114,31 +113,34 @@
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
   <Class Name="WSF.Shell.Interop.Knownfolders.KnownFolderProperties" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="16.25" Y="2.5" Width="1.5" />
+    <Position X="8.25" Y="18" Width="2" />
     <TypeIdentifier>
-      <HashCode>BAAAAAAAAAAggAoGAECAYIYgQARABAAJAoAGIAAACiA=</HashCode>
+      <HashCode>BAAAAAAAAAAggAoEAECAYIYgQARABAAJAoAGIAAACiA=</HashCode>
       <FileName>Shell\Interop\Knownfolders\KnownFolderProperties.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
   <Class Name="WSF.Shell.Interop.ShellFolders.KnownFolderNative" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="14.5" Y="2.5" Width="1.5" />
+    <Position X="8.25" Y="18.75" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAACAEACAAACAAKAAIAAACAAAAAAAAAAMAAAA=</HashCode>
       <FileName>Shell\Interop\Knownfolders\KnownFolderNative.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Class Name="WSF.Shell.Interop.ShellFolders.GenericCOMFolder&lt;T&gt;" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="11" Y="1.5" Width="1.5" />
+  <Class Name="WSF.Shell.Interop.ShellFolders.GenericCOMFolder&lt;T&gt;" BaseTypeListCollapsed="true">
+    <Position X="2.5" Y="19.75" Width="2" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAACIEACAAACAAAAAAgAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAACAEACAAACAAAAAAgAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Shell\Interop\ShellFolders\GenericCOMFolder.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" Collapsed="true" />
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="WSF.Shell.Interop.ShellFolders.ShellFolder">
-    <Position X="0.5" Y="0.5" Width="1.5" />
+    <Position X="0.5" Y="18" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAgCAEACAAACAAAAAAAAAAAAAAAABAAAAAAAA=</HashCode>
       <FileName>Shell\Interop\ShellFolders\ShellFolder.cs</FileName>
@@ -146,21 +148,28 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="WSF.Shell.Interop.ShellFolders.ShellFolderDesktop">
-    <Position X="2.25" Y="0.5" Width="2" />
+    <Position X="2.5" Y="18" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Shell\Interop\ShellFolders\ShellFolderDesktop.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="WSF.Shell.Interop.ShellFolders.ShellHelpers" Collapsed="true">
-    <Position X="9.25" Y="4.5" Width="1.5" />
+  <Class Name="WSF.Shell.Interop.ShellFolders.ShellHelpers">
+    <Position X="4" Y="12" Width="2.25" />
+    <NestedTypes>
+      <Enum Name="WSF.Shell.Interop.ShellFolders.ShellHelpers.SpecialPath" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Shell\Interop\ShellFolders\ShellHelpers.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAQgAAAAAAAAAQAAAAAAAA=</HashCode>
       <FileName>Shell\Interop\ShellFolders\ShellHelpers.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="WSF.Shell.Interop.ShellFolders.ShellItem2" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="14.5" Y="4.5" Width="1.5" />
+    <Position X="4.75" Y="18" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAACAEACABACAAAAAAAAAAAAAAAABAAAAAAAA=</HashCode>
       <FileName>Shell\Interop\ShellItems\ShellItem2.cs</FileName>
@@ -168,27 +177,27 @@
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
   <Class Name="WSF.Shell.Interop.KnownFolders.KnownFolderGuids" Collapsed="true">
-    <Position X="9.25" Y="2.5" Width="1.5" />
+    <Position X="8.25" Y="2.5" Width="1.75" />
     <TypeIdentifier>
       <HashCode>gpgJUw4kkj4hMQBBDJELjGITR2AXkqgKyIhdoQQBdRI=</HashCode>
       <FileName>Shell\Interop\Knownfolders\KnownFolders.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="WSF.Shell.Interop.Messages.Resources.LocalizedMessages" Collapsed="true">
-    <Position X="11" Y="3.5" Width="1.5" />
+    <Position X="18.25" Y="6.75" Width="1.75" />
     <TypeIdentifier>
       <HashCode>FtkJbX+JdoCBKeFSeLBrsXVAKyGJsmQiQHrlZQCKgPY=</HashCode>
     </TypeIdentifier>
   </Class>
   <Class Name="WSF.Shell.Interop.Messages.ShellException" Collapsed="true">
-    <Position X="18" Y="3.5" Width="1.5" />
+    <Position X="18" Y="3.5" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Shell\Interop\Messages\ShellException.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="WSF.Shell.Interop.ResourceIds.IconHelper" Collapsed="true">
-    <Position X="12.75" Y="1.5" Width="1.5" />
+  <Class Name="WSF.Shell.Interop.ResourceIds.IconHelper">
+    <Position X="4.75" Y="19.75" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AgAAAAAAAAACEAAAAAAAEAAAAAAAABAAAAQAAAAAAAA=</HashCode>
       <FileName>Shell\Interop\ResourceIds\IconHelper.cs</FileName>
@@ -201,184 +210,194 @@
       <FileName>Shell\Interop\ShellItems\PropVariant.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="WSF.Shell.Pidl.IdList" Collapsed="true">
-    <Position X="14.5" Y="1.5" Width="1.5" />
+  <Class Name="WSF.Shell.Pidl.IdList">
+    <Position X="2.75" Y="8.25" Width="2" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
     <TypeIdentifier>
       <HashCode>ABACAAAAAAAAgAAEAAAAAAAAABAAAGAAQIAAAAAAAoA=</HashCode>
       <FileName>Shell\Pidl\IdList.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="WSF.Shell.Pidl.PidlManager" Collapsed="true">
-    <Position X="14.5" Y="3.5" Width="1.5" />
+  <Class Name="WSF.Shell.Pidl.PidlManager">
+    <Position X="0.5" Y="12" Width="3.25" />
     <TypeIdentifier>
       <HashCode>AEAgQAAAAABACABQAAAAQEIEAAAAEABAAAABQAAAIAA=</HashCode>
       <FileName>Shell\Pidl\PidlManager.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="WSF.Shell.Pidl.ShellId" Collapsed="true">
-    <Position X="11" Y="4.5" Width="1.5" />
+    <Position X="10.25" Y="20.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAEABAAAEkABAAABAAAIAEIAAAAAAAAAAAAA=</HashCode>
       <FileName>Shell\Pidl\ShellId.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="WSF.IDs.KF_ParseName_IID" Collapsed="true">
+    <Position X="11.75" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>BIAAAAAAAAGAAEIgEAgAIAgBBAkCBAJAGAMAAAAAAMQ=</HashCode>
+      <FileName>IDs\KF_ParseName_IID.cs</FileName>
+    </TypeIdentifier>
+  </Class>
   <Struct Name="WSF.Shell.Interop.EXTRASEARCH" Collapsed="true">
-    <Position X="9.25" Y="5.75" Width="1.5" />
+    <Position X="8.25" Y="5.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAgAAAAAAAAEABAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Shell\Interop\EXTRASEARCH.cs</FileName>
     </TypeIdentifier>
   </Struct>
   <Struct Name="WSF.Shell.Interop.MSG" Collapsed="true">
-    <Position X="11" Y="5.75" Width="1.5" />
+    <Position X="10" Y="5.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAABAAIAAAAAAAAQAAAAAAAAAAAAAEAAAAAAAAgAACA=</HashCode>
       <FileName>Shell\Interop\MSG.cs</FileName>
     </TypeIdentifier>
   </Struct>
   <Struct Name="WSF.Shell.Interop.POINT" Collapsed="true">
-    <Position X="14.5" Y="5.75" Width="1.5" />
+    <Position X="13.5" Y="5.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYAA=</HashCode>
       <FileName>Shell\Interop\POINT.cs</FileName>
     </TypeIdentifier>
   </Struct>
   <Struct Name="WSF.Shell.Interop.PROPERTYKEY" Collapsed="true">
-    <Position X="18" Y="5.75" Width="1.5" />
+    <Position X="18.25" Y="5.75" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAEAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Shell\Interop\PROPERTYKEY.cs</FileName>
     </TypeIdentifier>
   </Struct>
   <Struct Name="WSF.Shell.Interop.SHELLDETAILS" Collapsed="true">
-    <Position X="9.25" Y="6.75" Width="1.5" />
+    <Position X="8.25" Y="6.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>QAAAAAAAAAAAACAAAAAAAAAAAAAAACAAAAAAAAAAAAA=</HashCode>
       <FileName>Shell\Interop\SHELLDETAILS.cs</FileName>
     </TypeIdentifier>
   </Struct>
   <Struct Name="WSF.Shell.Interop.SHELLEXECUTEINFO" Collapsed="true">
-    <Position X="11" Y="6.75" Width="1.5" />
+    <Position X="10" Y="6.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AgBAAAEAEAAABAAkAAAAAAAAgAAIAAMAQAgAAAgAAIA=</HashCode>
       <FileName>Shell\Interop\SHELLEXECUTEINFO.cs</FileName>
     </TypeIdentifier>
   </Struct>
   <Struct Name="WSF.Shell.Interop.SHFILEINFO" Collapsed="true">
-    <Position X="12.75" Y="6.75" Width="1.5" />
+    <Position X="11.75" Y="6.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAIAAAAEAAAAAAAAAAQAAAAAAAAAAAAAAAIAAAAQAA=</HashCode>
       <FileName>Shell\Interop\SHFILEINFO.cs</FileName>
     </TypeIdentifier>
   </Struct>
   <Struct Name="WSF.Shell.Interop.STRRET" Collapsed="true">
-    <Position X="14.5" Y="6.75" Width="1.5" />
+    <Position X="13.5" Y="6.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAhAAAAAAAAAQAAAAAAA=</HashCode>
       <FileName>Shell\Interop\STRRET.cs</FileName>
     </TypeIdentifier>
   </Struct>
   <Struct Name="WSF.Shell.Interop.Interfaces.KnownFolders.NativeFolderDefinition" Collapsed="true">
-    <Position X="12.75" Y="5.75" Width="1.5" />
+    <Position X="11.75" Y="5.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAIAAAAAAAAAIABAAEAAAAAEEAAAAQAIYACABCA=</HashCode>
       <FileName>Shell\Interop\Interfaces\KnownFolders\NativeFolderDefinition.cs</FileName>
     </TypeIdentifier>
   </Struct>
   <Struct Name="WSF.Shell.PropertyKey" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="16.25" Y="5.75" Width="1.5" />
+    <Position X="2.25" Y="29" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAQAAAgAAAAAAAAAAAUIAAABAAAAAAAiA=</HashCode>
       <FileName>Shell\PropertyKey.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" Collapsed="true" />
+    <Lollipop Position="0.2" />
   </Struct>
-  <Interface Name="WSF.Interfaces.IDirectoryBrowser" Collapsed="true">
-    <Position X="9.25" Y="8" Width="1.5" />
+  <Interface Name="WSF.Interfaces.IDirectoryBrowser">
+    <Position X="0.5" Y="0.5" Width="2" />
     <TypeIdentifier>
-      <HashCode>AABAgAAAEAAIAIAAAAQAAAQBAAgABACAAAAAAQAABgA=</HashCode>
+      <HashCode>AAAAgAgAEAAKBIAAAAQAAQQBAAwABACAAAAAAQAABgA=</HashCode>
       <FileName>Interfaces\IDirectoryBrowser.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="WSF.Shell.Interop.IEnumExtraSearch" Collapsed="true">
-    <Position X="11" Y="8" Width="1.5" />
+  <Interface Name="WSF.Shell.Interop.IEnumExtraSearch">
+    <Position X="18" Y="14.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AgAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAEBA=</HashCode>
       <FileName>Shell\Interop\Interfaces\IEnumExtraSearch.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="WSF.Shell.Interop.IEnumIDList" Collapsed="true">
-    <Position X="12.75" Y="8" Width="1.5" />
+  <Interface Name="WSF.Shell.Interop.IEnumIDList">
+    <Position X="16.25" Y="14.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AgAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAEBA=</HashCode>
       <FileName>Shell\Interop\Interfaces\IEnumIDList.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="WSF.Shell.Interop.Interfaces.IExtractIcon" Collapsed="true">
-    <Position X="16.25" Y="8" Width="1.5" />
+  <Interface Name="WSF.Shell.Interop.Interfaces.IExtractIcon">
+    <Position X="6.25" Y="25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAQAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Shell\Interop\Interfaces\IExtractIcon.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="WSF.Shell.Interop.Interfaces.IPropertyStore" Collapsed="true">
-    <Position X="12.75" Y="8.75" Width="1.5" />
+  <Interface Name="WSF.Shell.Interop.Interfaces.IPropertyStore">
+    <Position X="0.5" Y="29" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAQAAEAAIAAAAgAAAAAAAAAAAAIAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Shell\Interop\Interfaces\IPropertyStore.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="WSF.Shell.Interop.Interfaces.KnownFolders.IKnownFolderManager" Collapsed="true">
-    <Position X="18" Y="8" Width="1.5" />
+  <Interface Name="WSF.Shell.Interop.Interfaces.KnownFolders.IKnownFolderManager">
+    <Position X="10.75" Y="22.75" Width="2.25" />
     <TypeIdentifier>
       <HashCode>IAAEAAAAEAAAAAAAAAACAAAQAAAAAAAAEAAEQAAQAAI=</HashCode>
       <FileName>Shell\Interop\Interfaces\KnownFolders\IKnownFolderManager.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="WSF.Shell.Interop.Interfaces.KnownFolders.IKnownFolderNative" Collapsed="true">
-    <Position X="9.25" Y="8.75" Width="1.5" />
+  <Interface Name="WSF.Shell.Interop.Interfaces.KnownFolders.IKnownFolderNative">
+    <Position X="10.75" Y="26.25" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAAAAgIAAAAAAAAAAAgAAAAAAAACoAAAAAAAAAJAAQA=</HashCode>
       <FileName>Shell\Interop\Interfaces\KnownFolders\IKnownFolderNative.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="WSF.Shell.Interop.Interfaces.Knownfolders.IKnownFolderProperties" Collapsed="true">
-    <Position X="11" Y="8.75" Width="1.5" />
+  <Interface Name="WSF.Shell.Interop.Interfaces.Knownfolders.IKnownFolderProperties">
+    <Position X="8.25" Y="22.75" Width="2.25" />
     <TypeIdentifier>
       <HashCode>BAAAAAAAAAAgAAoEAECAYIYgQARABAAJAoAEIAAACiA=</HashCode>
       <FileName>Shell\Interop\Interfaces\KnownFolders\IKnownFolderProperties.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="WSF.Shell.Interop.Interfaces.ShellFolders.IShellFolder">
-    <Position X="6.75" Y="5.5" Width="1.5" />
+    <Position X="2.5" Y="22.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAgAAAgAAAAAQABAAAAQAAEQCAIAAAEAAAAAAAAAAA=</HashCode>
       <FileName>Shell\Interop\Interfaces\ShellFolders\IShellFolder.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="WSF.Shell.Interop.Interfaces.ShellFolders.IShellFolder2">
-    <Position X="4.75" Y="5.5" Width="1.5" />
+    <Position X="0.5" Y="22.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>ACAgAAAgAAACgQABAAAAQAAEQCAIAAAEAAACAAgIgAA=</HashCode>
       <FileName>Shell\Interop\Interfaces\ShellFolders\IShellFolder2.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="WSF.Shell.Interop.Interfaces.ShellItems.IEnumShellItems" Collapsed="true">
-    <Position X="14.5" Y="8" Width="1.5" />
+  <Interface Name="WSF.Shell.Interop.Interfaces.ShellItems.IEnumShellItems">
+    <Position X="18" Y="16" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AgAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAEBA=</HashCode>
       <FileName>Shell\Interop\Interfaces\ShellItems\IEnumShellItems.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="WSF.Shell.Interop.Interfaces.ShellItems.IShellItem">
-    <Position X="6.75" Y="0.5" Width="1.5" />
+    <Position X="6.25" Y="22.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAABAAAABAAAABAAAAAAAABAAAQAAAA=</HashCode>
       <FileName>Shell\Interop\Interfaces\ShellItems\IShellItem.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="WSF.Shell.Interop.Interfaces.ShellItems.IShellItem2">
-    <Position X="4.75" Y="0.5" Width="1.5" />
+    <Position X="4.25" Y="22.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>EASAAIAAAAAAAAABAAAAFAAQEJAAAAAQAABBQCQAAAA=</HashCode>
       <FileName>Shell\Interop\Interfaces\ShellItems\IShellItem2.cs</FileName>
@@ -387,15 +406,8 @@
   <Enum Name="WSF.Enums.DirectoryItemFlags" Collapsed="true">
     <Position X="11" Y="9.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQAASUAAgAAAIAAAAAAAAAAAAASgAACAAEAAAEAABg=</HashCode>
+      <HashCode>EAQAASUAAgAAAIAAAAAAAAAAAAASgAACAAEAAAEAABg=</HashCode>
       <FileName>Enums\DirectoryItemFlags.cs</FileName>
-    </TypeIdentifier>
-  </Enum>
-  <Enum Name="WSF.Enums.PathHandler" Collapsed="true">
-    <Position X="12.75" Y="10.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAACAAgAAAAAAAAAAAQAAAAAAAAAAABAAAAAAABA=</HashCode>
-      <FileName>Enums\PathHandler.cs</FileName>
     </TypeIdentifier>
   </Enum>
   <Enum Name="WSF.Enums.PathMatch" Collapsed="true">

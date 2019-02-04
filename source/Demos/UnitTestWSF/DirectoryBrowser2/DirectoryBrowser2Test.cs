@@ -13,7 +13,7 @@
     public class DirectoryBrowser2Test
     {
         /// <summary>
-        /// Verify that we can build a <see cref="BrowseItemFromPath2"/> object
+        /// Verify that we can build a <see cref="BrowseItemFromPath"/> object
         /// for a default drive.
         /// 
         /// Note that the properties SpecialPathId and PathFileSystem are expected to
@@ -28,7 +28,7 @@
 
             Assert.IsTrue(drivePath != null);
 
-            var drive = Browser2.Create(drivePath);
+            var drive = Browser.Create(drivePath);
             drive.LoadProperties();
 
             Assert.IsTrue(drive != null);
@@ -51,11 +51,13 @@
             Assert.IsTrue(drive.ParentIdList.Size > 0);
             Assert.IsTrue(drive.ChildIdList.Size > 0);
 
-            Assert.IsFalse(string.IsNullOrEmpty(drive.IconResourceId));
+            // Non-KNownfolder items are not associated with an IconResourceId
+            // https://www.win7dll.info/imageres_dll.html
+            Assert.IsTrue(string.IsNullOrEmpty(drive.IconResourceId));
         }
 
         /// <summary>
-        /// Verify that we can build a <see cref="BrowseItemFromPath2"/> object
+        /// Verify that we can build a <see cref="BrowseItemFromPath"/> object
         /// for a special directory.
         /// 
         /// Note that the properties SpecialPathId and PathFileSystem are expected to
@@ -78,7 +80,7 @@
             Assert.IsTrue(dirPath != null);
 
             // Lets test the directory browser object with that path
-            var dir = Browser2.Create(dirPath);
+            var dir = Browser.Create(dirPath);
             dir.LoadProperties();
 
             Assert.IsTrue(dir != null);
@@ -110,12 +112,12 @@
         [TestMethod]
         public void TestPathShell()
         {
-            var dir = Browser2.DesktopDirectory;
+            var dir = Browser.DesktopDirectory;
 
             Assert.IsTrue(string.IsNullOrEmpty(dir.PathShell) == false);
             Assert.IsTrue(string.Compare(dir.SpecialPathId, dir.PathShell, true) == 0);
 
-            var sysDefault = Browser2.SysDefault;
+            var sysDefault = Browser.SysDefault;
             Assert.IsTrue(string.IsNullOrEmpty(sysDefault.PathShell) == false);
             Assert.IsTrue(string.Compare(sysDefault.PathFileSystem, sysDefault.PathShell, true) == 0);
 
@@ -124,22 +126,22 @@
         [TestMethod]
         public void TestFullName()
         {
-            var dir = Browser2.DesktopDirectory;
+            var dir = Browser.DesktopDirectory;
 
             Assert.IsTrue(string.IsNullOrEmpty(dir.FullName) == false);
             Assert.IsTrue(string.Compare(dir.FullName, dir.PathFileSystem, true) == 0);
 
-            var sysDefault = Browser2.SysDefault;
+            var sysDefault = Browser.SysDefault;
             Assert.IsTrue(string.IsNullOrEmpty(sysDefault.FullName) == false);
             Assert.IsTrue(string.Compare(sysDefault.PathFileSystem, sysDefault.FullName, true) == 0);
 
-            var thisPC = Browser2.MyComputer;
+            var thisPC = Browser.MyComputer;
             Assert.IsTrue(string.IsNullOrEmpty(thisPC.FullName) == false);
             Assert.IsTrue(string.Compare(thisPC.FullName, thisPC.SpecialPathId, true) == 0);
         }
 
         /// <summary>
-        /// Verify that we can build a <see cref="BrowseItemFromPath2"/> object
+        /// Verify that we can build a <see cref="BrowseItemFromPath"/> object
         /// for a special known folder item that does NOT have a drirectory in
         /// in the file system.
         /// 
@@ -163,7 +165,7 @@
             Assert.IsTrue(id != null);        // file system representation
 
             // Lets test the directory browser object with that path
-            var specialItem = Browser2.Create(KF_ParseName_IID.MyComputerFolder);
+            var specialItem = Browser.Create(KF_ParseName_IID.MyComputerFolder);
             specialItem.LoadProperties();
 
             Assert.IsTrue(specialItem != null);
@@ -209,7 +211,7 @@
         [TestMethod]
         public void GetMusic()
         {
-            var music = Browser2.Create(KF_IID.ID_FOLDERID_Music);
+            var music = Browser.Create(KF_IID.ID_FOLDERID_Music);
             music.LoadProperties();
 
             Assert.IsTrue(music != null);
@@ -245,8 +247,8 @@
 
             Assert.IsTrue(drivePath != null);
 
-            var drive = Browser2.Create(drivePath);
-            var drive1 = Browser2.Create(drivePath);
+            var drive = Browser.Create(drivePath);
+            var drive1 = Browser.Create(drivePath);
 
             Assert.IsTrue(drive != null);
             Assert.IsTrue(drive1 != null);
@@ -271,8 +273,8 @@
             Assert.IsTrue(dirPath != null);
 
             // Lets test the directory browser object with that path
-            var dir = Browser2.Create(dirPath);
-            var dir1 = Browser2.Create(dirPath);
+            var dir = Browser.Create(dirPath);
+            var dir1 = Browser.Create(dirPath);
 
             Assert.IsTrue(dir != null);
             Assert.IsTrue(dir1 != null);
@@ -302,8 +304,8 @@
             Assert.IsTrue(pathShell != id);
 
             // Lets test the directory browser object with that path
-            var specialItem = Browser2.Create(pathShell);
-            var specialItem1 = Browser2.Create(pathShell);
+            var specialItem = Browser.Create(pathShell);
+            var specialItem1 = Browser.Create(pathShell);
 
             Assert.IsTrue(specialItem != null);
             Assert.IsTrue(specialItem1 != null);
@@ -317,8 +319,8 @@
         [TestMethod]
         public void GetMusicEquality()
         {
-            var music = Browser2.Create(KF_IID.ID_FOLDERID_Music);
-            var music1 = Browser2.Create(KF_IID.ID_FOLDERID_Music);
+            var music = Browser.Create(KF_IID.ID_FOLDERID_Music);
+            var music1 = Browser.Create(KF_IID.ID_FOLDERID_Music);
 
             Assert.IsTrue(music != null);
             Assert.IsTrue(music1 != null);
@@ -335,7 +337,7 @@
             // Get the default drive's path
             var drivePath = new DirectoryInfo(Environment.SystemDirectory).Root.Name;
             var driveInfoPath = new System.IO.DriveInfo(drivePath);
-            var drive = Browser2.Create(drivePath);
+            var drive = Browser.Create(drivePath);
 
             // Lets test the directory browser object with that path
             string dirPath = null;
@@ -343,11 +345,11 @@
             {
                 dirPath = kf.GetPath();
             }
-            var dir = Browser2.Create(dirPath);
+            var dir = Browser.Create(dirPath);
 
             // Get This PC and Music SpecialItem
-            var specialItem = Browser2.Create(KF_IID.ID_FOLDERID_ComputerFolder);
-            var music = Browser2.Create(KF_IID.ID_FOLDERID_Music);
+            var specialItem = Browser.Create(KF_IID.ID_FOLDERID_ComputerFolder);
+            var music = Browser.Create(KF_IID.ID_FOLDERID_Music);
 
             Assert.IsFalse(drive.Equals(dir));
             Assert.IsFalse(drive.Equals(specialItem));

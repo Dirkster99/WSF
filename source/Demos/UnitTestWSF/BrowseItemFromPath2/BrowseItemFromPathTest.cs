@@ -11,7 +11,7 @@
     public class BrowseItemFromPathTest
     {
         /// <summary>
-        /// Verify that we can build a <see cref="BrowseItemFromPath2"/> object
+        /// Verify that we can build a <see cref="BrowseItemFromPath"/> object
         /// for a default drive.
         /// 
         /// Note that the properties SpecialPathId and PathFileSystem are expected to
@@ -26,7 +26,7 @@
 
             Assert.IsTrue(drivePath != null);
 
-            var drive = BrowseItemFromPath2.InitItem(drivePath);
+            var drive = BrowseItemFromPath.InitItem(drivePath);
 ////            drive.LoadProperties();
 
             Assert.IsTrue(drive != null);
@@ -53,7 +53,7 @@
         }
 
         /// <summary>
-        /// Verify that we can build a <see cref="BrowseItemFromPath2"/> object
+        /// Verify that we can build a <see cref="BrowseItemFromPath"/> object
         /// for a special directory.
         /// 
         /// Note that the properties SpecialPathId and PathFileSystem are expected to
@@ -76,7 +76,7 @@
             Assert.IsTrue(dirPath != null);
 
             // Lets test the directory browser object with that path
-            var dir = BrowseItemFromPath2.InitItem(dirPath);
+            var dir = BrowseItemFromPath.InitItem(dirPath);
 ////            dir.LoadProperties();
 
             Assert.IsTrue(dir != null);
@@ -137,7 +137,7 @@
 ////        }
 
         /// <summary>
-        /// Verify that we can build a <see cref="BrowseItemFromPath2"/> object
+        /// Verify that we can build a <see cref="BrowseItemFromPath"/> object
         /// for a special known folder item that does NOT have a drirectory in
         /// in the file system.
         /// 
@@ -161,7 +161,7 @@
             Assert.IsTrue(id != null);        // file system representation
 
             // Lets test the directory browser object with that path
-            var specialItem = BrowseItemFromPath2.InitItem(KF_ParseName_IID.MyComputerFolder);
+            var specialItem = BrowseItemFromPath.InitItem(KF_ParseName_IID.MyComputerFolder);
 ////            specialItem.LoadProperties();
 
             Assert.IsTrue(specialItem != null);
@@ -207,7 +207,7 @@
         [TestMethod]
         public void GetMusic()
         {
-            var music = BrowseItemFromPath2.InitItem(KF_IID.ID_FOLDERID_Music);
+            var music = BrowseItemFromPath.InitItem(KF_IID.ID_FOLDERID_Music);
 ////            music.LoadProperties();
 
             Assert.IsTrue(music != null);

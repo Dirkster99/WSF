@@ -1,4 +1,4 @@
-﻿namespace UnitTestWSF
+﻿namespace UnitTestWSF.DirectoryBrowser2
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using WSF;
@@ -125,7 +125,7 @@
                 Assert.IsFalse(string.IsNullOrEmpty(parseName));
                 Console.WriteLine(parseName);
 
-                var browserItem = Browser.Create(parseName, true);
+                var browserItem = Browser.Create(parseName);
                 Assert.IsTrue(browserItem != null);
 
                 Assert.IsTrue(browserItem.EqualsParseName(parseName));
@@ -158,12 +158,12 @@
                 Assert.IsFalse(string.IsNullOrEmpty(parseName));
                 Console.WriteLine(parseName);
 
-                var browserItem = Browser.Create(parseName,true);
+                var browserItem = Browser.Create(parseName);
                 Assert.IsTrue(browserItem != null);
 
                 Assert.IsTrue(browserItem.EqualsParseName(parseName));
 
-                var browserItem1 = Browser.Create(item, true);
+                var browserItem1 = Browser.Create(item);
                 Assert.IsTrue(browserItem1 != null);
 
                 // Object from PIDL and ParseName should realy describe same location
@@ -191,7 +191,7 @@
                 Assert.IsFalse(string.IsNullOrEmpty(parseName));
                 Console.WriteLine(parseName);
 
-                var browserItem = Browser.Create(parseName,true);
+                var browserItem = Browser.Create(parseName);
                 Assert.IsTrue(browserItem != null);
 
                 Assert.IsTrue(browserItem.EqualsParseName(parseName));

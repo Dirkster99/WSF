@@ -6,8 +6,6 @@
     using System;
     using System.Runtime.InteropServices;
     using System.Text;
-    using WSF.Shell.Pidl;
-    using WSF.Shell.Interop.Interfaces;
 
     /// <summary>
     /// Class wraps <see cref="IShellFolder2"/> COM interface to ensure

@@ -1,5 +1,6 @@
 ﻿namespace UnitTestWSF
 {
+/***
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using WSF;
     using WSF.IDs;
@@ -136,4 +137,5 @@
             }
         }
     }
+***/
 }
