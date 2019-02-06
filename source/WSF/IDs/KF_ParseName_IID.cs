@@ -1,6 +1,8 @@
 ﻿namespace WSF.IDs
 {
     /// <summary>
+    /// Class models parse names for knownfolders that have a parsename (special id)
+    /// thats different from the knownfolder id.
     /// </summary>
     public sealed class KF_ParseName_IID
     {
