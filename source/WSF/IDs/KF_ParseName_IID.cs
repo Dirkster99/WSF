@@ -207,6 +207,6 @@
         /// Canonical Name: "ControlPanelFolder"
         ///  KnownFolderId: "82a74aeb-aeb4-465c-a014-d097ee346d63"
         /// </summary>
-        public static readonly string ControlPanelFolder = @"::{26EE0668-A00A-44D7-9371-BEB064C98683}\0";
+        public static readonly string ControlPanelFolder = @"::{26EE0668-A00A-44D7-9371-BEB064C98683}";
     }
 }
