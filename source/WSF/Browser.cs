@@ -34,7 +34,7 @@
         /// SyncSetupFolder, SyncResultsFolder, ConflictFolder
         /// AppUpdatesFolder, ChangeRemoveProgramsFolder, SyncCenterFolder
         /// </summary>
-        private static readonly HashSet<Guid> _filterKF = new HashSet<Guid>()
+        private static readonly HashSet<Guid> _filterKF = new HashSet<Guid>
         {
             new Guid(KF_ID.ID_FOLDERID_SyncSetupFolder),
             new Guid(KF_ID.ID_FOLDERID_SyncResultsFolder),
@@ -326,10 +326,10 @@
                             if (kf != null)
                                 kf.Obj.GetIDList((uint)KNOWN_FOLDER_FLAG.KF_NO_FLAGS, out pidlFull);
                         }
-                    }
 
-                    if (pidlFull == default(IntPtr))
-                        yield break;
+                        if (pidlFull == default(IntPtr))
+                            yield break;
+                    }
 
                     using (var desktopFolder = new ShellFolderDesktop())
                     {
@@ -430,8 +430,6 @@
 
                             labelName = strbuf.ToString();
                         }
-
-                        IdList apidlIdList = PidlManager.PidlToIdlist(apidl);
 
                         yield return Create(parseName, name, labelName, lazyLodingProperties);
                     }
@@ -973,7 +971,6 @@
             }
 
             // Second chance finding root under ThisPC
-            var thisPC = Browser.MyComputer;
             foreach (var item in GetChildItems(KF_IID.ID_FOLDERID_ComputerFolder))
             {
                 if (string.IsNullOrEmpty(item.PathFileSystem))
@@ -1272,7 +1269,8 @@
             try
             {
                 KnownFolderManagerClass knownFolderManager = new KnownFolderManagerClass();
-                var result = knownFolderManager.GetFolderIds(out folders, out count);
+                if (knownFolderManager.GetFolderIds(out folders, out count) != HRESULT.S_OK)
+                    return pathList;
 
                 if (count > 0 && folders != IntPtr.Zero)
                 {

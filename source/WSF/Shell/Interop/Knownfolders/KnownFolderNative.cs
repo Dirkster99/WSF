@@ -16,7 +16,7 @@
     public class KnownFolderNative : IDisposable
     {
         #region fields
-        private bool _disposed = false;
+        private bool _disposed;
         private IntPtr _intPtrKnownFolder = IntPtr.Zero;
         #endregion fields
 

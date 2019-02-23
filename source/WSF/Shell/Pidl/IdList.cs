@@ -178,7 +178,7 @@
             if (Ids.Count <= 0)
                 return null;
 
-            return new IdList(new List<ShellId>() { Ids.Last() });
+            return new IdList(new List<ShellId>{ Ids.Last() });
         }
 
         /// <summary>

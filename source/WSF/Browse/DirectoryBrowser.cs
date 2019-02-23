@@ -16,7 +16,7 @@ namespace WSF.Browse
     /// Implements a light weight Windows Shell Browser class that can be used
     /// to model and browse the shell tree structure of the Windows (7-10) Shell.
     /// </summary>
-    internal sealed partial class DirectoryBrowser : IDirectoryBrowser
+    internal sealed class DirectoryBrowser : IDirectoryBrowser
     {
         #region fields
         private bool _IconResourceIdInitialized;
@@ -621,7 +621,7 @@ namespace WSF.Browse
                                 }
 
                                 // -> Lets get its name for display if its more than empty
-                                string displayName = System.IO.Path.GetFileName(PathFileSystem);
+                                // string displayName = System.IO.Path.GetFileName(PathFileSystem);
                             }
                         }
                         catch (Exception exp)

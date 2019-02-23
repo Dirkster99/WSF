@@ -90,10 +90,6 @@
             // Test service functions ...
             Console.WriteLine("\n");
 
-            var directory = Browser.Create(@"C:tmp");
-
-            var music = Browser.Create(KF_IID.ID_FOLDERID_Music);
-
             var desktop = Browser.Create(KF_IID.ID_FOLDERID_Desktop);
 
             Console.WriteLine("");
@@ -141,8 +137,6 @@
 
             foreach (KeyValuePair<string, KnownfolderSlim> pair in Ids)
             {
-                var folderid = pair.Key;
-
                 string fs_path = KnownFolderHelper.GetKnownFolderPath(pair.Key);
                 bool exists = false;
 
@@ -180,10 +174,9 @@
 
         private static void TestAllFolders()
         {
-            Dictionary<string, IKnownFolderProperties> propColl = new Dictionary<string, IKnownFolderProperties>();
-
             // List all known folders
             Console.WriteLine("\n");
+
             foreach (var item in KnownFolderHelper.GetAllFolders())
             {
                 Console.WriteLine("{0}\n", item);

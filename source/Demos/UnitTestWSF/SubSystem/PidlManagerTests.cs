@@ -26,6 +26,7 @@
                                                IntPtr.Zero, out pidl);
 
                 var idList = PidlManager.Decode(pidl);
+                Assert.IsTrue(idList != null);
             }
             finally
             {

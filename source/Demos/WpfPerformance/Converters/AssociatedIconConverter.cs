@@ -156,7 +156,7 @@
                 catch (Exception exception)
                 {
                     Debug.WriteLine(string.Format("---> 1 Failed to get icon from {0}: {1}{2}",
-                        path, Environment.NewLine, exception.ToString()));
+                        path, Environment.NewLine, exception));
                 }
 
                 try
@@ -167,7 +167,8 @@
                 }
                 catch (Exception exception)
                 {
-                    Debug.WriteLine(string.Format("---> 2 Failed to get icon from {0}: {1}{2}", path, Environment.NewLine, exception.ToString()));
+                    Debug.WriteLine(string.Format("---> 2 Failed to get icon from {0}: {1}{2}",
+                        path, Environment.NewLine, exception));
                 }
             }
 

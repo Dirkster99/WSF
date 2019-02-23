@@ -70,6 +70,7 @@
             IDirectoryBrowser[] pathItems;
             bool exists = Browser.DirectoryExists(WindowsShellPath, out pathItems);
 
+            Assert.IsTrue(exists);
             Assert.IsTrue(pathItems != null);
             Assert.IsTrue(pathItems.Length == 2);
         }
@@ -178,6 +179,7 @@
             IDirectoryBrowser[] pathItems;
             bool exists = Browser.DirectoryExists(sysDefault.PathFileSystem, out pathItems);
 
+            Assert.IsTrue(exists);
             Assert.IsTrue(pathItems != null);
             bool pathIsRouted = false;
             var rootedPath = Browser.FindRoot(pathItems, sysDefault.PathFileSystem, out pathIsRouted);

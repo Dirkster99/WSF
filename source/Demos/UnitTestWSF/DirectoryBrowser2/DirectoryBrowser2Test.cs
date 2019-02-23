@@ -336,7 +336,6 @@
         {
             // Get the default drive's path
             var drivePath = new DirectoryInfo(Environment.SystemDirectory).Root.Name;
-            var driveInfoPath = new System.IO.DriveInfo(drivePath);
             var drive = Browser.Create(drivePath);
 
             // Lets test the directory browser object with that path

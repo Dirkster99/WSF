@@ -14,7 +14,7 @@
         #region fields
         public const int _NonVirtualizationMaximumSize = 1024;
 
-        private readonly FastObservableCollection<ItemViewModel> _ListItems = null;
+        private readonly FastObservableCollection<ItemViewModel> _ListItems;
 
         private bool _IsProcessing;
         private string _CurrentPath;

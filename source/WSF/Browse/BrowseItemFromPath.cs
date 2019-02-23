@@ -1,17 +1,11 @@
 ﻿namespace WSF.Browse
 {
     using System;
-    using System.Diagnostics;
-    using System.IO;
-    using WSF.Enums;
     using WSF.IDs;
     using WSF.Shell.Enums;
     using WSF.Shell.Interop.Dlls;
-    using WSF.Shell.Interop.Interfaces.Knownfolders;
-    using WSF.Shell.Interop.Interfaces.KnownFolders;
     using WSF.Shell.Interop.Interfaces.ShellFolders;
     using WSF.Shell.Interop.Knownfolders;
-    using WSF.Shell.Interop.ResourceIds;
     using WSF.Shell.Interop.ShellFolders;
     using WSF.Shell.Pidl;
 
