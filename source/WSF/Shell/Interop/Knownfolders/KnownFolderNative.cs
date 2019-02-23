@@ -276,7 +276,10 @@
                         {
                             Marshal.ReleaseComObject(Obj);
                         }
-                        catch{}
+                        catch
+                        {
+                            // Catch this, just in case, to complete disposable on error
+                        }
                         finally
                         {
                             Obj = null;
@@ -289,7 +292,10 @@
                         {
                             Marshal.Release(_intPtrKnownFolder);
                         }
-                        catch { }
+                        catch
+                        {
+                            // Catch this, just in case, to complete disposable on error
+                        }
                         finally
                         {
                             _intPtrKnownFolder = IntPtr.Zero;

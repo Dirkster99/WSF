@@ -101,7 +101,7 @@
         public static IdList FromParsingString(string str)
         {
             //  Create the id storage.
-            var ids = new List<ShellId>();
+            var idList = new List<ShellId>();
 
             //  Repeatedly read a short length then the data.
             int index = 0;
@@ -113,11 +113,11 @@
                 for (var i = 0; i < length; i++, index += 2)
                     id[i] = Convert.ToByte(str.Substring(index, 2), 16);
 
-                ids.Add(ShellId.FromData(id));
+                idList.Add(ShellId.FromData(id));
             }
 
             //  Return the list.
-            return new IdList(ids);
+            return new IdList(idList);
         }
 
         /// <summary>

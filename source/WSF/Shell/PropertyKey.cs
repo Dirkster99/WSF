@@ -11,7 +11,7 @@
     {
         #region Private Fields
 
-        private Guid formatId;
+        private readonly Guid formatId;
         private readonly Int32 propertyId;
 
         #endregion

@@ -11,7 +11,7 @@
         private DateTime _lastRefreshTimeUtc;
         private bool _isLoaded;
         private bool _IsLoading;
-        private int _ID;
+        private readonly int _ID;
         #endregion fields
 
         #region ctors
@@ -225,7 +225,8 @@
                     }
                     finally
                     {
-                        IsLoaded = IsLoading = false;
+                        IsLoaded = false;
+                        IsLoading = false;
                     }
 
                     return true;

@@ -19,20 +19,21 @@ namespace WSF.Browse
     internal sealed partial class DirectoryBrowser : IDirectoryBrowser
     {
         #region fields
-        private object resolvePropsLock = new object();
         private bool _IconResourceIdInitialized;
         private string _IconResourceId;
 
         private bool _KnownFolderIsInitialized;
         private IKnownFolderProperties _KnownFolder;
 
-        private object _resolvePidlsLock = new object();
         private bool _PIDLs_Initialized;
         private IdList _ParentIdList;
         private IdList _ChildIdList;
 
         private bool _ItemTypeIsInitialized;
         private DirectoryItemFlags _ItemType;
+
+        private readonly object _resolvePidlsLock = new object();
+        private readonly object resolvePropsLock = new object();
         #endregion fields
 
         #region ctors
@@ -492,9 +493,6 @@ namespace WSF.Browse
 
         private string LoadIconResourceId()
         {
-            string filename = null; // Get Resoure Id for desktop root item
-            int index = -1;
-
             lock (resolvePropsLock)
             {
                 if (_KnownFolderIsInitialized == false)
@@ -520,6 +518,9 @@ namespace WSF.Browse
                     pidl = PidlManager.CombineParentChild(ParentIdList, ChildIdList);
                 else
                     pidl = IdList.Create();
+
+                string filename;
+                int index;
 
                 if (IconHelper.GetIconResourceId(pidl, out filename, out index))
                 {
@@ -566,7 +567,10 @@ namespace WSF.Browse
                         {
                             pathExists = System.IO.File.Exists(PathFileSystem);
                         }
-                        catch { }
+                        catch
+                        {
+                            // Catch tis just in case it happens...
+                        }
 
                         if (pathExists)
                         {
@@ -576,7 +580,10 @@ namespace WSF.Browse
                                 itemType |= DirectoryItemFlags.DataFileContainer;
                         }
                     }
-                    catch { }
+                    catch
+                    {
+                        // Catch tis just in case it happens...
+                    }
 
                     // See if this is a directory if it was not a file...
                     if ((itemType & DirectoryItemFlags.FileSystemFile) == 0)

@@ -209,6 +209,7 @@
             }
             catch
             {
+                // Catch this in case we have an exotic non-existing, non-access case
             }
 
             return null;
@@ -393,7 +394,10 @@
                                 }
                             }
                         }
-                        catch { }
+                        catch
+                        {
+                            // Catch this in case we have an exotic non-existing, non-access case
+                        }
                     }
                 }
             }

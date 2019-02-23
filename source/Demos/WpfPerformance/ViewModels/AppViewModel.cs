@@ -183,7 +183,8 @@
                         dirPath = Browser.SysDefault.PathFileSystem;
                     }
 
-                    GoToPath = CurrentPath = dirPath;
+                    GoToPath = dirPath;
+                    CurrentPath = dirPath;
                     Console.WriteLine("Retrieving all StageZero sub-directories from '{0}'...\n", dirPath);
 
                     // List all known folders
@@ -203,8 +204,7 @@
                     Console.WriteLine("{0} Done retrieving {1} entries.\n", endTime, result.Count);
                     Console.WriteLine("After {0:n2} minutes or {1:n2} seconds.\n",
                         (endTime - startTime).TotalMinutes,
-                        (endTime - startTime).TotalSeconds,
-                        result.Count);
+                        (endTime - startTime).TotalSeconds);
                 }
                 finally
                 {

@@ -45,12 +45,12 @@ namespace WSF.Shell.Pidl
         /// </summary>
         /// <param name="data">The data.</param>
         /// <returns>A new Shell ID from the given data.</returns>
-        /// <exception cref="System.NullReferenceException">'data' cannot be null.</exception>
+        /// <exception cref="System.ArgumentNullException">'data' cannot be null.</exception>
         /// <exception cref="System.InvalidOperationException">'data' must contain data.</exception>
         public static ShellId FromData(byte[] data)
         {
             if (data == null)
-                throw new NullReferenceException("'data' cannot be null.");
+                throw new ArgumentNullException("'data' cannot be null.");
 
             if (data.Length == 0)
                 throw new InvalidOperationException("'data' must contain data.");
@@ -59,9 +59,19 @@ namespace WSF.Shell.Pidl
         }
         #endregion constructors
 
-        #region methods
+        #region properties
+        /// <summary>
+        /// Gets the raw identifier.
+        /// </summary>
+        public byte[] RawId { get { return _id; } }
 
-        #endregion methods
+        /// <summary>
+        /// Gets the length of the identifier.
+        /// </summary>
+        public int Length { get { return _id.Length; } }
+        #endregion properties
+
+        #region methods
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
@@ -133,16 +143,6 @@ namespace WSF.Shell.Pidl
         }
 
         /// <summary>
-        /// Gets the raw identifier.
-        /// </summary>
-        public byte[] RawId { get { return _id; }}
-
-        /// <summary>
-        /// Gets the length of the identifier.
-        /// </summary>
-        public int Length {get { return _id.Length; }}
-
-        /// <summary>
         /// Gets a UTF8 encoded string that is human readable (although its hex number display)
         /// and denotes the contents of this object.
         /// </summary>
@@ -181,5 +181,6 @@ namespace WSF.Shell.Pidl
             
             return utf8;
         }
+        #endregion methods
     }
 }

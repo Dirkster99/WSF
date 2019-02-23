@@ -979,7 +979,6 @@
                 if (string.IsNullOrEmpty(item.PathFileSystem))
                     continue;
 
-                pathExt = null;
                 if (IsParentPathOf(item.PathFileSystem, newPath, out pathExt) == true)
                 {
                     // Search root under ThisPC
@@ -1303,7 +1302,10 @@
                                 }
                             }
                         }
-                        catch { }
+                        catch
+                        {
+                            // Catch this in case we have an exotic non-existing, non-access case
+                        }
                     }
                 }
             }
