@@ -180,12 +180,12 @@
             if (!isXpOrAbove())
                 throw new NotSupportedException("Windows XP or above required.");
 
-            // There is no thumbnail mode in shell.
-            var _size = size == IconSize.thumbnail ? IconSize.jumbo : size;
-
-            // XP does not have extra large or jumbo icon size.
-            if (!isVistaUp() && (_size == IconSize.jumbo || _size == IconSize.extraLarge))
-                _size = IconSize.large;
+////            // There is no thumbnail mode in shell.
+////            var _size = size == IconSize.thumbnail ? IconSize.jumbo : size;
+////
+////            // XP does not have extra large or jumbo icon size.
+////            if (!isVistaUp() && (_size == IconSize.jumbo || _size == IconSize.extraLarge))
+////                _size = IconSize.large;
 
             return getIconIndex(ptrPidl, isDirectory, forceLoadFromDisk, size, iconState);
         }
@@ -201,10 +201,13 @@
             {
                 ret = true;
             }
-            else if ((Environment.OSVersion.Version.Major == 5) &&
-                    (Environment.OSVersion.Version.Minor >= 1))
+            else
             {
-                ret = true;
+                if ((Environment.OSVersion.Version.Major == 5) &&
+                    (Environment.OSVersion.Version.Minor >= 1))
+                {
+                    ret = true;
+                }
             }
 
             return ret;

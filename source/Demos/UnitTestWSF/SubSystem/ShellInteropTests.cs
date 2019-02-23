@@ -21,7 +21,7 @@
         {
             using (var desktopShellFolder = new ShellFolderDesktop())
             {
-
+                Assert.IsTrue(desktopShellFolder != null);
             }
         }
 

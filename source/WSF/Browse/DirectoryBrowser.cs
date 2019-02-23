@@ -346,6 +346,7 @@ namespace WSF.Browse
                 }
                 catch
                 {
+                    // return false on exceptional errors
                 }
 
                 return isPath;

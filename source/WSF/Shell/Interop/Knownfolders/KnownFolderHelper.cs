@@ -155,7 +155,10 @@
                     if (ret != null)
                         return ret;
                 }
-                catch{ }
+                catch
+                {
+                    // continue iteration on exceptional errors
+                }
             }
 
             IntPtr pidl = default(IntPtr);

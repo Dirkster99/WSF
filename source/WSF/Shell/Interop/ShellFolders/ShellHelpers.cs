@@ -61,7 +61,7 @@
             if (string.IsNullOrEmpty(path) == true)
                 return IntPtr.Zero;
 
-            IntPtr pidlPtr = default(IntPtr);
+            IntPtr pidlPtr;
 
             if (IsSpecialPath(path) == SpecialPath.IsSpecialPath) // Handle Special Folder path notation
             {
@@ -105,8 +105,7 @@
         /// The caller is responsible for freeing the returned PIDL when it is no longer needed by calling ILFree.</returns>
         internal static IntPtr PidlFromParsingName(string name)
         {
-            IntPtr pidlFull = default(IntPtr);
-
+            IntPtr pidlFull;
             SFGAOF sfgao;
 
             var retCode = NativeMethods.SHParseDisplayName(name, IntPtr.Zero,
