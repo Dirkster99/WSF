@@ -114,7 +114,7 @@
         public static IdList PidlToIdlist(IntPtr pidl)
         {
             if(pidl == IntPtr.Zero)
-                throw new Exception("Cannot create an ID list from a null pidl.");
+                throw new ArgumentNullException("Cannot create an ID list from IntPtr.Zero");
 
             //  Create the raw ID list.
             List<ShellId> ids = Decode(pidl);
@@ -306,8 +306,9 @@
         public static string GetPidlDisplayName(IntPtr pidl)
         {
             SHFILEINFO fileInfo = new SHFILEINFO();
-            NativeMethods.SHGetFileInfo(pidl, 0, out fileInfo,
-                                      (uint)Marshal.SizeOf(fileInfo),
+            uint sizeOfFileInfo = (uint)Marshal.SizeOf(fileInfo);
+
+            NativeMethods.SHGetFileInfo(pidl, 0, out fileInfo, sizeOfFileInfo,
                                       SHGFI.SHGFI_PIDL | SHGFI.SHGFI_DISPLAYNAME);
 
             string ret = fileInfo.szDisplayName;
@@ -342,12 +343,12 @@
         {
             switch (path.ToLower())
             {
-                case "::{2a00375e-224c-49de-b8d1-440df7ef3ddc}": return true;  // 'LocalizedResourcesDir'
-                case "::{0f214138-b1d3-4a90-bba9-27cbc0c5389a}": return true;  // 'SyncSetup'
-                case "::{289a9a43-be44-4057-a41b-587a76d7e7f9}": return true;  // 'SyncResults'
-                case "::{4bfefb45-347d-4006-a5be-ac0cb0567192}": return true;  // 'Conflict'
-                case "::{a305ce99-f527-492b-8b1a-7e76fa98d6e4}": return true;  // 'AppUpdates'
-                case "::{df7266ac-9274-4867-8d55-3bd661de872d}": return true;  // 'ChangeRemovePrograms'
+                case "::{2a00375e-224c-49de-b8d1-440df7ef3ddc}":               // 'LocalizedResourcesDir'
+                case "::{0f214138-b1d3-4a90-bba9-27cbc0c5389a}":               // 'SyncSetup'
+                case "::{289a9a43-be44-4057-a41b-587a76d7e7f9}":               // 'SyncResults'
+                case "::{4bfefb45-347d-4006-a5be-ac0cb0567192}":               // 'Conflict'
+                case "::{a305ce99-f527-492b-8b1a-7e76fa98d6e4}":               // 'AppUpdates'
+                case "::{df7266ac-9274-4867-8d55-3bd661de872d}":               // 'ChangeRemovePrograms'
                 case "::{43668bf8-c14e-49b2-97c9-747784d784b7}": return true;  // 'SyncManager'
 
                 default:
@@ -470,10 +471,20 @@
         /// into a path (parse name) representation 'C:\'.
         /// </summary>
         /// <param name="idList"></param>
+        /// <returns></returns>
+        public static string GetPathFromPIDL(IdList idList)
+        {
+            return GetPathFromPIDL(idList, TypOfPath.LogicalPath);
+        }
+
+        /// <summary>
+        /// Converts a <see cref="IdList"/> formated PIDL representation
+        /// into a path (parse name) representation 'C:\'.
+        /// </summary>
+        /// <param name="idList"></param>
         /// <param name="pathType"></param>
         /// <returns></returns>
-        public static string GetPathFromPIDL(IdList idList,
-                                             TypOfPath pathType = TypOfPath.LogicalPath)
+        public static string GetPathFromPIDL(IdList idList, TypOfPath pathType)
         {
             IntPtr pidl = PidlManager.IdListToPidl(idList);
             try

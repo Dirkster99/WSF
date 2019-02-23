@@ -13,9 +13,21 @@
         /// Returns falsem if neither file nor given directory exist.
         /// </summary>
         /// <param name="sFileName"></param>
+        /// <returns></returns>
+        public static bool OpenContainingFolder(string sFileName)
+        {
+            return OpenContainingFolder(sFileName, null);
+        }
+
+        /// <summary>
+        /// Convinience method to open Windows Explorer with a selected file (if it exists).
+        /// Otherwise, Windows Explorer is opened in the location where the file should be at.
+        /// Returns falsem if neither file nor given directory exist.
+        /// </summary>
+        /// <param name="sFileName"></param>
         /// <param name="sParent"></param>
         /// <returns></returns>
-        public static bool OpenContainingFolder(string sFileName, string sParent = null)
+        public static bool OpenContainingFolder(string sFileName, string sParent)
         {
             if (string.IsNullOrEmpty(sFileName) == true)
                 return false;
@@ -41,7 +53,10 @@
                         return true;
                     }
                 }
-                catch { }
+                catch
+                {
+                    // Catch this and return false in case run-time error occurs
+                }
 
                 return false;
             }
@@ -49,6 +64,9 @@
 
         /// <summary>
         /// Opens a file with the current Windows default application.
+        /// 
+        /// Throws variaous exceptions (eg.: System.IO.FileNotFoundException)
+        /// see <see cref="Process.Start()"/> for details.
         /// </summary>
         /// <param name="sFileName"></param>
         public static void OpenInWindows(string sFileName)
@@ -60,8 +78,9 @@
             {
                 Process.Start(new ProcessStartInfo(sFileName));
             }
-            catch (System.Exception)
+            catch
             {
+                // re-throw to let caller know this was not a success
                 throw;
             }
         }
@@ -81,6 +100,7 @@
             }
             catch
             {
+                // We should not get here but just in case we did...
             }
         }
     }

@@ -228,6 +228,12 @@
 
         #region methods
         /// <summary>
+        /// Determines whether the <see cref="IconResourceId"/> string in this object contains
+        /// a valid resource id reference of the sample form 'dll, -3'.
+        /// </summary>
+        bool IsIconResourceIdValid();
+
+        /// <summary>
         /// Determines whether the string in <paramref name="iconResourceId"/> contains
         /// a valid resource id reference of the sample form 'dll, -3'.
         /// 
@@ -237,7 +243,7 @@
         /// <param name="iconResourceId"></param>
         /// <returns>True if resource id has more than zero characters and a ','
         /// character at an index larger 2, otherwise false.</returns>
-        bool IsIconResourceIdValid(string iconResourceId = null);
+        bool IsIconResourceIdValid(string iconResourceId);
 
         /// <summary>
         /// Resets an icons resource id. Use this property to overwrite available

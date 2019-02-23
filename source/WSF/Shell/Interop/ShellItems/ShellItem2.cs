@@ -12,7 +12,7 @@
     public class ShellItem2 : IDisposable
     {
         #region fields
-        private bool _disposed = false;
+        private bool _disposed;
         private IntPtr _intPtrShellFolder2 = IntPtr.Zero;
         #endregion fields
 

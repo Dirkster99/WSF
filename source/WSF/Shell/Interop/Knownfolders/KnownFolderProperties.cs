@@ -212,6 +212,16 @@
         }
 
         /// <summary>
+        /// Determines whether the <see cref="IconResourceId"/> string in this object contains
+        /// a valid resource id reference of the sample form 'dll, -3'.
+        /// </summary>
+        /// <returns></returns>
+        public bool IsIconResourceIdValid()
+        {
+            return IsIconResourceIdValid(this.IconResourceId);
+        }
+
+        /// <summary>
         /// Determines whether the string in <paramref name="iconResourceId"/> contains
         /// a valid resource id reference of the sample form 'dll, -3'.
         /// 
@@ -220,19 +230,12 @@
         /// </summary>
         /// <param name="iconResourceId"></param>
         /// <returns></returns>
-        public bool IsIconResourceIdValid(string iconResourceId = null)
+        public bool IsIconResourceIdValid(string iconResourceId)
         {
-            string testString = null;
-
-            if (string.IsNullOrEmpty(iconResourceId) == false)
-                testString = iconResourceId;
-            else
-                testString = this.IconResourceId;
-
-            if (string.IsNullOrEmpty(testString))
+            if (string.IsNullOrEmpty(iconResourceId))
                 return false;
 
-            int indexOfKomma = testString.IndexOf(',');
+            int indexOfKomma = iconResourceId.IndexOf(',');
             if (indexOfKomma <= 2)
                 return false;
 
