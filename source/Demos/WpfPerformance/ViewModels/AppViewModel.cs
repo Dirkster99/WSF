@@ -131,7 +131,7 @@
         #region methods
         public async Task InitLoadAsync(string dirPath = null)
         {
-            var result = await this.LoadItems(dirPath);
+            var result = await this.LoadItems(dirPath).ConfigureAwait(false);
 
             var startTime = DateTime.Now;
             Console.WriteLine("{0} adding items into ObservableCollection...\n", startTime);

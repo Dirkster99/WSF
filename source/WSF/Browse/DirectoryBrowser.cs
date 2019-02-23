@@ -266,8 +266,8 @@ namespace WSF.Browse
             get
             {
                 return _IconResourceIdInitialized
-                     & _ItemTypeIsInitialized
-                     & _KnownFolderIsInitialized;
+                    && _ItemTypeIsInitialized
+                    && _KnownFolderIsInitialized;
             }
         }
 

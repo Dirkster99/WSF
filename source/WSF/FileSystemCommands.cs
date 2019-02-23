@@ -74,15 +74,8 @@
             if (string.IsNullOrEmpty(sFileName) == true)
                 return;
 
-            try
-            {
-                Process.Start(new ProcessStartInfo(sFileName));
-            }
-            catch
-            {
-                // re-throw to let caller know this was not a success
-                throw;
-            }
+            // re-throw to let caller know this was not a success
+            Process.Start(new ProcessStartInfo(sFileName));
         }
 
         /// <summary>

@@ -29,7 +29,10 @@
                 using (var kf = KnownFolderHelper.FromPIDL(fullIdList))
                 {
                     if (kf != null)
+                    {
                         props = KnownFolderHelper.GetFolderProperties(kf.Obj);
+                        Assert.IsTrue(props != null);
+                    }
                 }
 
                 Assert.IsTrue(item != null);
@@ -99,6 +102,8 @@
 
                 iCnt++;
             }
+
+            Assert.IsTrue(filterReferenceItem != null);
 
             // Filtering for an arbitrary item in the programm files folder should yield
             // a collection with one item (assuming that all item names are unique)
