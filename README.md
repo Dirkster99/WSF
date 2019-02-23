@@ -1,3 +1,4 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/b9b51d88782a414e89105bd2efe4ca03)](https://app.codacy.com/app/Dirkster99/WSF?utm_source=github.com&utm_medium=referral&utm_content=Dirkster99/WSF&utm_campaign=Badge_Grade_Dashboard)
 [![Build status](https://ci.appveyor.com/api/projects/status/i17iks30rv2xh5gg?svg=true)](https://ci.appveyor.com/project/Dirkster99/wsf)
 [![Release](https://img.shields.io/github/release/Dirkster99/WSF.svg)](https://github.com/Dirkster99/WSF/releases/latest)
 [![NuGet](https://img.shields.io/nuget/dt/Dirkster.WSF.svg)](http://nuget.org/packages/Dirkster.WSF)
