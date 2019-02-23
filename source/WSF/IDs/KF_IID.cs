@@ -20,6 +20,10 @@
     /// </summary>
     public sealed class KF_IID
     {
+        private KF_IID()
+        {
+        }
+
         /// <summary>
         /// Gets the prefix that is used to prefix all IDs in this class
         /// to handle all path references (normal path like 'C:\Windows\'

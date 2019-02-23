@@ -3,6 +3,7 @@
     /// <summary>
     /// Provides high level flags to identify specific types of a Windows Shell item.
     /// </summary>
+    [System.Flags]
     public enum DirectoryItemFlags : uint
     {
         /// <summary>

@@ -1,7 +1,11 @@
 ﻿namespace WSF.IDs
 {
-    internal class ShellIIDGuids
+    internal sealed class ShellIIDGuids
     {
+        private ShellIIDGuids()
+        {
+        }
+
         // IID GUID strings for relevant Shell COM interfaces.
 
         ////internal const string IID_IQueryAssociations = "{c46ca590-3c3f-11d2-bee6-0000f805ca57}";

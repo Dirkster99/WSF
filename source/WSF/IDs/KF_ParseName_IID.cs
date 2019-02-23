@@ -6,6 +6,10 @@
     /// </summary>
     public sealed class KF_ParseName_IID
     {
+        private KF_ParseName_IID()
+        {
+        }
+
         #region UsersLibrariesFolder
         /// <summary>
         /// Localized Name: "" (En-US) -> "Libraries" (Name)

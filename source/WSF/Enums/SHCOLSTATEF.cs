@@ -1,14 +1,12 @@
 ﻿namespace WSF.Shell.Enums
 {
-    using System;
-
     // ReSharper disable InconsistentNaming
 
     /// <summary>
     /// A pointer to a value that contains flags that indicate the default column state.
     /// This parameter can include a combination of the following flags.
     /// </summary>
-    [Flags]
+    [System.Flags]
     public enum SHCOLSTATEF
     {
         /// <summary>

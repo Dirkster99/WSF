@@ -18,6 +18,10 @@
     /// </remarks>
     public sealed class KF_ID
     {
+        private KF_ID()
+        {
+        }
+
         /// <summary>
         /// Defines the exact length in characters for all IDs defined below.
         /// </summary>
