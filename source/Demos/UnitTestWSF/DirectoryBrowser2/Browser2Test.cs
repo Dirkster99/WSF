@@ -204,6 +204,7 @@
             IDirectoryBrowser[] pathItems;
             bool exists = Browser.DirectoryExists(windowsDir.PathFileSystem, out pathItems);
 
+            Assert.IsTrue(exists);
             Assert.IsTrue(items != null);
             Assert.IsTrue(items.Count > 0);
 

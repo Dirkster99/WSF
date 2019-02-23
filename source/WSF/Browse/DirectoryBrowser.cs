@@ -589,7 +589,10 @@ namespace WSF.Browse
                             {
                                 pathExists = System.IO.Directory.Exists(PathFileSystem);
                             }
-                            catch { }
+                            catch
+                            {
+                                // Catch this in case string contains blah blah blah :-)
+                            }
 
                             if (pathExists == true)
                             {
@@ -615,6 +618,7 @@ namespace WSF.Browse
                         }
                         catch (Exception exp)
                         {
+                            // Catch and output this in debug in case we've missed a trivial check
                             Debug.WriteLine(exp.Message);
                         }
                     }

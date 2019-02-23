@@ -257,7 +257,10 @@
                     if (Guid.TryParse(path, out theGuid) == true)
                         path = KF_IID.IID_Prefix + path;
                 }
-                catch {}
+                catch
+                {
+                    // Catching errors just in case ...
+                }
             }
 
             // Return item for root desktop item

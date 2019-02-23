@@ -63,7 +63,6 @@
     <Compile Include="DirectoryBrowser2\PIDL_PathTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SubSystem\ShellInteropTests.cs" />
-    <Compile Include="DirectoryBrowserSlimTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\WSF\WSF.csproj">

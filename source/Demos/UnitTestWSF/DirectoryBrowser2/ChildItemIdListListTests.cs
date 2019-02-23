@@ -57,7 +57,10 @@
                 using (var kf = KnownFolderHelper.FromPIDL(fullIdList))
                 {
                     if (kf != null)
+                    {
                         props = KnownFolderHelper.GetFolderProperties(kf.Obj);
+                        Assert.IsTrue(props != null);
+                    }
                 }
 
                 Assert.IsTrue(item != null);
