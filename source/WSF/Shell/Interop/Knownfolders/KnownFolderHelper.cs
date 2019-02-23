@@ -122,10 +122,20 @@
         /// <c>::{645FF040-5081-101B-9F08-00AA002F954E}</c> for the Recycle Bin.
         /// </summary>
         /// <param name="path">The path for the requested known folder; either a physical path or a virtual path.</param>
+        /// <returns>A known folder representing the specified name.</returns>
+        public static KnownFolderNative FromPath(string path)
+        {
+            return FromPath(path, null);
+        }
+
+        /// <summary>
+        /// Returns a known folder given its shell path, such as <c>C:\users\public\documents</c> or 
+        /// <c>::{645FF040-5081-101B-9F08-00AA002F954E}</c> for the Recycle Bin.
+        /// </summary>
+        /// <param name="path">The path for the requested known folder; either a physical path or a virtual path.</param>
         /// <param name="IsSpecialPath"></param>
         /// <returns>A known folder representing the specified name.</returns>
-        public static KnownFolderNative FromPath(string path,
-                                                 bool? IsSpecialPath = null)
+        public static KnownFolderNative FromPath(string path, bool? IsSpecialPath)
         {
             if (string.IsNullOrEmpty(path) == true)
                 throw new ArgumentNullException("'path' parameter cannot be Empty or Null.");

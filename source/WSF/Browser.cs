@@ -575,14 +575,8 @@
         /// of <see cref="IDirectoryBrowser"/> items or null if path cannot be resolved.
         /// </summary>
         /// <param name="fs_path">The file system path to be resolved.</param>
-        /// <param name="bFindKF">Determines if known folder should be looked up
-        /// even if given folder is a normal string such as (eg.: 'C:\Windows\').
-        /// Set this parameter only if you are sure that you need it as it will
-        /// have a performance impact on the time required to generate the object.
-        /// </param>
         /// <returns></returns>
-        public static IDirectoryBrowser[] GetFileSystemPathItems(string fs_path,
-                                                                  bool bFindKF = false)
+        public static IDirectoryBrowser[] GetFileSystemPathItems(string fs_path)
         {
             try
             {

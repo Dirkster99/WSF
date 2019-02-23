@@ -1065,11 +1065,19 @@
         /// Legacy Default Path  Not applicable
         /// </summary>
         public const string ID_FOLDERID_Screenshots = "{b7bede81-df94-4682-a7d8-57a52620b86f}";
-        
+
         /// <summary>
         /// Returns a dictionary of all constants and their Ids in this class.
         /// </summary>
-        public Dictionary<string,string> GetIdKnownFolders(string prefixId = null)
+        public Dictionary<string, string> GetIdKnownFolders()
+        {
+            return GetIdKnownFolders(null);
+        }
+
+        /// <summary>
+        /// Returns a dictionary of all constants and their Ids in this class.
+        /// </summary>
+        public Dictionary<string,string> GetIdKnownFolders(string prefixId)
         {
           if (prefixId == null)      // Ensure that we do not add null + string below
             prefixId = string.Empty;
