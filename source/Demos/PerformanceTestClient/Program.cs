@@ -9,6 +9,10 @@
 
     class Program
     {
+        protected Program()
+        {
+        }
+
         static void Main(string[] args)
         {
             Console.WriteLine("\n--> Retrieving all sub-directories WITHOUT lazily loading properties:");
@@ -41,7 +45,7 @@
                 i++;
 
                 if ((i % 1000) == 0)        // print a little progress indicator
-                    Console.Write(".", i);
+                    Console.Write(".");
             }
 
             // List all known folders
@@ -49,9 +53,7 @@
             Console.WriteLine();
             Console.WriteLine("{0} Done retrieving {1} entries.\n", endTime, result.Count);
             Console.WriteLine("After {0:n2} minutes or {1:n2} seconds.\n",
-                (endTime - startTime).TotalMinutes,
-                (endTime - startTime).TotalSeconds,
-                result.Count);
+                (endTime - startTime).TotalMinutes, (endTime - startTime).TotalSeconds);
         }
     }
 }
