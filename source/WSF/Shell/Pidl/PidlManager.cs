@@ -350,9 +350,10 @@
                 case "::{a305ce99-f527-492b-8b1a-7e76fa98d6e4}":               // 'AppUpdates'
                 case "::{df7266ac-9274-4867-8d55-3bd661de872d}":               // 'ChangeRemovePrograms'
                 case "::{43668bf8-c14e-49b2-97c9-747784d784b7}": return true;  // 'SyncManager'
-            }
 
-            return false;
+                default:
+                    return false;
+            }
         }
 
         /// <summary>

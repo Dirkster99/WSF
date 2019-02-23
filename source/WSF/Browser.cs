@@ -940,7 +940,7 @@
                     }
                 }
 
-                IDirectoryBrowser[] arrDesktop = new IDirectoryBrowser[1] { desktop };
+                IDirectoryBrowser[] arrDesktop = new IDirectoryBrowser[] { desktop };
 
                 // Search root under desktop based on pathItems.Length == 1
                 idx = FindCommonRoot(arrDesktop, newPath, out pathExt);

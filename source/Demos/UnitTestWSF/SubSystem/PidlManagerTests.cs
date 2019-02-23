@@ -46,6 +46,7 @@
                                                      IntPtr.Zero, out pidl);
 
                 var idList = PidlManager.PidlToIdlist(pidl);  // Convert PIDL to IdList
+                Assert.IsTrue(idList != null);
             }
             finally
             {

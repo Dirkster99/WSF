@@ -243,7 +243,6 @@
         {
             // Get the default drive's path
             var drivePath = new DirectoryInfo(Environment.SystemDirectory).Root.Name;
-            var driveInfoPath = new System.IO.DriveInfo(drivePath);
 
             Assert.IsTrue(drivePath != null);
 
