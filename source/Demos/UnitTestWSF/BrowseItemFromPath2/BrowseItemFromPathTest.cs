@@ -86,7 +86,7 @@
 ////            Assert.IsTrue(dir.KnownFolder != null);
 
             // This item should have the Guid of the 'Windows' special folder
-            var dirFolderGuid = new Guid(KF_ID.ID_FOLDERID_Windows);
+////            var dirFolderGuid = new Guid(KF_ID.ID_FOLDERID_Windows);
 ////            Assert.IsTrue(dirFolderGuid == dir.KnownFolder.FolderId);
             Assert.IsTrue(string.Compare(dirPath, dir.PathFileSystem, true) == 0);
 

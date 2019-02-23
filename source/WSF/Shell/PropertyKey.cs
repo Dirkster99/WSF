@@ -12,7 +12,7 @@
         #region Private Fields
 
         private Guid formatId;
-        private Int32 propertyId;
+        private readonly Int32 propertyId;
 
         #endregion
 

@@ -412,6 +412,21 @@
             return IntPtr.Zero;
         }
 
+
+        /// <summary>
+        /// Converts a <see cref="IntPtr"/> formated PIDL representation
+        /// into a path representation 'C:\'.
+        /// 
+        /// The memory of the PIDL passed in must be freed
+        /// (<see cref="Marshal.FreeCoTaskMem"/>) by the caller.
+        /// </summary>
+        /// <param name="pidl"></param>
+        /// <returns></returns>
+        public static string GetPathFromPIDL(IntPtr pidl)
+        {
+            return GetPathFromPIDL(pidl, TypOfPath.LogicalPath);
+        }
+
         /// <summary>
         /// Converts a <see cref="IntPtr"/> formated PIDL representation
         /// into a path representation 'C:\'.
@@ -422,8 +437,7 @@
         /// <param name="pidl"></param>
         /// <param name="pathType"></param>
         /// <returns></returns>
-        public static string GetPathFromPIDL(IntPtr pidl,
-                                             TypOfPath pathType = TypOfPath.LogicalPath)
+        public static string GetPathFromPIDL(IntPtr pidl, TypOfPath pathType)
         {
             if (pidl != default(IntPtr))
             {

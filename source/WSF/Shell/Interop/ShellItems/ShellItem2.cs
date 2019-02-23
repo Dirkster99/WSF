@@ -121,7 +121,10 @@
                         {
                             Marshal.ReleaseComObject(Obj);
                         }
-                        catch{}
+                        catch
+                        {
+                            // Make sure other resources are disposed even if this throws
+                        }
                         finally
                         {
                             Obj = null;
@@ -134,7 +137,10 @@
                         {
                             Marshal.Release(_intPtrShellFolder2);
                         }
-                        catch { }
+                        catch
+                        {
+                            // Make sure other resources are disposed even if this throws
+                        }
                         finally
                         {
                             _intPtrShellFolder2 = IntPtr.Zero;

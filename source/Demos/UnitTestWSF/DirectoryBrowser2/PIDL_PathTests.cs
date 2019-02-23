@@ -74,6 +74,7 @@
             var drivePath = new DirectoryInfo(Environment.SystemDirectory).Root.Name;
             var driveInfoPath = new System.IO.DriveInfo(drivePath);
 
+            Assert.IsTrue(driveInfoPath != null);
             Assert.IsTrue(drivePath != null);
 
             var testitem = Browser.Create(drivePath);

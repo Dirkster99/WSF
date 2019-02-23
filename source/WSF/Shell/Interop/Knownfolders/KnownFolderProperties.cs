@@ -301,13 +301,19 @@
                             this.IsPathExists = pathExists;
                         }
                     }
-                    catch { }
+                    catch
+                    {
+                        // Catch this just in case
+                    }
 
                     try
                     {
                         this.PidlIdList = kfObj.KnownFolderToIdList();
                     }
-                    catch { }
+                    catch
+                    {
+                        // Catch this just in case
+                    }
                 }
             }
 

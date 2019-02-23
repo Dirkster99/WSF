@@ -682,6 +682,7 @@
             }
             catch
             {
+                // Catch this in case we've been missing a 'trivial' check
             }
 
             return dirs;

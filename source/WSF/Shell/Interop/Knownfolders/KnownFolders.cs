@@ -18,6 +18,10 @@
     /// </remarks>
     public sealed class KnownFolderGuids
     {
+        private KnownFolderGuids()
+        {
+        }
+
         // ReSharper disable InconsistentNaming
 
         /// <summary>

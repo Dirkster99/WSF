@@ -79,7 +79,7 @@
                     Assert.IsTrue(shellFolder != null);
 
                     guid = typeof(IExtractIcon).GUID;
-                    var pidls = new IntPtr[] { relChildPtr };
+                    var pidls = new[] { relChildPtr };
                     hr = shellFolder.Obj.GetUIObjectOf(IntPtr.Zero, 1, pidls, guid,
                                                         IntPtr.Zero, out ptrExtractIcon);
 

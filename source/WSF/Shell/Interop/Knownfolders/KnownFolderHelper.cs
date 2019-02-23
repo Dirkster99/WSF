@@ -346,7 +346,8 @@
             try
             {
                 KnownFolderManagerClass knownFolderManager = new KnownFolderManagerClass();
-                var result = knownFolderManager.GetFolderIds(out folders, out count);
+                if (knownFolderManager.GetFolderIds(out folders, out count) != HRESULT.S_OK)
+                    return foldersList;
 
                 if (count > 0 && folders != IntPtr.Zero)
                 {
