@@ -3,6 +3,8 @@
 [![Release](https://img.shields.io/github/release/Dirkster99/WSF.svg)](https://github.com/Dirkster99/WSF/releases/latest)
 [![NuGet](https://img.shields.io/nuget/dt/Dirkster.WSF.svg)](http://nuget.org/packages/Dirkster.WSF)
 
+![Net4](https://badgen.net/badge/Framework/.Net&nbsp;4/blue) ![NetCore3](https://badgen.net/badge/Framework/NetCore&nbsp;3/blue)
+
 # Windows Shell Foundation (WSF)
 
 <h2><img src="https://github.com/Dirkster99/WSF/blob/master/ProjectIcon.png?raw=true" height="64"/>&nbsp;Overview</h2>

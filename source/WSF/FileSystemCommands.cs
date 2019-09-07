@@ -77,7 +77,7 @@
             // re-throw to let caller know this was not a success
             Process.Start(new ProcessStartInfo(sFileName));
         }
-
+/***
         /// <summary>
         /// Copies the given string into the Windows clipboard.
         /// </summary>
@@ -96,5 +96,6 @@
                 // We should not get here but just in case we did...
             }
         }
+***/
     }
 }
