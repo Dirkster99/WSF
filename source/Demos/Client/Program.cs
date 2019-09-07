@@ -2,7 +2,6 @@
 {
     using WSF;
     using WSF.IDs;
-    using WSF.Shell.Interop.Interfaces.Knownfolders;
     using WSF.Shell.Interop.Knownfolders;
     using System;
     using System.Collections.Generic;

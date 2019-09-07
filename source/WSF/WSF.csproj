@@ -1,227 +1,133 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{2FB5C730-5836-4ED7-ABCA-2B9669E8C0A6}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WSF</RootNamespace>
-    <AssemblyName>WSF</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <TargetFrameworks>net4;netcoreapp3.0</TargetFrameworks>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DocumentationFile>bin\Debug\WSF.xml</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\WSF.xml</DocumentationFile>
-  </PropertyGroup>
+
   <PropertyGroup>
-    <ApplicationIcon>Resources\FolderOpen.ico</ApplicationIcon>
+    <AssemblyTitle>WSF</AssemblyTitle>
+    <PackageId>Dirkster.WSF</PackageId>
+    <Product>WSF</Product>
+    <Copyright>2018 - 2019</Copyright>
+    <Company>Open Source</Company>
+    <Description>Provides a Windows Shell data provider to support applications similar to Windows Explorer.</Description>
+    <Version>1.2</Version>
+    <AssemblyVersion>1.2</AssemblyVersion>
+    <FileVersion>1.2</FileVersion>
+    <VersionPrefix>1.2</VersionPrefix>
+    <PackageProjectUrl>https://github.com/Dirkster99/WSF</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Dirkster99/WSF</RepositoryUrl>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageTags>Windows Shell c# .net Windows Explorer</PackageTags>
+    <PackageIconUrl>https://raw.githubusercontent.com/Dirkster99/WSF/master/ProjectIcon.png</PackageIconUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReleaseNotes>Package Update with support based on .NetCore 3 and .Net4.</PackageReleaseNotes>
+    <NeutralLanguage>en</NeutralLanguage>
   </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="PresentationCore" />
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <None Remove="Resources\FolderOpen.ico" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Browser.cs" />
-    <Compile Include="Browse\BrowseItemFromPath.cs" />
-    <Compile Include="Browse\DirectoryBrowser.cs" />
-    <Compile Include="Browse\FilterMask.cs" />
-    <Compile Include="Enums\DirectoryItemFlags.cs" />
-    <Compile Include="Enums\PathMatch.cs" />
-    <Compile Include="Enums\PathType.cs" />
-    <Compile Include="Enums\SubItemFilter.cs" />
-    <Compile Include="FileSystemCommands.cs" />
-    <Compile Include="IDs\KF_ParseName_IID.cs" />
-    <Compile Include="IDs\KnownfolderSlim.cs" />
-    <Compile Include="Interfaces\IDirectoryBrowser.cs" />
-    <Compile Include="Local\Strings.de-DE.Designer.cs">
-      <DependentUpon>Strings.de-DE.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Local\Strings.Designer.cs">
-      <DependentUpon>Strings.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Local\Strings.es-ES.Designer.cs">
-      <DependentUpon>Strings.es-ES.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Local\Strings.fr-FR.Designer.cs">
-      <DependentUpon>Strings.fr-FR.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Local\Strings.hi-IN.Designer.cs">
-      <DependentUpon>Strings.hi-IN.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Local\Strings.it-IT.Designer.cs">
-      <DependentUpon>Strings.it-IT.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Local\Strings.ja-JP.Designer.cs">
-      <DependentUpon>Strings.ja-JP.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Local\Strings.ru-RU.Designer.cs">
-      <DependentUpon>Strings.ru-RU.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Local\Strings.zh-CHS.Designer.cs">
-      <DependentUpon>Strings.zh-CHS.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Shell\Enums\GetPropertyStoreFlags.cs" />
-    <Compile Include="Shell\Enums\SFGAOF.cs" />
-    <Compile Include="Shell\Enums\SIGDN.cs" />
-    <Compile Include="Shell\Interop\DLLs\CoreNativeMethods.cs" />
-    <Compile Include="Shell\Interop\DLLs\User32.cs" />
-    <Compile Include="Shell\Interop\Interfaces\IExtractIcon.cs" />
-    <Compile Include="Shell\Interop\Interfaces\KnownFolders\DefinitionOptions.cs" />
-    <Compile Include="Shell\Interop\Interfaces\KnownFolders\FolderCategory.cs" />
-    <Compile Include="Shell\Interop\Interfaces\KnownFolders\IKnownFolderManager.cs" />
-    <Compile Include="Shell\Interop\Interfaces\KnownFolders\IKnownFolderNative.cs" />
-    <Compile Include="Shell\Interop\Interfaces\KnownFolders\KnownFoldersIIDGuids.cs" />
-    <Compile Include="Shell\Interop\Interfaces\KnownFolders\NativeFolderDefinition.cs" />
-    <Compile Include="Shell\Interop\Interfaces\KnownFolders\RedirectionCapabilities.cs" />
-    <Compile Include="Shell\Interop\Interfaces\KnownFolders\IKnownFolderProperties.cs" />
-    <Compile Include="Shell\Interop\Interfaces\ShellItems\IEnumShellItems.cs" />
-    <Compile Include="Shell\Interop\Interfaces\ShellItems\IShellItem.cs" />
-    <Compile Include="Shell\Interop\Knownfolders\KnownFolderProperties.cs" />
-    <Compile Include="Shell\Interop\Knownfolders\KnownFolderHelper.cs" />
-    <Compile Include="Shell\Interop\Knownfolders\KnownFolderManagerClass.cs" />
-    <Compile Include="Shell\Interop\Knownfolders\KnownFolderNative.cs" />
-    <Compile Include="Shell\Interop\Messages\Resources\LocalizedMessages.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>LocalizedMessages.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Shell\Interop\Messages\ShellException.cs" />
-    <Compile Include="Shell\Interop\ResourceIds\FileAttribute.cs" />
-    <Compile Include="Shell\Interop\ResourceIds\IconHelper.cs" />
-    <Compile Include="Shell\Interop\ResourceIds\IconSize.cs" />
-    <Compile Include="Shell\Interop\ResourceIds\ShellIconStateConstants.cs" />
-    <Compile Include="Shell\Interop\ShellFolders\GenericCOMFolder.cs" />
-    <Compile Include="Shell\Interop\ShellFolders\ShellFolder.cs" />
-    <Compile Include="Shell\Interop\ShellFolders\ShellFolderDesktop.cs" />
-    <Compile Include="Shell\Interop\ShellFolders\ShellHelpers.cs" />
-    <Compile Include="Shell\Interop\ShellItems\ShellItem2.cs" />
-    <Compile Include="Shell\Interop\Interfaces\IPropertyStore.cs" />
-    <Compile Include="Shell\Interop\Interfaces\ShellItems\IShellItem2.cs" />
-    <Compile Include="Shell\Interop\ShellItems\PropVariant.cs" />
-    <Compile Include="IDs\ShellIIDGuids.cs" />
-    <Compile Include="Shell\Enums\SICHINTF.cs" />
-    <Compile Include="Shell\Enums\HRESULT.cs" />
-    <Compile Include="Shell\Interop\EXTRASEARCH.cs" />
-    <Compile Include="Shell\Interop\Interfaces\IEnumExtraSearch.cs" />
-    <Compile Include="Shell\Interop\Interfaces\IEnumIDList.cs" />
-    <Compile Include="Shell\Interop\Interfaces\ShellFolders\IShellFolder.cs" />
-    <Compile Include="Shell\Interop\Interfaces\ShellFolders\IShellFolder2.cs" />
-    <Compile Include="IDs\KF_IID.cs" />
-    <Compile Include="IDs\KF_ID.cs" />
-    <Compile Include="Shell\Interop\Knownfolders\KnownFolders.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Shell\Enums\KNOWN_FOLDER_FLAG.cs" />
-    <Compile Include="Shell\Interop\MSG.cs" />
-    <Compile Include="Shell\Interop\POINT.cs" />
-    <Compile Include="Shell\Interop\PROPERTYKEY.cs" />
-    <Compile Include="Shell\Enums\SEE.cs" />
-    <Compile Include="Shell\Enums\SFGAO.cs" />
-    <Compile Include="Enums\SHCOLSTATEF.cs" />
-    <Compile Include="Enums\SHCONTF.cs" />
-    <Compile Include="Shell\Interop\DLLs\shell32.cs" />
-    <Compile Include="Shell\Interop\SHELLDETAILS.cs" />
-    <Compile Include="Shell\Interop\SHELLEXECUTEINFO.cs" />
-    <Compile Include="Shell\Interop\SHFILEINFO.cs" />
-    <Compile Include="Shell\Enums\SHGDNF.cs" />
-    <Compile Include="Shell\Enums\SHGFI.cs" />
-    <Compile Include="Shell\Interop\DLLs\Shlwapi.cs" />
-    <Compile Include="Shell\Interop\STRRET.cs" />
-    <Compile Include="Shell\Pidl\IdList.cs" />
-    <Compile Include="Shell\Pidl\PidlManager.cs" />
-    <Compile Include="Shell\Pidl\ShellId.cs" />
-    <Compile Include="Shell\PropertyKey.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Local\Strings.de-DE.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Strings.de-DE.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Local\Strings.es-ES.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Strings.es-ES.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Local\Strings.fr-FR.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Strings.fr-FR.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Local\Strings.hi-IN.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Strings.hi-IN.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Local\Strings.it-IT.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Strings.it-IT.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Local\Strings.ja-JP.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Strings.ja-JP.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Local\Strings.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Strings.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Local\Strings.ru-RU.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Strings.ru-RU.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Local\Strings.zh-CHS.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Strings.zh-CHS.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Shell\Interop\Messages\Resources\LocalizedMessages.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>LocalizedMessages.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ClassDiagram1.cd" />
-  </ItemGroup>
+
   <ItemGroup>
     <Content Include="Resources\FolderOpen.ico" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+
+  <ItemGroup>
+    <Compile Update="Local\Strings.de-DE.Designer.cs">
+      <DependentUpon>Strings.de-DE.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Local\Strings.Designer.cs">
+      <DependentUpon>Strings.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Local\Strings.es-ES.Designer.cs">
+      <DependentUpon>Strings.es-ES.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Local\Strings.fr-FR.Designer.cs">
+      <DependentUpon>Strings.fr-FR.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Local\Strings.hi-IN.Designer.cs">
+      <DependentUpon>Strings.hi-IN.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Local\Strings.it-IT.Designer.cs">
+      <DependentUpon>Strings.it-IT.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Local\Strings.ja-JP.Designer.cs">
+      <DependentUpon>Strings.ja-JP.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Local\Strings.ru-RU.Designer.cs">
+      <DependentUpon>Strings.ru-RU.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Local\Strings.zh-CHS.Designer.cs">
+      <DependentUpon>Strings.zh-CHS.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Shell\Interop\Messages\Resources\LocalizedMessages.Designer.cs">
+      <DependentUpon>LocalizedMessages.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Local\Strings.de-DE.resx">
+      <LastGenOutput>Strings.de-DE.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Local\Strings.es-ES.resx">
+      <LastGenOutput>Strings.es-ES.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Local\Strings.fr-FR.resx">
+      <LastGenOutput>Strings.fr-FR.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Local\Strings.hi-IN.resx">
+      <LastGenOutput>Strings.hi-IN.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Local\Strings.it-IT.resx">
+      <LastGenOutput>Strings.it-IT.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Local\Strings.ja-JP.resx">
+      <LastGenOutput>Strings.ja-JP.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Local\Strings.resx">
+      <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Local\Strings.ru-RU.resx">
+      <LastGenOutput>Strings.ru-RU.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Local\Strings.zh-CHS.resx">
+      <LastGenOutput>Strings.zh-CHS.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Shell\Interop\Messages\Resources\LocalizedMessages.resx">
+      <SubType>Designer</SubType>
+      <LastGenOutput>LocalizedMessages.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+
 </Project>

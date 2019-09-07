@@ -1,0 +1,33 @@
+version: 1.2.{build}
+
+branches:
+  only:
+  - master
+  
+before_build:
+  - cmd: nuget restore source/WSF.sln
+
+build:
+  verbosity: minimal
+
+configuration: Release
+
+platform: Any CPU
+
+image: Visual Studio 2019 Preview
+
+install:
+  - cmd: choco install dotnetcore-sdk --pre
+
+artifacts:
+- path: source\WSF\bin\Release
+  name: WSF
+
+- path: source\Demos\Client\bin\Release
+  name: Client
+
+- path: source\Demos\PerformanceTestClient\bin\Release
+  name: PerformanceTestClient
+
+- path: source\Demos\WpfPerformance\bin\Release
+  name: WpfPerformance
